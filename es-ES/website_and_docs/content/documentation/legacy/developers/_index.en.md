@@ -1,10 +1,10 @@
 ---
-title: Legacy developer documentation
-linkTitle: Developers
+title: Documentación antigua del desarrollador
+linkTitle: Desarrolladores
 weight: 16
 description: |
-  Information of interest to developers of Selenium
+  Información de interés para los desarrolladores de Selenium
 aliases:
-  - /documentation/en/legacy_docs/
+  - /documentation/es/legacy_docs/
 ---
 
