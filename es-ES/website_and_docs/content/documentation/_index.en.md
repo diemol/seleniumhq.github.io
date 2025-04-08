@@ -1,49 +1,49 @@
 ---
-title: The Selenium Browser Automation Project
-linkTitle: Documentation
+title: El proyecto de automatización del navegador Selenium
+linkTitle: Documentación
 cascade:
-  - type: docs
+  - type: documentos
 aliases:
-  - /documentation/en/
+  - /es/documentation/es/
 ---
 
-Selenium is an umbrella project for a range of tools and libraries
-that enable and support the automation of web browsers.
+Selenium es un proyecto paraguas para una gama de herramientas y bibliotecas
+que permiten y apoyan la automatización de navegadores web.
 
-It provides extensions to emulate user interaction with browsers,
-a distribution server for scaling browser allocation,
-and the infrastructure for implementations of the
+Provee extensiones para emular la interacción del usuario con los navegadores,
+un servidor de distribución para la asignación de escala del navegador,
+y la infraestructura para implementaciones de la
 [W3C WebDriver specification](//www.w3.org/TR/webdriver/)
-that lets you write interchangeable code for all major web browsers.
+que le permite escribir código intercambiable para todos los principales navegadores web.
 
-This project is made possible by volunteer contributors
-who have put in thousands of hours of their own time,
-and made the source code
-[freely available]({{< ref "copyright.md#license" >}})
-for anyone to use, enjoy, and improve.
+Este proyecto es posible gracias a los colaboradores voluntarios
+que han puesto miles de horas de su propio tiempo,
+y hizo que el código fuente
+[disponible libremente]({{< ref "copyright. d#license" >}})
+para cualquiera a usar, disfrutar y mejorar.
 
-Selenium brings together browser vendors, engineers, and enthusiasts
-to further an open discussion around automation of the web platform.
-The project organises [an annual conference](//seleniumconf.com/)
-to teach and nurture the community.
+Selenium reúne a proveedores de navegadores, ingenieros y entusiastas
+para promover una discusión abierta acerca de la automatización de la plataforma web.
+El proyecto organiza [una conferencia anual](//seleniumconf.com/)
+para enseñar y nutrir a la comunidad.
 
 At the core of Selenium is [WebDriver]({{< ref "webdriver" >}}),
 an interface to write instruction sets that can be run interchangeably in many
 browsers. Once you've installed everything, only a few lines of code get you inside
-a browser. You can find a more comprehensive example in [Writing your first Selenium script]({{< ref "first_script.md" >}})
+a browser. Puedes encontrar un ejemplo más completo en [Escribir tu primer script de Selenio]({{< ref "first_script.md" >}})
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/hello/HelloSelenium.java" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="/examples/python/tests/hello/hello_selenium.py" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< gh-codeblock path="/examples/dotnet/HelloSelenium.cs" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="/examples/ruby/spec/hello/hello_selenium.rb" >}}
+{{< gh-codeblock path="/examples/ruby/spec/hola/hola/hola_selenium.rb" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
 {{< gh-codeblock path="/examples/javascript/test/hello/helloSelenium.js" >}}
@@ -53,10 +53,10 @@ a browser. You can find a more comprehensive example in [Writing your first Sele
 {{< /tab >}}
 {{< /tabpane >}}
 
-See the [Overview]({{< ref "overview" >}}) to check the different project
-components and decide if Selenium is the right tool for you.
+Mira la [Overview]({{< ref "overview" >}}) para comprobar los diferentes componentes
+del proyecto y decidir si Selenium es la herramienta adecuada para ti.
 
-You should continue on to [Getting Started]({{< ref "webdriver/getting_started" >}})
-to understand how you can install Selenium and successfully use it as a test
-automation tool, and scaling simple tests like this to run in large, distributed
-environments on multiple browsers, on several different operating systems.
+Deberías continuar con [Empezando]({{< ref "webdriver/getting_started" >}})
+para entender cómo puedes instalar Selenium y usarlo con éxito como una herramienta de automatización
+, y pruebas simples escalables como esta para ejecutarse en entornos grandes distribuidos
+en múltiples navegadores, en varios sistemas operativos diferentes.
