@@ -1,54 +1,54 @@
 ---
-title: Selenium's Continuous Integration Implementation
+title: Implementación continua de la integración de Selenium
 linkTitle: CI Tool
 weight: 6
 description: |
-  We used to have a Jenkins CI tool that executed unit tests and ran integration tests on Sauce Labs. We moved all of the tests to Travis, and now execute everything with Github Actions.
+  Solíamos tener una herramienta de CI de Jenkins que ejecutaba pruebas unitarias y ejecutaba pruebas de integración en Sauce Labs. Hemos movido todas las pruebas a Travis, y ahora ejecutamos todo con Github Actions.
 ---
 
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/Continuous-Integration)
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/Continuous-Integration)
 
-## General architecture
+## Arquitectura general
 
-We have a number of Google Compute Engine virtual machines running Ubuntu, currently hosted at {0..29}.ci.seleniumhq.org - they have publicly addressable DNS set up to point [ab](ab.md).{0..29}.ci.seleniumhq.org pointing at them as well, so that cookie tests can do subdomain lookups.
+Tenemos una serie de máquinas virtuales de Google Computer Engine ejecutando Ubuntu, actualmente alojadas en {0..29}.ci.seleniumhq. rg - tienen DNS públicamente direccionable configurado para el punto [ab](ab.md).{0..29}. i.seleniumhq.org también los señala, para que las pruebas de cookies puedan hacer búsquedas de subdominios.
 
-One of these machines, ci.seleniumhq.org, is running jenkins. If you want a login on jenkins, get in touch with juangj.  The Build All Java job polls SCM for changes, and does the following:
+Una de estas máquinas, ci.seleniumhq.org, está ejecutando jenkins. Si quieres un login en jenkins, ponte en contacto con juangj.  El Build All Java job encuesta SCM para cambios, y hace lo siguiente:
 
-- Does a clean build of the 'release' target, any tests which are going to be run, and any artifacts (e.g. the IEDriverServer executable) which will be required to run those tests
-- Tars up the entire built working directory and publishes it to http://ci.seleniumhq.org/selenium-trunk-r${REVISION}.tgz - this is used later by test runs
-- Publishes the selenium-server-standalone jar to http://ci.seleniumhq.org/selenium-server-standalone-r${REVISION}.tgz - this is copied down directly by [SauceLabs](http://saucelabs.com) when running tests.
-- Zips up the IEDriverServer and publishes it to http://ci.seleniumhq.org/IEDriverServer-Win32-r${REVISION}.zip - this is copied down directly by [SauceLabs](http://saucelabs.com) to run IE tests
-  This machine is backed by a 1TB persistent disk, which can hold many build artifacts, but they should be cleared out occasionally (particularly when moving disk between zones).
+- Hace una construcción limpia del objetivo 'lanzamiento', cualquier prueba que se vaya a ejecutar, y cualquier artefacto (e. . el ejecutable de IEDriverServer) que será requerido para ejecutar esas pruebas
+- Muestra todo el directorio de trabajo construido y lo publica en http://ci.seleniumhq.org/selenium-trunk-r${REVISION}.tgz - esto es usado más tarde por ejecuciones de prueba
+- Publica el jarro selenium-server-standalone en http://ci.seleniumhq.org/selenium-server-standalone-r${REVISION}.tgz - esto es copiado directamente por [SauceLabs](http://saucelabs.com) al ejecutar pruebas.
+- Publica el IEDriverServer y lo publica en http://ci.seleniumhq.org/IEDriverServer-Win32-r${REVISION}. ip - esto es copiado directamente por [SauceLabs](http://saucelabs.com) para ejecutar pruebas IE
+  Esta máquina está respaldada por un disco persistente de 1TB, que pueden contener muchos artefactos de construcción, pero deben ser eliminados ocasionalmente (especialmente cuando se mueven el disco entre zonas).
 
-When this build is successful, it triggers downstream builds for each OS/browser/test combination we care about.  It also triggers a downstream clean build to ensure our maven poms are still in order ("Maven build").
+Cuando esta compilación tiene éxito, activa las compilaciones de aguas abajo para cada combinación de OS/navegador/prueba que nos importa.  También activa una construcción limpia para asegurar que nuestros paneles de laberinto sigan en orden ("construcción de Maven").
 
-Apart from "Maven build" which runs on the same build node as the compile (a beefy, 8-CPU machine with 32GB RAM), all downstream builds run on separate build nodes.
+Aparte de "Maven build" que se ejecuta en el mismo nodo de compilación (un carpintero, Máquina de 8-CPU con 32GB RAM), todas las versiones de downstream se ejecutan en nodos de construcción independientes.
 
-The downstream builds are configured using environment variables, as per the [SauceDriver](https://github.com/SeleniumHQ/selenium/blob/master/java/client/test/org/openqa/selenium/testing/drivers/SauceDriver.java) class.  The downstream builds download the selenium-trunk tar from the build master, and then run tests (which should already have been compiled by the Build All Java rule).  Two of these downstream builds are special; "HtmlUnit Java Tests" and "Small Tests" just run headless locally.  The others use [SauceLabs](http://saucelabs.com).
+Las versiones de aguas abajo se configuran usando variables de entorno, según la clase [SauceDriver](https://github.com/SeleniumHQ/selenium/blob/master/java/client/test/org/openqa/selenium/testing/drivers/SauceDriver.java).  Las versiones posteriores descargan el tar selenium-trunk del maestro de construcción, y luego ejecute las pruebas (que ya deberían haber sido compiladas por la regla Build All Java).  Dos de estas versiones anteriores son especiales; "HtmlUnit Java Tests" y "Pequeñas Pruebas" sólo ejecutan localmente sin headless.  Los otros usan [SauceLabs](http://saucelabs.com).
 
-A note about networking: The build nodes are set up on an internal network 10.1.0/24, so network communication between them is incredibly fast and free.
+Una nota acerca de la red: Los nodos de construcción están configurados en una red interna 10.1.0/24, por lo que la comunicación de red entre ellos es increíblemente rápida y gratuita.
 
-When a non-headless browser test is running, the test-file servlet hosts the test files on ports determined by an environment variable (231${EXECUTOR\_NUMBER} and 241${EXECUTOR\_NUMBER} - EXECUTOR\_NUMBER is currently always equal to 0).  The hostname used by tests is set by an environment variable ([ab](ab.md).${NODE\_NAME}.ci.seleniumhq.org where NODE\_NAME in {0..29}).  A browser is requested from [SauceLabs](http://saucelabs.com) using our credentials (stored in jenkins-wide environment variables, set on the System Configuration page).  Jenkins is currently set to run three test-classes at a time in parallel, per test run, again on the System Configuration page.
+Cuando se está ejecutando una prueba de navegador sin encabezamiento, el servlet de test-file aloja los archivos de prueba en puertos determinados por una variable de entorno (231${EXECUTOR\_NUMBER} y 241${EXECUTOR\_NUMBER} - EXECUTOR\_NUMBER es actualmente siempre igual a 0).  El nombre de host utilizado por las pruebas es establecido por una variable de entorno ([ab](ab.md).${NODE\_NAME}.ci.seleniumhq.org donde NODE\_NAME en {0..29}).  Se solicita un navegador a [SauceLabs](http://saucelabs.com) usando nuestras credenciales (almacenadas en variables de entorno de todo jenkins, configuradas en la página de configuración del sistema).  Jenkins está configurado actualmente para ejecutar tres clases de test-classes a la vez en paralelo, por ejecución de prueba, de nuevo en la página Configuración del sistema.
 
-The tests are run, and the results get notified to IRC.
+Las pruebas se ejecutan y los resultados son notificados al IRC.
 
-Thanks to [SauceLabs](http://saucelabs.com) and [Google](http://cloud.google.com/products/compute-engine.html) for donating the infrastructure to run all of these tests.
+Gracias a [SauceLabs](http://saucelabs.com) y [Google](http://cloud.google.com/products/compute-engine.html) por donar la infraestructura para ejecutar todas estas pruebas.
 
 ## FAQ
 
-### I want to run my tests on Sauce like Jenkins does (my tests are failing on CI, but work fine on my machine!)
+### Quiero ejecutar mis pruebas en Sauce como lo hace Jenkins (mis pruebas fallan en CI, pero funcionan bien en mi máquina!)
 
-See the [SauceDriver](Sauce.md) page
+Ver la página [SauceDriver](Sauce.md)
 
-### I want to add a new browser (Firefox has released a new version!)
+### Quiero añadir un nuevo navegador (¡Firefox ha lanzado una nueva versión!)
 
-Jenkins doesn't have a great concept of templates.  I (dawagner) have some selenium scripts which automate the UI of Jenkins, to create new jobs using canned settings.  If you want to do it manually, here are roughly the steps to take:
+Jenkins no tiene un gran concepto de plantillas.  I (dawagner) tengo algunos scripts de selenium que automatizan la interfaz de usuario de Jenkins, para crear nuevos trabajos usando los ajustes enlatados.  Si quieres hacerlo manualmente, aquí están aproximadamente los pasos a seguir:
 
-- Find the most similar config(s) you want to copy.  If it's a new Firefox release, find the latest firefox (which should have roughly 6 builds associated with it: Javascript + Java {Windows,Linux} \*\*{Native,Synthesized}
-- For each of those builds, create a New Job (menu on the left hand side of the home page, when logged in)
-- Name the job in the style of the others.  Select "Copy existing job", and enter the job you're copying.
-- Scroll through the job it's pre-populated.  Replace the version numbers, browser name, and any other details that need replacing.  For firefox updates, there are currently three places you should be replacing the number (the "browser\_version" field, and two in the Build Execute Shell)
-- Save
-- Go to the Build All Java task, configure it, add your new build to the "Projects to build" field where there are many others listed.\*\*
+- Encuentra las configuraciones más similares que quieras copiar.  Si es una nueva versión de Firefox, encuentre la última versión de firefox (que debería tener aproximadamente 6 compilaciones asociadas con él: Javascript + Java {Windows,Linux} \*\*{Native,Synthesized}
+- Para cada una de estas compilaciones, crea un nuevo Job (menú en el lado izquierdo de la página de inicio, al iniciar sesión)
+- Nombra el trabajo al estilo de los demás.  Selecciona "Copiar trabajo existente" e introduce el trabajo que estás copiando.
+- Desplácese por el trabajo que está prepoblado.  Reemplace los números de versión, el nombre del navegador y cualquier otro detalle que necesite reemplazar.  Para actualizaciones de firefox, actualmente hay tres lugares en los que deberías estar reemplazando el número (el campo "browser\_version" y dos en la consola de ejecución de construcción)
+- Guardar
+- Ve a la tarea Build All Java, configúrela, añade tu nueva construcción al campo "Proyectos para construir" donde hay muchos otros listados.\*\*
 
-If it's a firefox update, you probably also want to delete an existing build.
+Si se trata de una actualización de firefox, probablemente también quiera eliminar una versión existente.
