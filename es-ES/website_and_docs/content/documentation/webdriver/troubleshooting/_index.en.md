@@ -1,27 +1,27 @@
 ---
-title: Troubleshooting Assistance
-linkTitle: Troubleshooting
+title: Solución de problemas de asistencia
+linkTitle: Solución de problemas
 weight: 20
 description: |
-  How to solve WebDriver problems.
+  Cómo resolver problemas de WebDriver.
 ---
 
-It is not always obvious the root cause of errors in Selenium.
+No siempre es evidente la raíz de los errores en Selenium.
 
-1. The most common Selenium-related error is a result of poor synchronization.
-  Read about [Waiting Strategies]({{< ref "../waits" >}}). If you aren't sure if it
-  is a synchronization strategy you can try _temporarily_ hard coding a large sleep
-  where you see the issue, and you'll know if adding an explicit wait can help.
+1. El error más común relacionado con Selenium es el resultado de una mala sincronización.
+  Lee sobre [Esperando estrategias]({{< ref "../waits" >}}). Si no estás seguro de si
+  es una estrategia de sincronización puedes intentar programar _temporalmente_ duramente un sueño grande
+  donde ves el problema, y sabrá si añadir una espera explícita puede ayudar.
 
 2. Note that many errors that get reported to the project are actually caused by
-  issues in the underlying drivers that Selenium sends the commands to. You can rule
-  out a driver problem by executing the command in multiple [browsers]({{< ref "../browsers/" >}}).
+  issues in the underlying drivers that Selenium sends the commands to. Puedes descartar
+  un problema de controlador ejecutando el comando en múltiples [browsers]({{< ref "../browsers/" >}}).
 
-3. If you have questions about how to do things, check out the [Support options](/support/)
-  for ways get assistance.
+3. Si tienes preguntas sobre cómo hacer las cosas, revisa las [opciones de soporte](/support/)
+  para encontrar formas de obtener asistencia.
 
-4. If you think you've found a problem with Selenium code, go ahead and file a
-  Bug Report
-  on GitHub.
+4. Si crees que has encontrado un problema con el código de Selenium, sigue adelante y archiva un
+  Informe de error
+  en GitHub.
 
 
