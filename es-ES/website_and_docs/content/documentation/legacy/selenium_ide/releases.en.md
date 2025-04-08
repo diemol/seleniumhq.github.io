@@ -1,435 +1,435 @@
 ---
-title: Legacy Selenium IDE Release Notes
-linkTitle: Releases
+title: Notas de lanzamiento de Selenium IDE heredadas
+linkTitle: Publicaciones
 weight: 4
 description: |
-  Selenium IDE was the original Firefox extension for Record and Playback. Version 2.x was updated to support WebDriver.
+  Selenium IDE fue la extensión original de Firefox para Registro y Reproducción. La versión 2.x fue actualizada para soportar WebDriver.
 ---
 
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/SeIDE-Release-Notes)
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/SeIDE-Release-Notes)
 
-## 2.9.1 - to be released
+## 2.9.1 - a liberar
 
-- Fix - Fixes https://github.com/SeleniumHQ/selenium/issues/396
-- Fix - Changed Google code links to GitHub.
-- Enh - Merged official language plugins into the main xpi eliminating the need for multi-xpi with the main xpi and multiple language plugin xpis.
-- Fix - Fixes https://github.com/SeleniumHQ/selenium/issues/570
+- Corregir - Corregir https://github.com/SeleniumHQ/selenium/issues/396
+- Corregir - Cambiados enlaces de código de Google a GitHub.
+- Enh - Se fusionaron los plugins de idioma oficial en el principal xpi eliminando la necesidad de multi-xpi con el principal xpi y el complemento de lenguaje múltiple xpis.
+- Corregir - Corregir https://github.com/SeleniumHQ/selenium/issues/570
 
 ## 2.9.0
 
-- Enh - Schedule tests for automatic playback at a certain time or periodic intervals. (http://blog.reallysimplethoughts.com/2015/03/09/selenium-ide-scheduler-has-arrived-part-1/)
-- Enh - Allow submission of diagnostic information via a gist.
-- Enh - Improved health logging, including alerts normally hidden.
+- Enh - Programar pruebas para la reproducción automática en un cierto tiempo o intervalos periódicos. (http://blog.reallysimplement. hts.com/2015/03/09/selenium-ide-scheduler-has-arriived-part-1/)
+- Enh - Permitir el envío de información diagnóstica a través de un gist.
+- Enh - Mejoras en la tala de salud, incluyendo alertas normalmente ocultas.
 
 ## 2.8.0
 
-- New - Added visual assist option to help users requiring stronger constrast in colors, turned off by default. Turn it on from the Options dialog. - Issue 7696 (on Google Code)
-- New - Health Service to catch unhandled exceptions, statistics, metrics and diagnostics
-- Enh - Added Search Issues menu item in Help menu to make it easier to search all issues so that we do not get so many duplicate reports of the same issue
-- Fix - Fixed broken autocomplete - issue 7928 (on Google Code)
-- Fix - Fixed cancelling of select button when page is reloaded - issue 7793 (on Google Code)
-- Fix - Adding select button to the sidebar and reduced button size - issue 7815 (on Google Code)
+- Nuevo - Se ha añadido la opción de ayuda visual para ayudar a los usuarios que necesitan una apariencia más fuerte en colores, desactivada por defecto. Actívalo desde el diálogo Opciones. - Número 7696 (en Google Code)
+- Nuevo - Servicio de salud para detectar excepciones no manejadas, estadísticas, métricas y diagnóstico
+- Enh - Añadido elemento de menú Problemas de Búsqueda en el menú de Ayuda para hacer más fácil la búsqueda de todos los problemas para que no tengamos tantos informes duplicados del mismo problema
+- Corregir - Corregido autocompletado roto - issue 7928 (en Google Code)
+- Corregir - Se ha corregido la cancelación del botón de selección cuando se recarga la página - Emitir 7793 (en Google Code)
+- Arreglar - Añadir botón de selección a la barra lateral y tamaño de botón reducido - Emitir 7815 (en Google Code)
 
 ## 2.7.0
 
-- Fix - Fixed switching between tabs in the bottom info panel in FF32 - issue 7824 (on Google Code)
-- Fix - Fixes for https://bugzilla.mozilla.org/show_bug.cgi?id=1016305
-- Enh - Let comments (and commands) span the full width of the commands table
-- Enh - Show the result of the test case in the log after it has been played
-- Enh - Group items in the Action menu by function
-- Enh - Collect more statistics about test case and suite including running time for reporting purposes
-- Enh - Improved listboxes supporting drag and drop reordering
-- Enh - Provide common utility function for plugin authors to deal with files
-- Enh - Allow pressing tab in the command text box to accept the current autocomplete and move to the target text box
-- Enh - Select an autocomplete match when typing in the command text box to speed up manual entry of commands
-- Enh - Make promises implementation available via deferred.js for plugin developers
-- Enh - Make simple http functions available for plugin developers
-- Enh - Easier to use confirmations for internal use and for plugins
-- Fix - Disable autocomplete when editing comments
-- Fix - Fixed error TypeError: command.isRollup is not a function
-- Fix - Fixed TypeError: debugContext.currentCommand is undefined
-- Fix - Fixed TypeError: this.treebox is undefined treeView.js
-- Fix - Various errors when selecting a comment (usually hidden from the user)
-- Fix - Incorrect doctype in overlay
-- Fix - Adding Selenium IDE item under Settings->Developer menu - issue 7268 (on Google Code)
-- Fix - Ignore Firefox developer tools while recording
+- Corregir - Interrupción fija entre pestañas en el panel de información inferior de FF32 - Emitir 7824 (en Google Code)
+- Corregir - Corregir para https://bugzilla.mozilla.org/show_bug.cgi?id=1016305
+- Enh - Permitir que los comentarios (y comandos) abarquen el ancho completo de la tabla de comandos
+- Enh - Mostrar el resultado del caso de prueba en el registro después de que se haya reproducido
+- Enh - Agrupar elementos en el menú de acción por función
+- Enh - Recoge más estadísticas sobre el caso de prueba y la suite incluyendo el tiempo de ejecución para propósitos reportados
+- Enh - Mejorados listboxes soportando reordenar y arrastrar
+- Enh - Proporciona una función de utilidad común para que los autores de plugins se ocupen de los archivos
+- Enh - Permitir la pulsación de la pestaña en el cuadro de texto de comando para aceptar el autocompletado actual y mover al cuadro de texto de destino
+- Enh - Selecciona una coincidencia de autocompletado cuando escribas en el cuadro de texto de comandos para acelerar la entrada manual de comandos
+- Enh - Hacer que la implementación de promesas esté disponible a través de diferred.js para desarrolladores de plugins
+- Enh - Hacer disponibles funciones http simples para desarrolladores de plugins
+- Enh - Fácil de usar confirmaciones para uso interno y para plugins
+- Corregir - Desactivar autocompletar al editar comentarios
+- Corregir - Corregido error TypeError: command.isRollup no es una función
+- Corregir - FixTypeError: debugContext.currentCommand no está definido
+- Corregir - Fixed TypeError: this.treebox es indefinido treeView.js
+- Corregir - Errores variados al seleccionar un comentario (normalmente ocultos al usuario)
+- Corregir - Tipo de documento incorrecto en la superposición
+- Corregir - Añadir elemento de Selenium IDE en Configuración->Menú de desarrollador - Emitir 7268 (en el código de Google)
+- Corregir - Ignorar herramientas de desarrollador de Firefox durante la grabación
 
 ## 2.6.0
 
-- Fix - Fixed broken autocompletion in FF31+ - issue 7645 (on Google Code)
-- Fix - Fixed options validation on options reset - issue 1050 (on Google Code)
-- Fix - Fixed C# code formatting for select elements
+- Corregir - Corregido autocompletado roto en FF31+ - incidencia 7645 (en Google Code)
+- Corregir - Validación de opciones en el restablecimiento de opciones - incidencia 1050 (en Google Code)
+- Corregir - Formato de código C# fijo para elementos seleccionados
 
 ## 2.5.0
 
-- Enh - Select an element for a command by clicking on the element in the browser window (http://blog.reallysimplethoughts.com/2014/01/05/manually-adding-and-updating-element-locators-the-easy-way/)
-- Enh - Start playing a test suite from any test case (Using right click menu) - issue 1987 (on Google Code)
-- Enh - Add a new test case using a keyboard shortcut (ctrl-N or cmd+N)
-- Fix - Fixed delete test case through right click menu was sometimes disabled - issue 5003 (on Google Code)
-- Fix - Fixed Selenium IDE icon is sometimes not visible - issue 5712 (on Google Code)
-- Fix - Fixed selectWindow using a variable - issue 3270 (on Google Code)
-- Some minor changes
+- Enh - Seleccione un elemento para un comando haciendo clic en el elemento en la ventana del navegador (http://blog.reallysimplehowever hts.com/2014/01/05/manually-adding-and-updating-element-locators-the-easy-way/)
+- Enh - Comienza a reproducir una suite de pruebas desde cualquier caso de prueba (usando menú de clic derecho) - número 1987 (en Google Code)
+- Enh - Añadir un nuevo caso de prueba usando un atajo de teclado (ctrl-N o cmd+N)
+- Corregir - Borrado fijo de caso de prueba a través del menú de clic derecho a veces fue deshabilitado - problema 5003 (en Google Code)
+- Corregir - El ícono de Selenium IDE arreglado a veces no es visible - issue 5712 (en Google Code)
+- Corregir - Corregida ventana de selección usando una variable - incidencia 3270 (en Google Code)
+- Algunos cambios menores
 
 ## 2.4.0
 
-- Enh - Base URL history, recent test cases and recent test suites can be cleared - issue 6135 (on Google Code)
-- Enh - Special key now have shorter names (http://blog.reallysimplethoughts.com/2013/09/25/using-special-keys-in-selenium-ide-part-2/)
-- Enh - Support for user extensions in Webdriver playback - issue 5675 (on Google Code)
-- Fix - The recording of entering text in fields uses type instead of sendKeys.
-- Enh - When developer tools are active, the last open test case or suite is automatically opened
-- Fix - Fixed is`*` commands in Webdriver playback in Selenium IDE - issue 6118 (on Google Code)
-- Enh - Adding ability to show commands as deprecated in Selenium IDE and smartness to show the correct alternative command
-- Enh - Deprecating Selenium IDE commands `*`TextPresent, typeKeys, keyUp, keyDown and keyPress
-- Enh - Import json library in exported Ruby Webdriver tests
-- Enh - Adding support for waitFor`*` and waitForNot`*` commands in Webdriver playback - issue 5913 (on Google Code)
+- Enh - Historia de URL base, los casos de prueba recientes y las suites de pruebas recientes se pueden eliminar - el número 6135 (en Google Code)
+- Enh - La clave especial ahora tiene nombres más cortos (http://blog.reallysimplethough, 2013/09/25/using-special-keys-in-selenium-ide-part-2/)
+- Enh - Soporte para las extensiones de usuario en la reproducción del controlador web - número 5675 (en Google Code)
+- Corregir - La grabación de introducir texto en los campos utiliza el tipo en lugar de enviarKeys.
+- Enh - Cuando las herramientas del desarrollador están activas, el último caso de prueba abierto o suite se abre automáticamente
+- Corregir - Corregido es`*` comandos en la reproducción del controlador web en Selenium IDE - Emitir 6118 (en Google Code)
+- Enh - Agregar capacidad para mostrar comandos como obsoletos en Selenium IDE y smartness para mostrar el comando alternativo correcto
+- Enh - Desaprobar comandos de Selenium IDE `*`TextPresent, typeKeys, keyUp, keyDown y keypress
+- Enh - Importar biblioteca json en las pruebas exportadas de Ruby Webdriver
+- Enh - Añadir soporte para los comandos waitFor`*` y waitForNot`*` en la reproducción del controlador web - emitir 5913 (en Google Code)
 
 ## 2.3.0
 
-- New - Added support for HTML5 input fields recording - issue 3765 (on Google Code)
-- New - Recording for sendKeys command
-- Enh - Removal of deprecated `*`TextPresent commands from right click menu
-- Fix - Dead object error in recording IDE tests - issue 4761 (on Google Code)
-- Fix - Fixed could not continue in recording - issue 5820 (on Google Code)
-- Enh - UTF-8 encoded user-extensions.js support - issue 1646 (on Google Code)
-- New special keys support for sendKeys in Selenium IDE and webdriver playback - issue #6052 (on Google Code)
-- New - Special keys support to sendKeys in all official formatters - issue 6053 (on Google Code) (http://blog.reallysimplethoughts.com/2013/09/25/using-special-keys-in-selenium-ide-part-1/)
-- Enh - Plugin api enhancement for specifying formatter type + documentaton comments
-- Fix - Invalid XPath error in Firefox 23 - issue 6055 (on Google Code)
-- New - Added support for Firefox 23
+- Nuevo - Añadido soporte para grabación de campos de entrada HTML5 - número 3765 (en Google Code)
+- Nuevo - Grabación del comando sendKeys
+- Enh - Quitar los comandos obsoletos `*`TextPresent desde el menú de clic derecho
+- Corregir - Error de objeto muerto en la grabación de pruebas de IDE - issue 4761 (en Google Code)
+- Corregir - Corregido no se pudo continuar en la grabación - problema 5820 (en Google Code)
+- Enh - Soporte UTF-8 codificado user-extensions.js - issue 1646 (en Google Code)
+- Nuevo soporte de claves especiales para sendKeys en Selenium IDE y reproducción del controlador web - número #6052 (en Google Code)
+- Nuevo - Soporte de claves especiales para sendKeys en todos los formatos oficiales - número 6053 (en Google Code) (http://blog.reallysimplethough, hts.com/2013/09/25/using-special-keys-in-selenium-ide-part-1/)
+- Enh - Mejora de Plugin api para especificar el tipo de formateador + comentarios de documentación
+- Corregir - Error XPath no válido en Firefox 23 - incidencia 6055 (en Google Code)
+- Nuevo - Añadido soporte para Firefox 23
 
 ## 2.2.0
 
-- Fix - keyUp, keyDown, keyPress, typeKeys fixed on Firefox 22 - issue 5883 (on Google Code), issue 5884 (on Google Code)
+- Corregir - keyUp, keyDown, keyPress, typeKeys arreglados en Firefox 22 - emitir 5883 (en Google Code), emitir 5884 (en Google Code)
 
 ## 2.1.0
 
-- Enh - Plugin system changed (http://blog.reallysimplethoughts.com/2013/07/07/changes-to-selenium-ide-plugin-system/)
-- New - Added support for Firefox 22 + 23 beta
-- Fix - Click fixed for Firefox 22 - issue 5841 (on Google Code)
+- Enh - Plugin system changed (http://blog.reallysimplenonetheless 2013/07/changes-to-selenium-ide-plugin-system/)
+- Nuevo - Añadido soporte para Firefox 22 + 23 beta
+- Corregir - Click arreglado para Firefox 22 - issue 5841 (en Google Code)
 
 ## 2.0.0
 
-- New - WebDriver playback support (http://blog.reallysimplethoughts.com/2013/02/18/webdriver-playback-in-selenium-ide-is-here/)
-- New - Added support for Firefox 19 & 20
-- New - Selenium IDE icon on toolbar is added on first install
+- Nuevo - Soporte de reproducción de WebDriver (http://blog.reallysimpledeehts.com/2013/02/18/webdriver-playback-in-selenium-ide-is-here/)
+- Nuevo - Añadido soporte para Firefox 19 y 20
+- Nuevo - El icono de IDE de Selenium en la barra de herramientas se añade en la primera instalación
 
 ## 1.10.0
 
-- New - Added support for Firefox 16 & 17
-- New - Implemented formatting for alert handling commands
-- Bug - Fixed options for Java 4 WebDriver formatter
-- Bug - Processing locators before use in getCssCount and getXpathCount. Fixes  issue 4784 (on Google Code)
+- Nuevo - Añadido soporte para Firefox 16 & 17
+- Nuevo - Implementado formato para comandos de manejo de alertas
+- Error - Opciones corregidas para el formato WebDriver de Java 4
+- Error - Procesando localizadores antes de usar en getCssCount y getXpathCount. Corregir la incidencia 4784 (en Google Code)
 
 ## 1.9.1
 
-- New - Added support for Firefox 15
-- New - Added support for assertTextPresent, verifyTextPresent, waitForTextPresent, assertTextNotPresent, verifyTextNotPresent, waitForTextNotPresent commands to WebDriver formatters. (http://blog.reallysimplethoughts.com/2012/08/26/selenium-ide-webdriver-formatters-updated-to-support-textpresent-commands/)
-- New - Added the target and value parameters in comments when the WebDriver formatters do not support the command
+- Nuevo - Añadido soporte para Firefox 15
+- Nuevo - Añadido soporte para assertTextPresent, verifyTextPresent, waitForTextPresent, assertTextNotPresent, verifyTextNotPresent, waitForTextNotPresent comandos a los formatos WebDriver formatters. (http://blog.reallysimplehowever hts.com/2012/08/26/selenium-ide-webdriver-formatters-updated-to-support-textpresent-commands/)
+- Nuevo - Se añadieron los parámetros de destino y valor en los comentarios cuando los formateadores WebDriver no soportan el comando
 
 ## 1.9.0
 
-- New - Added Selenese command sendKeys (http://blog.reallysimplethoughts.com/2012/07/19/new-selenese-command-sendkeys/)
-- New - Better naming of formatters
-- New - Added support for Firefox 14
+- Nuevo - Añadido sendKeys comando Selenese (http://blog.reallysimplehowever hts.com/2012/07/19/new-selenese-command-sendkeys/)
+- Nuevo - Mejor nombre de formatos
+- Nuevo - Añadido soporte para Firefox 14
 
 ## 1.8.1
 
-- New - Added support for Firefox 13
+- Nuevo - Añadido soporte para Firefox 13
 
 ## 1.8.0
 
-- New - Added support for Firefox 12
+- Nuevo - Añadido soporte para Firefox 12
 
 ## 1.7.2
 
-- Bug - Fixed regression with typing into file input fields - issue 3549 (on Google Code)
+- Error - Regresión corregida con tecleo en los campos de entrada del archivo - issue 3549 (en Google Code)
 
 ## 1.7.1
 
-- Bug - Fixed regression with stored variables - issue 3520 (on Google Code)
+- Error - Regresión corregida con variables almacenadas - Emitir 3520 (en Google Code)
 
 ## 1.7.0
 
-- New - Added additional useful menu items to the help menu
-- New - Added support for Firefox 11
-- Bug - Stored variables can safely contain consecutive dollar signs - issue 834 (on Google Code)
-- Bug - Don't trim whitespace when decoding HTML testcases - issue 755 (on Google Code)
-- New - Formatter menu items are now context sensitive - issue 3327 (on Google Code) and issue 3385 (on Google Code)
-- Bug - Fixed Ruby WebDriver test suite export - issue 3243 (on Google Code)
-- Bug - File extensions being added to all file pickers - issue 3336 (on Google Code)
-- Bug - Record interactions with elements with an id of 'id' - issue 3273 (on Google Code)
+- Nuevo - Añadidos elementos de menú adicionales útiles al menú de ayuda
+- Nuevo - Añadido soporte para Firefox 11
+- Error - Las variables almacenadas pueden contener signos consecutivos en dólares - incidencia 834 (en Google Code)
+- Error - No recortar espacios en blanco al decodificar casos de prueba HTML - emitir 755 (en Google Code)
+- Nuevo - Los elementos del menú Formatter son ahora sensibles al contexto - problema 3327 (en el código de Google) y emite 3385 (en el código de Google)
+- Error - Exportación de la suite de pruebas Ruby WebDriver corregida - incidencia 3243 (en Google Code)
+- Error - Extensiones de archivo añadidas a todos los selectores de archivos - incidencia 3336 (en Google Code)
+- Error - Grabar interacciones con elementos con un id de 'id' - emitir 3273 (en Google Code)
 
 ## 1.6.0
 
-- New - Added support for Firefox 10
-- New - Added keyboard shortcuts to launch Selenium IDE - issue 3028 (on Google Code)
-- Bug - Added break command to autocomplete list - issue 3046 (on Google Code)
-- Bug - Incorrect tooltip displayed in sidebar - issue 3098 (on Google Code)
-- Bug - Improved XPath locator recording when there are multiple matches - issue 3056 (on Google Code)
-- Bug - Locators can now be reordered on Mac - issue 3267 (on Google Code)
+- Nuevo - Añadido soporte para Firefox 10
+- Nuevo - Añadidos atajos de teclado para lanzar Selenium IDE - incidencia 3028 (en Google Code)
+- Error - Se añadió un comando de ruptura a la lista de autocompletar - problema 3046 (en Google Code)
+- Error - descripción incorrecta mostrada en la barra lateral - incidencia 3098 (en Google Code)
+- Error - Grabación mejorada del localizador XPath cuando hay múltiples coincidencias - incidencia 3056 (en Google Code)
+- Error - Locators can now be reorder on Mac - issue 3267 (en Google Code)
 
 ## 1.5.0
 
-- New - Added support for Firefox 9
-- Bug - Changes to user extensions weren't being updated in Firefox 8 - issue 2801 (on Google Code)
-- Bug - Security error was thrown when trying to type into file (upload) input fields in Firefox 8 - issue 2826 (on Google Code)
-- Bug - Improved French locale - issue 1912 (on Google Code)
-- Bug - break command was failing - issue 725 (on Google Code)
-- Bug - source view is now fixed width (monospace) - issue 522 (on Google Code)
-- New - Implemented 'select' formatting for WebDriver bindings (Java, C#, Python, Ruby)
-- Bug - Fixed compile-time and run-time errors in the code formatted for WebDriverBackedSelenium
-- Bug - Fixed 'baseUrl' and 'get' formatting errors in various formatters to handle relative and absolute URLs
+- Nuevo - Añadido soporte para Firefox 9
+- Error - Los cambios a las extensiones de usuario no se actualizaban en Firefox 8 - número 2801 (en Google Code)
+- Error - Error al intentar escribir en los campos de entrada de archivo (subir) de Firefox 8 - incidencia 2826 (en Google Code)
+- Error - Mejora de la localización francesa - Problema 1912 (en Google Code)
+- Error - comando break falló - emite 725 (en Google Code)
+- Error - la vista de origen ahora es de ancho fijo (monospace) - Emite 522 (en Google Code)
+- Nuevo - Implementado formato 'seleccionar' para enlaces WebDriver (Java, C#, Python, Ruby)
+- Error - Se han corregido errores de tiempo de compilación y tiempo de ejecución en el código formateado para WebDriverBackedSelenium
+- Error - Se corrigieron errores de formato 'baseUrl' y 'get' en varios formateadores para manejar URLs relativas y absolutas
 
 ## 1.4.1
 
-- Bug - Apparently I shipped without switching all the version numbers correctly. (Adam)
+- Error - Aparentemente he enviado sin cambiar todos los números de versión correctamente. (Adán)
 
 ## 1.4.0
 
-- New - Firefox 8 support (again, just a version max version bump)
+- Nuevo - soporte para Firefox 8 (otra vez, sólo un bump de versión máxima)
 
 ## 1.3.0
 
-Was going to be just a quick release to get
+Va a ser solo un lanzamiento rápido
 
-- New - Firefox 7 support (again, just a version max version bump)
+- Nuevo - soporte para Firefox 7 (otra vez, sólo un bump de versión máxima)
 
-in, but then I got busy and didn't push it when I had planned and so now
+dentro, pero entonces me ocupé y no lo empujé cuando había planeado y ahora
 
-- New - Order of locators can be controlled through a panel in options.
+- Nuevo - El orden de los localizadores se puede controlar a través de un panel en opciones.
 
-has leaked in. Most people will want to just leave this the way it is by default. This is brand-spanking-new and allows you to do visually what you could before using a somewhat arcane bit of JS in an extension.
+se ha filtrado. La mayoría de la gente querrá dejar esto de la manera predeterminada. Esto es nuevo en la marca y te permite hacer visualmente lo que pudiste antes de usar un poco arcano de JS en una extensión.
 
 ## 1.2.0
 
-Just a quick release primarily for
+Sólo una versión rápida principalmente para
 
-- New - Firefox 6 support (which really was just changing the max version number)
+- Nuevo - soporte para Firefox 6 (que realmente estaba cambiando el número máximo de versión)
 
-But we also snuck in
+Pero también nos enganchamos en
 
-- Bug - Recorded CSS locator was not W3C clean wrt attributes
-- Bug - Deleting of cookies works properly if the cookie name is escaped (such as will ASP sites)
-- Bug - If the cookie value has an = in it, the whole cookie is now returned instead of just up to the =
+- Error - Localizador CSS grabado no fue W3C clean wrt attributes
+- Error - La eliminación de cookies funciona correctamente si el nombre de la cookie está escapado (como los sitios ASP)
+- Error - Si el valor de la cookie tiene un = en ella, la cookie completa ahora es devuelta en lugar de sólo hasta la =
 
-You will also notice that the bundle now only has formatters for the officially supported languages of the project (Java, C#, Python, Ruby). If anyone from the Perl, Groovy or PHP camps wants to take on ownership of those formats we'll happily help you out.
+También notará que el paquete ahora sólo tiene formateadores para los idiomas oficialmente soportados del proyecto (Java, C#, Python, Ruby). Si alguien de los campamentos de Perl, Groovy o PHP quiere tomar posesión de esos formatos, le ayudaremos felizmente.
 
 ## 1.1.0
 
-Hey! Look at that! A slightly more significant version bump! Any why is that? Well...
+¡Hola! ¡Mira esto! ¡Una versión algo más significativa! ¿Por qué? Bueno...
 
-- New - WebDriver exports for Ruby, Python, C# and Java
+- Nuevo - exportaciones de WebDriver para Ruby, Python, C# y Java
 
-Which are the four supported languages of the Selenium project. This also means that Se-IDE is officially deprecating inclusion of the Groovy, Perl and PHP format plugins in the main release bundle. It would be outstanding if the community around those languages picks up their development and maintenance. Read more about the WebDriver exporters on [Samit's blog](http://blog.reallysimplethoughts.com/2011/07/08/selenium-ide-and-selenium-2-webdriver/).
+Cuatro idiomas apoyados en el proyecto Selenium. Esto también significa que Se-IDE está oficialmente obsoleto la inclusión de los plugins de formato Groovy, Perl y PHP en el paquete principal de lanzamientos. Sería excepcional que la comunidad alrededor de esos idiomas recogiera su desarrollo y mantenimiento. Lee más sobre los exportadores de WebDriver en [Samit blog](http://blog.reallysimplethoughts.com/2011/07/08/selenium-ide-and-selenium-2-webdriver/).
 
-Of course, format switching is still in Experimental purgatory for at least this release. Losing people's scripts because of bugs is not acceptable and we're working on it. To 'goal' is to have them back for the next release.
+Por supuesto, el cambio de formato todavía está en purgatorio Experimental para al menos esta versión. Perder scripts de la gente debido a errores no es aceptable y estamos trabajando en ello. "Objetivo" es tenerlos de vuelta para la próxima versión.
 
-Also included in this release are
+También se incluyen en esta versión
 
-- New - setIndent(n) is now available to formats for greater control over formatting of export formats
-- Bug - There was a performance regression in deep in some shared code that has been addressed.
-- New - Rather than recording 'foo' for an element which and an id of 'foo' it is captured as 'id=foo' to be very specific as to which element would be interacted with
-- New - Same with 'name'
-- New - Popups (alerts, confirms, prompts) and new windows work again
+- Nuevo - setIndent(n) ahora está disponible en formatos para un mayor control sobre el formato de los formatos de exportación
+- Error - Hubo una regresión de rendimiento en lo profundo de algún código compartido que se ha abordado.
+- Nuevo - En lugar de grabar 'foo' para un elemento que y un id de 'foo' es capturado como 'id=foo' para ser muy específico con qué elemento se interactuaría
+- Nuevo - Igual con 'nombre'
+- Nuevo - Las ventanas emergentes (alertas, confirmaciones, avisos) y nuevas ventanas vuelven a funcionar
 
 ## 1.0.12
 
-This is a minor release with nothing too huge included. But because the last one didn't get pushed to the world, it is important to make a note of a big change introduced in 1.0.11.
+Esta es una versión menor con nada demasiado grande incluido. Pero debido a que el último no fue empujado al mundo, es importante tomar nota de un gran cambio introducido en 1.0.11.
 
-We have marked the changing of formats as _Experimental_ due to a couple lose-all-your-data bugs. As a result it is disabled in the toolbar by default. To enable it, click the checkbox in the Options menu. And because we **really** don't want you to lose your data, when you switch formats you will get a big warning box. This too can be disabled in the Options menu. But if you do both of these things and your script gets sent to the abyss, you have been warned. :)
+Hemos marcado el cambio de formatos como _Experimental_ debido a un par de errores de pérdida de todos sus datos. Como resultado, está desactivado en la barra de herramientas de forma predeterminada. Para activarlo, haga clic en la casilla de verificación del menú Opciones. Y porque **realmente** no queremos que pierdas tus datos, cuando cambies de formato, obtendrás una gran caja de advertencia. Esto también puede desactivarse en el menú Opciones. Pero si usted hace ambas cosas y su guión se envía al abismo, se le ha advertido. :)
 
-Changes in this release include the following:
+Los cambios en esta versión incluyen lo siguiente:
 
-- New - Firefox 5 support
-- New - When upgrading Se-IDE, the release notes (these) are shown on first start
-- Bug - some Java format changes
-- Bug - some PHP format changes
-- Bug - the 'Find' button works again
-- Bug - generated CSS is standards compliant
-- New - dropped support for FF 3.5 or older
+- Nuevo - soporte para Firefox 5
+- Nuevo - Al actualizar el Se-IDE, las notas de lanzamiento (estas) se muestran en el primer inicio
+- Error - algunos cambios en el formato Java
+- Error - algunos cambios en el formato PHP
+- Error - el botón 'Encontrar' vuelve a funcionar
+- Error - CSS generado cumple con los estándares
+- Nuevo - se ha eliminado el soporte para FF 3.5 o anterior
 
 ## 1.0.11
 
-It has been half a year since our last release of 1.0.10 and we have put a lot of effort to bring you this release. The summary of the contributions to this release is as follows:-
+Ha pasado medio año desde nuestra última versión de 1.0.10 y hemos puesto un gran esfuerzo para traerle esta versión. El resumen de las contribuciones a esta versión es el siguiente: -
 
-| 73% (22) | Samit Badle             |
-| :-------------------------- | :---------------------- |
-| 16%( 5)  | Adam Goucher            |
-| 6% (2)   | Dave Hunt               |
-| 3% (1)   | Santiago Suarez Ordoñez |
-| 3% (1)   | Simon Stewart           |
+| 73% (22) | Maldita Samit            |
+| :-------------------------- | :----------------------- |
+| 16%( 5)  | Goucher Adam             |
+| 6% (2)   | Cacería de Dave          |
+| 3% (1)   | Santiago Suarez Ordoñez |
+| 3% (1)   | Simon Stewart            |
 
-Here is the list of changes excluding some minor fixes and code refactoring.
+Aquí está la lista de cambios que excluyen algunas correcciones menores y refactorización de código.
 
-### Main Features:
+### Características principales:
 
-- Firefox 4 support (Issue 1470 (on Google Code), Simon Stewart and Samit Badle)
-- New CSS locator builder! Selenium IDE will now create locators using CSS when recording (Santiago Suarez Ordoñez)
-- Added more power to the plugin developers through the new Util command builders support (Issue 442 (on Google Code), Samit Badle)
-- New command getCssCount (Adam Goucher)
+- Soporte para Firefox 4 (número 1470 (en Google Code), Simon Stewart y Samit Badle)
+- ¡Nuevo constructor de localizadores CSS! Selenium IDE creará ahora localizadores usando CSS al grabar (Santiago Suarez Ordonëez)
+- Se ha añadido más energía a los desarrolladores de plugins a través del nuevo soporte de constructores de comandos de Util (Issue 442 (en Google Code), Samit Badle)
+- Nuevo comando getCssCount (Adam Goucher)
 
-### Usability Improvements:
+### Mejoras de usabilidad:
 
-- Selenium IDE is now available from the Web developer menu in Firefox 4 (Issue 1467 (on Google Code), Samit Badle)
-- Camel Case search in command text box has been improved allowing you to type vTP for verifyTextPresent command (Samit Badle with Dave Hunt)
-- Most actions in Selenium IDE are now accessible through the new Actions menu (Issue 1266 (on Google Code), Samit Badle and Dave Hunt)
-- Removed help menu items related to Firefox from Selenium IDE help menu (Issue 1704 (on Google Code), Samit Badle)
-- Less prompting when saving test suite (Issue 967 (on Google Code), Samit Badle)
-- A method to Reset IDE Window is now available through the Options menu for people having trouble when switching from multiple monitors (Issue 1249 (on Google Code), Samit Badle)
-- Show the name of the test case in save dialog (Issue 984 (on Google Code), Samit Badle)
-- The preferences for the current format will be automatically shown in options dialog (Samit Badle)
-- The plugins pane in the Options dialog now has a splitter (Samit Badle)
-- Default Timeout Value field in the Options dialog now mentions a unit (Issue 896 (on Google Code), Adam Goucher)
-- Introduced experimental features option to hide some unstable features (Samit Badle)
+- Selenium IDE ya está disponible en el menú del desarrollador Web en Firefox 4 (número 1467 (en el código Google), Samit Badle)
+- Se ha mejorado la búsqueda de Casos de Camello en el cuadro de comandos que permite escribir vTP para el comando VerifyTextPresent (Samit Badle with Dave Hunt)
+- La mayoría de las acciones en Selenium IDE ahora son accesibles a través del nuevo menú Actions (número 1266 (en el código de Google), Samit Badle y Dave Hunt)
+- Se eliminaron los elementos del menú de ayuda relacionados con Firefox de Selenium IDE (número 1704 (en Google Code), Samit Badle)
+- Menos información al guardar la suite de pruebas (número 967 (en Google Code), Samit Badle)
+- Un método para restablecer la ventana de IDE está ahora disponible a través del menú Opciones para personas que tienen problemas al cambiar desde múltiples monitores (Número 1249 (en Google Code), Mala de Samit)
+- Mostrar el nombre del caso de prueba en el cuadro de diálogo de guardado (número 984 (en el código de Google), Samit Badle)
+- Las preferencias para el formato actual se mostrarán automáticamente en el diálogo de opciones (Samit Badle)
+- El panel de plugins en el diálogo de opciones ahora tiene un separador (Samit Badle)
+- El campo Valor de tiempo de espera por defecto en el diálogo de opciones ahora menciona una unidad (asunto 896 (en Google Code), Adam Goucher)
+- Opciones experimentales introducidas para ocultar algunas características inestables (Samit Badle)
 
-### Bug Fixes:
+### Corregir errores:
 
-- Format changing is now marked as experimental due to possible issues, you can turn it on from the options dialog (Samit Badle)
-- Fixed the header issue on saving test case in another format (Issue 1164 (on Google Code), Samit Badle)
-- Improved alert on changing the format (Issue 1244 (on Google Code), Samit Badle)
-- Find button is back on Macs and uses a new way to highlight (Issue 1052 (on Google Code), Samit Badle)
-- Recording is possible in the middle of a script again (Issue 968 (on Google Code), Samit Badle)
-- Fixed the annoying skip over one command when recording in the middle of the script (Issue 745 (on Google Code), Samit Badle)
-- While recording, "clickAndWait" command becomes "click" is now fixed (Issue 419 (on Google Code), Samit Badle)
-- Selenium IDE bottom pane folding now works correctly (Issue 614 (on Google Code), Samit Badle)
-- Changed the ID of Selenium IDE menu from generic name to avoid clashes with other addons. (Issue 969 (on Google Code), Samit Badle)
+- El cambio de formato ahora está marcado como experimental debido a posibles problemas, puede activarlo desde el diálogo de opciones (Samit Badle)
+- Se ha corregido el problema de cabecera al guardar el caso de prueba en otro formato (Número 1164 (en el código de Google), Samit Badle)
+- Alerta mejorada al cambiar el formato (Samit Badle)
+- El botón Buscar está de vuelta en Macs y utiliza una nueva forma de resaltarse (Número 1052 (en Google Code), Samit Badle)
+- La grabación es posible en medio de un script de nuevo (Número 968 (en Google Code), Samit Badle)
+- Se ha corregido el molesto saltar sobre un comando al grabar en medio del script (Issue 745 (en Google Code), Samit Badle)
+- Durante la grabación, el comando "clickAndWait" se convierte en "click" ahora está arreglado (problema 419 (en Google Code), Samit Badle)
+- El plegado del panel inferior del IDE Selenium ahora funciona correctamente (número 614 (en el código de Google), Insignia de Samit)
+- Cambiado el ID del menú IDE de Selenium desde el nombre genérico para evitar choques con otros complementos. (Número 969 (en Google Code), Samit Badle)
 
-### Improvements/Fixes Related to Formatters:
+### Mejores/Arreglos relacionados con los formatos:
 
-- Fixed support for stored variables in PHP formatter (Issue 970 (on Google Code), Samit Badle)
-- Allow formatters to customise how set`*` is handled (Adam Goucher)
-- Some bug fixes in PHP formatter (Issue 1281 (on Google Code), Adam Goucher)
-- Number type fix (Jeremy Herault)
-- New Java formatter: Webdriver backed Junit 4 formatter
-- New PHP formatter: Testing selenium formatter (Adam Goucher)
+- Soporte fijo para variables almacenadas en formato PHP (número 970 (en código Google), Samit Badle)
+- Permitir a los formateadores personalizar cómo se maneja el set`*` (Adam Goucher)
+- Algunas correcciones de errores en el formateador PHP (número 1281 (en el código de Google), Adam Goucher)
+- Tipo de número fijo (Jeremy Herault)
+- Nuevo formateador de Java: Formateador de Junit 4 respaldado
+- Nuevo formateador PHP: Prueba de formato selenium (Adam Goucher)
 
-### Known Issues:
+### Problemas conocidos:
 
-- Issue 1728 (on Google Code) - Firefox 4 eliminated support for the highlight. So the Find button has stopped working under Firefox 4 on Windows.
-- Issue 1729 (on Google Code) - The Plugin pane in the Options dialog is not shownig any text in Firefox 4 on Windows 7.
-- Issues have been reported in Selenium IDE on Ubuntu 11, which are not related to Selenium IDE. See comments on issue 1642 (on Google Code).
+- Número 1728 (en Google Code) - Firefox 4 eliminó el soporte para el resaltado. Así que el botón Buscar ha dejado de funcionar bajo Firefox 4 en Windows.
+- Número 1729 (en Google Code) - El panel del plugin en el diálogo Opciones no muestra ningún texto en Firefox 4 en Windows 7.
+- Se han notificado problemas en Selenium IDE en Ubuntu 11, que no están relacionados con el IDE de Selenium. Ver comentarios sobre el número 1642 (en Google Code).
 
 ## 1.0.10
 
-Another packaging problem broke the various things that used getText(). Which of course is one of the most commonly used bits of the API.
+Otro problema de empaquetado rompió las diversas cosas que usaron getText(). ¿Cuál por supuesto es uno de los bits más utilizados de la API.
 
-- BUG - properly including se-core atoms
+- BUG - incluyendo correctamente los átomos de se-core
 
-As a result, we've started to rebuild the test suite for things. It's going to take awhile to get the coverage we're hoping for, but it'll be worth it if we can go at least 2 days after a release before becoming embarrassed.
+Como resultado, hemos comenzado a reconstruir la suite de pruebas para las cosas. Va a tomar un tiempo para obtener la cobertura que esperamos, pero valdrá la pena si podemos ir al menos 2 días después de una liberación antes de quedar embarazado.
 
-Upgrade Notes:
+Notas de actualización:
 
-- Due to the atoms being included properly, some of the behaviour around accessing boolean attributes has changed. See http://seleniumhq.wordpress.com/2010/12/09/atoms-have-come-to-selenium-ide/ for details.
+- Debido a que los átomos se incluyen correctamente, algunos de los comportamientos en torno al acceso a los atributos booleanos han cambiado. Vea http://seleniumhq.wordpress.com/2010/12/09/atoms-have-come-to-selenium-ide/ para detalles.
 
 ## 1.0.9
 
-What started out as a pretty major change in terms of packaging ended up including two significant bug fixes as well. Hopefully we avoid that sort of thing with the release. Not that I don't expect it. :)
+Lo que comenzó como un cambio bastante importante en términos de empaquetamiento terminó incluyendo dos correcciones significativas de errores. Esperemos que evitemos este tipo de cosas con la liberación. No es que no lo espere. :)
 
-- BUG - Sizzle CSS library not included
-- BUG - Recording works with FF 4.0b7
+- BUG - Biblioteca CSS de Sizzle no incluida
+- BUG - Grabación funciona con FF 4.0b7
 
-What 1.0.9 was supposed to only have was...
+¿Qué se suponía que 1.0.9 sólo tendría que haber sido...
 
-- NEW - Formatters are **all** plugins. This effectively separates the development of an individual format from the development of the editor. Now, this means that when you install things for the first time you get a tonne of addons. That is ok. Don't panic. Oh, and it also means if you don't want them you have the option to. Not only does this mean fixes to formats get distributed sooner (PHP, I'm looking at you) but 3rd parties will be able to make better packaging choices by having the editor plus their formatters.
+- NUEVO - Los Formatters son **todos** los plugins. Esto separa efectivamente el desarrollo de un formato individual del desarrollo del editor. Ahora, esto significa que cuando se instalan cosas por primera vez se obtiene una tonelada de complementos. Eso está bien. No te preocupes. Oh, y también significa si no quieres que tengan la opción. Esto no solo significa arreglos a formatos se distribuyen antes (PHP, Te estoy mirando), pero las terceras partes podrán hacer mejores opciones de empaquetado teniendo el editor más sus formateadores.
 
-Other stuff
+Otras cosas
 
-- BUG - the JUnit 4 formatter doesn't try to use a string as the port number
-- BUG - the window when creating new formats properly closes now
-- BUG - removed the 'find' button if on OSX since it doesn't do anything on this platform (its a FF bug)
-- BUG - some hard coded strings have been internationalized
-- NEW - autocomplete has been enhanced somewhat - see http://code.google.com/p/selenium/issues/detail?id=992
-- BUG - when switching build systems, the icons for menus and such got left out of the package
-- BUG - commands are trimmed of whitespace before executing which was sometimes a source of great confusion
-- BUG - now preserves whitespace when displaying diffs in the log
+- BUG - el formato JUnit 4 no intenta usar una cadena como número de puerto
+- BUG - la ventana al crear nuevos formatos se cierra ahora correctamente
+- BUG - eliminó el botón 'encontrar' si en OSX ya que no hace nada en esta plataforma (su error FF)
+- BUG - algunas cadenas de código duro han sido internacionalizadas
+- NUEVO - el autocompletado se ha mejorado algo - ver http://code.google.com/p/selenium/issues/detail?id=992
+- BUG - al cambiar los sistemas de construcción, los iconos de los menús y tales quedaron fuera del paquete
+- BUG - Los comandos son recortados de espacios en blanco antes de ejecutarse, lo cual a veces fue una fuente de gran confusión
+- BUG - Ahora conserva espacios en blanco cuando se muestra difiere en el registro
 
 ## 1.0.8
 
-This release is primarily to get FF4 support out into the wild since it is getting to the advanced beta phase, but there is also a fair bit of other bug fixes in there as well. About 75% of the fixes in the release are directly the work of Samit Badle and the vast remainder by Jérémy Hérault.
+Esta versión es principalmente para conseguir soporte para FF4 en salvaje ya que está llegando a la fase beta avanzada, pero también hay un poco de otras correcciones de errores allí. Aproximadamente el 75% de las correcciones en la versión son directamente obra de Samit Badle y el inmenso resto de Jérémy Hérault.
 
-- BUG - There was an annoying bug where 'clickAndWait' would be saved as click, but has been fixed. see http://code.google.com/p/selenium/issues/detail?id=419
-- NEW -This could arguably be considered a bug fix, but if you changed format from HTML to something else then made an edit and switched back again to HTML your script contents would be lost. At its heart, the HTML -> something conversion is one way and so there is now a warning about possibly losing your code. The warning only happens the first time though so you can still shoot yourself in the foot; its just harder
-- BUG - element locator works for table rows. see http://code.google.com/p/selenium/issues/detail?id=485
-- BUG - the default timeout setting of se-ide is now actually used. see http://code.google.com/p/selenium/issues/detail?id=552
-- NEW - the 'run in the selenium testrunner' option has been removed. The supported methods in se-ide are the play single, play suite and if you need more there is always se-rc with a language binding or -htmlSuite
-- BUG - the base url wouldn't change on occasion, much to the frustration of many
-- NEW - a JUnit 4 formatter was added
-- BUG - the RSpec formatter had some additional tweaks
-- BUG - test suite html can now have tests from different folders
-- BUG - test suite saving triggers got a bit of attention so add/delete/modify is a little more robust
-- NEW - if you resize your se-ide and/or move it around your screen, the size and position are saved between sessions
-- BUG - the logic around when to prompt for saving wasn't really that nice, but its been fixed
-- NEW - uses 'browser atoms' like the rest of Selenium
-- NEW - CSS locator execution is handled through Sizzle
-- NEW - can now add multiple test cases to a suite at once
-- NEW - addition to the se-ide plugin api to add se-ide extensions to manipulate how recording is done - http://reallysimplethings.wordpress.com/2010/10/11/the-selenium-ide-1-x-plugin-api-part-12-adding-locator-builders/
-- NEW - the case of the missing log messages is now solved
-- NEW - Firefox 4 support
+- BUG - Hubo un error molesto donde 'clickAndWait' se guardaría como clic, pero ha sido arreglado. vea http://code.google.com/p/selenium/issues/detail?id=419
+- NUEVA -Esto podría considerarse una corrección de errores, pero si ha cambiado el formato de HTML a otra cosa, entonces hizo una edición y volvió a cambiar a HTML el contenido de su script se perdería. En su corazón, el HTML -> algo de conversión es un camino y ahora hay una advertencia sobre la posible pérdida de su código. La advertencia sólo ocurre la primera vez, así que todavía puedes dispararte a ti mismo en el pie; es más difícil
+- BUG - el localizador de elementos funciona para las filas de la tabla. vea http://code.google.com/p/selenium/issues/detail?id=485
+- BUG - la configuración predeterminada de tiempo de espera de se-ide ahora se utiliza. vea http://code.google.com/p/selenium/issues/detail?id=552
+- NUEVO - la opción "correr en el testrunner de selenio" ha sido eliminada. Los métodos soportados en se-ide son el juego único, play suite y si necesita más siempre hay se-rc con un enlace de idioma o -htmlSuite
+- BUG - la url base no cambiaría en ocasiones, mucho a la frustración de muchos
+- NUEVO - se añadió un formateador JUnit 4
+- BUG - el formato RSpec tenía algunos ajustes adicionales
+- BUG - la suite de pruebas html ahora puede tener pruebas de diferentes carpetas
+- BUG - prueba que los disparadores de ahorro de suite recibieron un poco de atención, así que añadir/eliminar/modificar es un poco más robusto
+- NUEVA - si cambia el tamaño de su lado y/o lo mueve alrededor de su pantalla, el tamaño y la posición se guardan entre las sesiones
+- BUG - la lógica alrededor de cuándo pedir ahorro no era realmente tan buena, pero se ha arreglado
+- NUEVO - utiliza 'átomos del navegador' como el resto de Selenium
+- Nueva - La ejecución del localizador CSS se gestiona a través de Sizzle
+- NUEVO - ahora puede agregar múltiples casos de prueba a una suite a la vez
+- NUEVO - adición a la api del plugin se-ide para añadir extensiones se-ide para manipular cómo se hace la grabación - http://reallysimplethings.wordpress.com/2010/10/11/the-selenium-ide-1-x-plugin-api-part-12-adding-locator-builders/
+- NUEVO - el caso de los mensajes de registro faltantes está resuelto
+- NUEVO - Soporte para Firefox 4
 
 ## 1.0.7
 
-Only a couple of things of note in this release to end-users which is somewhat silly since it is a month overdue, but that was due to some build changes that took a bit of work to get the kinks worked out. Should be ok now though.
+Sólo un par de cosas de nota en esta versión para los usuarios finales que es un poco tonto ya que es un mes atrasado, pero eso fue debido a algunos cambios en la compilación que tomaron un poco de trabajo para que funcionaran los parches. No obstante, debería estar bien ahora.
 
-- NEW - you can now drag-and-drop command around instead of the cut-insert-paste dance that you used to have to do (Jérémy Hérault)
-- NEW - same thing with tests in the test suite panel (Jérémy Hérault)
-- NEW - an new optional parameter when registering you se-ide plugin to allow for command exporting. see http://adam.goucher.ca/?p=1456 for details (Adam Goucher)
-- NEW - Swedish locale sv-SE now has translations (Olle Jonsson)
-- BUG - Some people were reporting an annoying popup when starting se-ide without any plugins installed (Adam oucher)
+- NUEVO - ahora puedes arrastrar y soltar el comando en lugar de la danza de cuchara-pega que solías hacer (Jérémy Hérault)
+- NUEVO - lo mismo con las pruebas en el panel de la suite de pruebas (Jérémy Hérault)
+- NUEVO - un nuevo parámetro opcional al registrar el plugin se-ide para permitir la exportación de comandos. ver http://adam.goucher.ca/?p=1456 para más detalles (Adam Goucher)
+- NUEVO - Locale sueca sv-SE ahora tiene traducciones (Olle Jonsson)
+- BUG - Algunas personas estaban reportando una molesta ventana emergente al iniciar se-ide sin ningún plugin instalado (Adam oucher)
 
 ## 1.0.6
 
-The big thing in this release is that the scary log message that was showing up on 'open' is fixed. The other big things are:
+Lo importante de esta versión es que el mensaje de registro aterrador que se mostraba en 'abierto' está arreglado. Las otras cosas grandes son:
 
-- BUG - The scary log message that was happening when you used 'open' has had its underlying cause fixed (Adam Goucher, Jérémy Hérault)
-- BUG - fixed a build issue with FF 3.6 and type-ahead for commands (Jérémy Hérault)
-- BUG - fixed some PHP export issues - see http://jira.openqa.org/browse/SIDE-346 and http://jira.openqa.org/browse/SIDE-183 (Adam Goucher)
-- BUG - there was a packaging issue around user-extensions (Adam Goucher)
-- BUG - ide won't put 'name=' as the Target when recording a selectWindow (David Burns)
-- BUG - to avoid confusion, when viewing formatter source, if it is read-only the button says 'ok' and if it is editable then it is 'save' (Jérémy Hérault)
-- NEW - you can now set a preference on whether you want record to be on or off when you start ide (Adam Goucher)
-- NEW - se-ide plugin information is read from the plugin's install.rdf (most people won't care about this, but its pretty cool from a geek perspective)
+- BUG - El mensaje de registro aterrador que estaba ocurriendo cuando utilizaste 'open' ha corregido su causa subyacente (Adam Goucher, Jérémy Hérault)
+- BUG - arreglado un problema de compilación con FF 3.6 y type-ahead para comandos (Jérémy Hérault)
+- BUG - arreglado algunos problemas de exportación de PHP - vea http://jira.openqa.org/browse/SIDE-346 y http://jira.openqa.org/browse/SIDE-183 (Adam Goucher)
+- BUG - hubo un problema de empaquetado alrededor de las extensiones de usuario (Adam Goucher)
+- BUG - junto no pondrá 'name=' como el objetivo al grabar una ventana de selección (David Burns)
+- BUG - para evitar confusión, al ver la fuente del formato, si se lee sólo el botón dice "ok" y si es editable, entonces es "save" (Jérémy Hérault)
+- NUEVO - ahora puede establecer una preferencia sobre si desea que el registro esté encendido o apagado cuando inicie el lado (Adam Goucher)
+- NUEVO - la información del plugin se lee desde install.rdf del plugin (la mayoría de la gente no le importa esto, pero es bastante genial desde una perspectiva geek)
 
 ## 1.0.5
 
-One thing that does not really fit the BUG or NEW label is that the code for Se-IDE is now in the main repo rather than tucked away in a somewhat hidden location.
+Una cosa que no encaja realmente en la etiqueta BUG o NUEVA es que el código para Se-IDE está ahora en el repositorio principal en lugar de escondido en un lugar algo oculto.
 
-- BUG - user formats were not appearing in the list (Adam Goucher)
-- BUG - constrained how iframes were loaded; which is why AMO was unhappy (Adam Goucher)
-- BUG - a whole bunch of tweaks to the existing formats (Dave Hunt)
-- BUG - a bunch of French translation fixes / additions (Jérémy Hérault)
-- BUG - the reload user extensions button only shows up if you have the developer tool checkbox checked (Jérémy Hérault)
-- BUG - labelling access keys on test runner (Olle Jonsson)
-- BUG - cleaned up a bunch of references from OpenQA to SeleniumHQ (Olle Jonsson)
-- BUG - had an = instead of == (Olle Jonsson)
-- BUG - adding a bunch of ;'s to make jslint shut up (Olle Jonsson)
-- BUG - getting rid of the 'setting something that only has a getter' message in Firefox 3.6 (Dan Fabulich)
-- NEW - self hosting of updates to avoid delays at AMO (Adam Goucher)
-- NEW - the version of se-ide is now in the title bar (Adam Goucher)
-- NEW - added some Se-IDE specific icons here and there (Adam Goucher, Dave Hunt)
-- NEW - preferences can now be Bool's as well (Adam Goucher)
-- NEW - added addPlugin(id) to the plugin API (Adam Goucher)
-- NEW - added a new panel to the Options screen around plugins. It doesn't do much now other than list the plugins that registered themselves through addPlugin, but should do more for 1.0.6 (Adam Goucher)
+- BUG - los formatos de usuario no aparecieron en la lista (Adam Goucher)
+- BUG - restringido cómo iframes fueron cargados; por eso AMO estaba descontento (Adam Goucher)
+- BUG - un montón de ajustes a los formatos existentes (Dave Hunt)
+- BUG - un montón de correcciones / adiciones de traducción al francés (Jérémy Hérault)
+- BUG - el botón de recargar las extensiones de usuario sólo se muestra si tienes la casilla de verificación de herramientas de desarrollador (Jérémy Hérault)
+- BUG - etiquetar las teclas de acceso en el corredor de pruebas (Olle Jonsson)
+- BUG - limpiado un montón de referencias de OpenQA a SeleniumHQ (Olle Jonsson)
+- BUG - tenía un = en lugar de == (Olle Jonsson)
+- BUG - añadir un puñado de ;'s para hacer cerrar jslint (Olle Jonsson)
+- BUG - deshacerte de la "configuración de algo que sólo tiene un getter" mensaje en Firefox 3.6 (Dan Fabulich)
+- NUEVA - Auto alojamiento de actualizaciones para evitar retrasos en AMO (Adam Goucher)
+- NUEVO - la versión de se-ide está ahora en la barra de título (Adam Goucher)
+- NUEVA - agregó algunos iconos específicos de Se-IDE aquí y allá (Adam Goucher, Dave Hunt)
+- NUEVA - las preferencias ahora también pueden ser Bool's (Adam Goucher)
+- NUEVO - añadido addPlugin(id) a la API del plugin (Adam Goucher)
+- NUEVO - añadido un nuevo panel a la pantalla de opciones alrededor de los plugins. No hace mucho más que listar los plugins que se registraron a través de addPlugin, pero debería hacer más por 1.0.6 (Adam Goucher)
 
 ## 1.0.4
 
-Selenium IDE 1.0.4 marks a resurgence in the project with releases planned for the middle of each month. Here are the changes that have happened between versions 1.0.2 and 1.0.4 of Selenium IDE. (Don't ask what happened to version 1.0.3)
+Selenium IDE 1.0.4 marca un resurgimiento en el proyecto con versiones previstas para mediados de cada mes. Aquí están los cambios que han ocurrido entre las versiones 1.0.2 y 1.0.4 de Selenium IDE. (No preguntes qué pasó con la versión 1.0.3)
 
-- BUG - Supported Firefox version increased to include the 3.6 series (Santiago Suarez Ordoñez)
-- BUG - Removed the Ruby formatter that was flagged as 'deprecated' (Adam Goucher)
-- NEW - Ruby formatter updated to use the selenium-client gem ( http://selenium-client.rubyforge.org/ ) (Adam Goucher)
-- NEW - Ability to add custom user-extensions to extend the Selenium API through plugins to Selenium IDE (Adam Goucher)
-- NEW - Ability to add custom formatters to extend which languages are available to users through plugins to Selenium IDE (Adam Goucher)
-- NEW - Can now load changes to user extensions without having to restart Selenium IDE (Jérémy Hérault)
-- NEW - RSpec formatter
+- BUG - Se ha aumentado la versión compatible de Firefox para incluir la serie 3.6 (Santiago Suarez Ordonez)
+- BUG - Eliminado el formateador de Ruby que fue marcado como 'obsoleto' (Adam Goucher)
+- NUEVO - Formateador de Ruby actualizado para utilizar la gema selenium-cliente ( http://selenium-client.rubyforge.org/ ) (Adam Goucher)
+- NUEVA - Posibilidad de añadir extensiones de usuario personalizadas para extender Selenium API a Selenium IDE (Adam Goucher)
+- NUEVA - Posibilidad de añadir formatos personalizados para extender qué idiomas están disponibles para los usuarios a través de plugins para Selenium IDE (Adam Goucher)
+- NUEVO - Ahora puede cargar cambios en las extensiones de usuario sin tener que reiniciar Selenium IDE (Jérémy Hérault)
+- NUEVO - formato RSpec
 
-### Acknowledgements
+### Agradecimientos
 
-Version 1.0.4 would not have happened without the following assistance
+La versión 1.0.4 no habría ocurrido sin la siguiente asistencia
 
-- Sauce Labs' sponsoring of Adam Goucher to work on it
-- Jérémy Hérault and the SERLI team for their Helium plugin (which was the proof an API could / should be developed for Se-IDE)
-- Dave Hunt for his feedback on pre-release versions
+- El patrocinio de Adam Goucher para trabajar en él
+- Jérémy Hérault y el equipo de SERLI para su plugin de Helium (que fue la prueba de que una API podría / debe ser desarrollada para Se-I
+- Dave Hunt por sus comentarios sobre las versiones anteriores
 
-For issues with this release or features you would like to see in future releases, please log them in the Google Code Issue tracker (https://github.com/SeleniumHQ/selenium/issues) using the _ide_ label so they don't get lost.
+Para problemas con esta versión o características que te gustaría ver en futuras versiones, por favor inicia sesión en el rastreador de problemas de Google Code (https://github. om/SeleniumHQ/selenium/issues) usando la etiqueta _ide_ para que no se pierdan.
 
 -adam
