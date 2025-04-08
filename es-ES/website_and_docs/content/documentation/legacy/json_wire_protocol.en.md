@@ -1,200 +1,200 @@
 ---
-title: JSON Wire Protocol Specification
+title: Especificación del protocolo JSON Wire
 linkTitle: JSON Wire Protocol
 weight: 10
 description: |
-  The endpoints and payloads for the now-obsolete open source protocol that was the precursor to the  [W3C specification](https://w3c.github.io/webdriver/).
+  Los endpoints y cargas útiles para el protocolo de código abierto ahora obsoleto que era el precursor de la [especificación W3C](https://w3c.github.io/webdriver/).
 ---
 
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol)
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol)
 
-All implementations of WebDriver that communicate with the browser, or a RemoteWebDriver server shall use a common wire protocol. This wire protocol defines a [RESTful web service](http://www.google.com?q=RESTful+web+service) using [JSON](http://www.json.org) over HTTP.
+Todas las implementaciones de WebDriver que se comuniquen con el navegador, o un servidor RemoteWebDriver usarán un protocolo de cable común. Este protocolo de cable define un [RESTful web service](http://www.google.com?q=RESTful+web+service) usando [JSON](http://www.json.org) sobre HTTP.
 
-The protocol will assume that the WebDriver API has been "flattened", but there is an expectation that client implementations will take a more Object-Oriented approach, as demonstrated in the existing Java API. The wire protocol is implemented in request/response pairs of "commands" and "responses".
+El protocolo asumirá que la API de WebDriver ha sido "aplanada", pero hay una expectativa de que las implementaciones de clientes tomen un enfoque más orientado a objetos, como se demuestra en la API de Java existente. El protocolo wire está implementado en los pares de peticiones/respuesta de "comandos" y "respuestas".
 
-## Terms and Concepts
+## Términos y conceptos
 
-### Client
+### Cliente
 
-The machine on which the WebDriver API is being used.<br><br>
+La máquina en la que se está utilizando la API de WebDriver.<br><br>
 
-### Session
+### Sesión
 
-The machine running the RemoteWebDriver. This term may also refer to a specific browser that implements the wire protocol directly, such as the FirefoxDriver or IPhoneDriver.<br><br>
+La máquina ejecutando el RemoteWebDriver. Este término también puede referirse a un navegador específico que implementa directamente el protocolo de cable, como el FirefoxDriver o IPhoneDriver.<br><br>
 
-The server should maintain one browser per session. Commands sent to a session will be directed to the corresponding browser.<br><br>
+El servidor debe mantener un navegador por sesión. Los comandos enviados a una sesión serán redireccionados al navegador correspondiente.<br><br>
 
-### WebElement
+### Elemento web
 
-An object in the WebDriver API that represents a DOM element on the page.<br><br>
+Un objeto en la API de WebDriver que representa un elemento DOM en la página.<br><br>
 
-### WebElement JSON Object
+### Objeto JSON WebElement
 
-The JSON representation of a WebElement for transmission over the wire. This object will have the following properties:<br><br>
+La representación JSON de un WebElement para la transmisión a través del cable. Este objeto tendrá las siguientes propiedades:<br><br>
 
-| **Key** | **Type** | **Description**                                                                                                                                                    |
-| ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| ELEMENT | string   | The opaque ID assigned to the element by the server. This ID should be used in all subsequent commands issued against the element. |
+| **Clave** | **Type** | **Descripción**                                                                                                                                                               |
+| --------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ELEMENCIA | cadena   | El ID opaco asignado al elemento por el servidor. Este ID debe ser utilizado en todos los comandos subsiguientes emitidos contra el elemento. |
 
-### Capabilities JSON Object
+### Capacidades JSON objeto
 
-Not all server implementations will support every WebDriver feature. Therefore, the client and server should use JSON objects with the properties listed below when describing which features a session supports. <br><br>
+No todas las implementaciones del servidor soportarán todas las funciones de WebDriver . Por lo tanto, el cliente y el servidor deben usar objetos JSON con las propiedades listadas a continuación al describir qué características soporta una sesión. <br><br>
 
-<table><thead><tr><th><b>Key</b> </th><th><b>Type</b> </th><th><b>Description</b> </th></tr></thead><tbody>
-<tr><td> browserName </td><td> string      </td><td> The name of the browser being used; should be one of <code> {android, chrome, firefox, htmlunit, internet explorer, iPhone, iPad, opera, safari}</code>. </td></tr>
-<tr><td> version    </td><td> string      </td><td> The browser version, or the empty string if unknown. </td></tr>
-<tr><td> platform   </td><td> string      </td><td> A key specifying which platform the browser is running on. This value should be one of <code>{WINDOWS|XP|VISTA|MAC|LINUX|UNIX}</code>. When requesting a new session, the client may specify <code>ANY</code> to indicate any available platform may be used. </td></tr>
-<tr><td> javascriptEnabled </td><td> boolean     </td><td> Whether the session supports executing user supplied JavaScript in the context of the current page. </td></tr>
-<tr><td> takesScreenshot </td><td> boolean     </td><td> Whether the session supports taking screenshots of the current page. </td></tr>
-<tr><td> handlesAlerts </td><td> boolean     </td><td> Whether the session can interact with modal popups, such as <code>window.alert</code> and <code>window.confirm</code>. </td></tr>
-<tr><td> databaseEnabled </td><td> boolean     </td><td> Whether the session can interact database storage. </td></tr>
-<tr><td> locationContextEnabled </td><td> boolean     </td><td> Whether the session can set and query the browser's location context. </td></tr>
-<tr><td> applicationCacheEnabled </td><td> boolean     </td><td> Whether the session can interact with the application cache. </td></tr>
-<tr><td> browserConnectionEnabled </td><td> boolean     </td><td> Whether the session can query for the browser's connectivity and disable it if desired. </td></tr>
-<tr><td> cssSelectorsEnabled </td><td> boolean     </td><td> Whether the session supports CSS selectors when searching for elements. </td></tr>
-<tr><td> webStorageEnabled </td><td> boolean     </td><td> Whether the session supports interactions with <a href='http://www.w3.org/TR/2009/WD-webstorage-20091029/'>storage objects</a>. </td></tr>
-<tr><td> rotatable  </td><td> boolean     </td><td> Whether the session can rotate the current page's current layout between portrait and landscape orientations (only applies to mobile platforms). </td></tr>
-<tr><td> acceptSslCerts </td><td> boolean     </td><td> Whether the session should accept all SSL certs by default. </td></tr>
-<tr><td> nativeEvents </td><td> boolean     </td><td> Whether the session is capable of generating native events when simulating user input. </td></tr>
-<tr><td> proxy      </td><td> proxy object </td><td> Details of any proxy to use. If no proxy is specified, whatever the system's current or default state is used. The format is specified under Proxy JSON Object. </td></tr>
-<tr><td> unexpectedAlertBehaviour </td><td> string     </td><td> What the browser should do with an unhandled alert before throwing out the UnhandledAlertException. Possible values are "accept", "dismiss" and "ignore" </td></tr>
-<tr><td> elementScrollBehavior      </td><td> integer </td><td> Allows the user to specify whether elements are scrolled into the viewport for interaction to align with the top (0) or bottom (1) of the viewport. The default value is to align with the top of the viewport. Supported in IE and Firefox (since 2.36) </td></tr></tbody></table>
+<table><thead><tr><th><b>Tecla</b> </th><th><b>Tipo</b> </th><th><b>Descripción</b> </th></tr></thead><tbody>
+<tr><td> nombre del navegador </td><td> cadena      </td><td> El nombre del navegador que se está usando; debe ser uno de <code> {android, chrome, firefox, htmlunit, explorador de Internet, iPhone, iPad, opera, safari}</code>. </td></tr>
+<tr><td> versión    </td><td> cadena      </td><td> La versión del navegador, o la cadena vacía si se desconoce. </td></tr>
+<tr><td> plataforma   </td><td> cadena      </td><td> Una clave especificando en qué plataforma se está ejecutando el navegador. Este valor debe ser uno de <code>{WINDOWS|XP|VISTA|MAC|LINUX|UNIX}</code>. Al solicitar una sesión nueva, el cliente puede especificar <code>TOY</code> para indicar que se puede utilizar cualquier plataforma disponible. </td></tr>
+<tr><td> javascriptActivado </td><td> boolean     </td><td> Si la sesión soporta la ejecución de JavaScript suministrado por el usuario en el contexto de la página actual. </td></tr>
+<tr><td> capturas de pantalla </td><td> boolean     </td><td> Si la sesión soporta la toma de capturas de pantalla de la página actual. </td></tr>
+<tr><td> alertas de handles </td><td> boolean     </td><td> Si la sesión puede interactuar con ventanas emergentes modales, como <code>window.alert</code> y <code>window.confirm</code>. </td></tr>
+<tr><td> base de datos habilitada </td><td> boolean     </td><td> Si la sesión puede interactuar con el almacenamiento de la base de datos. </td></tr>
+<tr><td> ubicaciónContexto activado </td><td> boolean     </td><td> Si la sesión puede establecer y consultar el contexto de ubicación del navegador. </td></tr>
+<tr><td> aplicaciónCacheActivada </td><td> boolean     </td><td> Si la sesión puede interactuar con la caché de la aplicación. </td></tr>
+<tr><td> navegador conectado </td><td> boolean     </td><td> Si la sesión puede consultar la conectividad del navegador y desactivarla si lo desea. </td></tr>
+<tr><td> cssSelectores habilitados </td><td> boolean     </td><td> Si la sesión soporta selectores CSS al buscar elementos. </td></tr>
+<tr><td> web Almacenamiento Activado </td><td> boolean     </td><td> Si la sesión soporta interacciones con <a href='http://www.w3.org/TR/2009/WD-webstorage-20091029/'>objetos de almacenamiento</a>. </td></tr>
+<tr><td> rotable  </td><td> boolean     </td><td> Si la sesión puede girar la disposición actual de la página entre las orientaciones de retrato y paisaje (sólo se aplica a las plataformas móviles). </td></tr>
+<tr><td> aceptar Certs </td><td> boolean     </td><td> Si la sesión debe aceptar todos los certificados SSL por defecto. </td></tr>
+<tr><td> eventos nativos </td><td> boolean     </td><td> Si la sesión es capaz de generar eventos nativos al simular la entrada del usuario. </td></tr>
+<tr><td> proxy      </td><td> objeto proxy </td><td> Detalles de cualquier proxy a utilizar. Si no se especifica ningún proxy, sea cual sea el estado actual o predeterminado del sistema. El formato se especifica bajo Objeto JSON Proxy. </td></tr>
+<tr><td> Alerta inesperada </td><td> cadena     </td><td> Qué debería hacer el navegador con una alerta no controlada antes de lanzar la UnhandledAlertException. Los valores posibles son "aceptar", "descartar" e "ignorar" </td></tr>
+<tr><td> elementScrollBehavior      </td><td> entero </td><td> Permite al usuario especificar si los elementos se desplazan a la vista para que la interacción se alinee con la parte superior (0) o la parte inferior (1) de la ventana. El valor por defecto es alinearse con la parte superior de la ventana gráfica. Soportado en IE y Firefox (desde 2.36) </td></tr></tbody></table>
 
-### Desired Capabilities
+### Capacidades deseadas
 
-A Capabilities JSON Object sent by the client describing the capabilities a new session created by the server should possess. Any omitted keys implicitly indicate the corresponding capability is irrelevant. More at <a href='DesiredCapabilities.md'>DesiredCapabilities</a>. <br><br>
+Un objeto JSON de Capacidades enviado por el cliente describiendo las capacidades que debería poseer una nueva sesión creada por el servidor. Cualquier clave omitida indica implícitamente que la capacidad correspondiente es irrelevante. Más en <a href='DesiredCapabilities.md'>DesiredCapabilidades</a>. <br><br>
 
-### Actual Capabilities
+### Capacidades reales
 
-A Capabilities JSON Object returned by the server describing what features a session actually supports.
-Any omitted keys implicitly indicate the corresponding capability is not supported. <br><br>
+Un objeto JSON de Capacidades devuelto por el servidor describiendo qué características realmente soporta una sesión.
+Cualquier clave omitida indica implícitamente que la capacidad correspondiente no está soportada. <br><br>
 
-### Cookie JSON Object
+### Cookie objeto JSON
 
-A JSON object describing a Cookie.<br><br>
+Un objeto JSON que describe una Cookie.<br><br>
 
-<table><thead><tr><th><b>Key</b> </th><th><b>Type</b> </th><th><b>Description</b> </th></tr></thead><tbody>
-<tr><td> name       </td><td> string      </td><td> The name of the cookie. </td></tr>
-<tr><td> value      </td><td> string      </td><td> The cookie value.  </td></tr>
-<tr><td> path       </td><td> string      </td><td> (Optional) The cookie path.<sup>1</sup> </td></tr>
-<tr><td> domain     </td><td> string      </td><td> (Optional) The domain the cookie is visible to.<sup>1</sup> </td></tr>
-<tr><td> secure     </td><td> boolean     </td><td> (Optional) Whether the cookie is a secure cookie.<sup>1</sup> </td></tr>
-<tr><td> httpOnly   </td><td> boolean     </td><td> (Optional) Whether the cookie is an httpOnly cookie.<sup>1</sup> </td></tr>
-<tr><td> expiry     </td><td> number      </td><td> (Optional) When the cookie expires, specified in seconds since midnight, January 1, 1970 UTC.<sup>1</sup> </td></tr></tbody></table>
+<table><thead><tr><th><b>Tecla</b> </th><th><b>Tipo</b> </th><th><b>Descripción</b> </th></tr></thead><tbody>
+<tr><td> nombre       </td><td> cadena      </td><td> El nombre de la cookie. </td></tr>
+<tr><td> valor      </td><td> cadena      </td><td> Valor de la cookie.  </td></tr>
+<tr><td> ruta       </td><td> cadena      </td><td> (Opcional) La ruta de las cookies.<sup>1</sup> </td></tr>
+<tr><td> dominio     </td><td> cadena      </td><td> (Opcional) El dominio al que la cookie es visible.<sup>1</sup> </td></tr>
+<tr><td> seguro     </td><td> boolean     </td><td> (Opcional) Si la cookie es una cookie segura.<sup>1</sup> </td></tr>
+<tr><td> Sólo http   </td><td> boolean     </td><td> (Opcional) Si la cookie es una cookie httpOnly.<sup>1</sup> </td></tr>
+<tr><td> expiry     </td><td> número      </td><td> (Opcional) Cuando la cookie caduque, se especifica en segundos desde medianoche, el 1 de enero de 1970 UTC.<sup>1</sup> </td></tr></tbody></table>
 
 <sup>1</sup> When returning Cookie objects, the server should only omit an optional field if it is incapable of providing the information. <br><br>
 
-### Log Entry JSON Object
+### Registro entrada JSON Objeto
 
-A JSON object describing a log entry. <br><br>
+Un objeto JSON que describe una entrada de registro. <br><br>
 
-<table><thead><tr><th><b>Key</b> </th><th><b>Type</b> </th><th><b>Description</b> </th></tr></thead><tbody>
-<tr><td> timestamp  </td><td> number      </td><td> The timestamp of the entry. </td></tr>
-<tr><td> level      </td><td> string      </td><td> The log level of the entry, for example, "INFO" (see <a href='#Log_Levels.md'>log levels</a>). </td></tr>
-<tr><td> message    </td><td> string      </td><td> The log message.   </td></tr>
+<table><thead><tr><th><b>Tecla</b> </th><th><b>Tipo</b> </th><th><b>Descripción</b> </th></tr></thead><tbody>
+<tr><td> fecha  </td><td> número      </td><td> La marca de tiempo de la entrada. </td></tr>
+<tr><td> nivel      </td><td> cadena      </td><td> El nivel de registro de la entrada, por ejemplo, "INFO" (ver <a href='#Log_Levels.md'>niveles de registro</a>). </td></tr>
+<tr><td> mensaje    </td><td> cadena      </td><td> El mensaje de registro.   </td></tr>
 </tbody></table>
 
-### Log Levels
+### Niveles de Log
 
-Log levels in order, with finest level on top and coarsest level at the bottom. <br><br>
+Registra los niveles en orden, con el nivel más alto y más grueso en la parte inferior. <br><br>
 
-<table><thead><tr><th><b>Level</b> </th><th><b>Description</b> </th></tr></thead><tbody>
-<tr><td> ALL          </td><td> All log messages. Used for fetching of logs and configuration of logging. </td></tr>
-<tr><td> DEBUG        </td><td> Messages for debugging. </td></tr>
-<tr><td> INFO         </td><td> Messages with user information. </td></tr>
-<tr><td> WARNING      </td><td> Messages corresponding to non-critical problems. </td></tr>
-<tr><td> SEVERE       </td><td> Messages corresponding to critical errors. </td></tr>
-<tr><td> OFF          </td><td> No log messages. Used for configuration of logging. </td></tr>
+<table><thead><tr><th><b>Nivel</b> </th><th><b>Descripción</b> </th></tr></thead><tbody>
+<tr><td> TODO          </td><td> Todos los mensajes de registro. Utilizado para la obtención de registros y la configuración del registro. </td></tr>
+<tr><td> DEBUG        </td><td> Mensajes para depuración. </td></tr>
+<tr><td> INFO         </td><td> Mensajes con información de usuario. </td></tr>
+<tr><td> ATENCIÓN      </td><td> Mensajes correspondientes a problemas no críticos. </td></tr>
+<tr><td> AVISO       </td><td> Mensajes correspondientes a errores críticos. </td></tr>
+<tr><td> DESACTIVADO          </td><td> No hay mensajes de registro. Utilizado para la configuración del registro. </td></tr>
 </tbody></table>
 
-### Log Type
+### Tipo de Log
 
-The table below lists common log types. Other log types, for instance, for performance logging may also be available. <br><br>
+La siguiente tabla muestra los tipos de registro comunes. Otros tipos de registro, por ejemplo, para el registro de rendimiento también pueden estar disponibles. <br><br>
 
-<table><thead><tr><th><b>Log Type</b> </th><th><b>Description</b> </th></tr></thead><tbody>
-<tr><td> client          </td><td> Logs from the client. </td></tr>
-<tr><td> driver          </td><td> Logs from the webdriver. </td></tr>
-<tr><td> browser         </td><td> Logs from the browser. </td></tr>
-<tr><td> server          </td><td> Logs from the server. </td></tr>
+<table><thead><tr><th><b>Tipo de Log</b> </th><th><b>Descripción</b> </th></tr></thead><tbody>
+<tr><td> cliente          </td><td> Registros del cliente. </td></tr>
+<tr><td> conductor          </td><td> Registros del webdriver. </td></tr>
+<tr><td> navegador         </td><td> Registros desde el navegador. </td></tr>
+<tr><td> servidor          </td><td> Registros del servidor. </td></tr>
 </tbody></table>
 
-### Proxy JSON Object
+### Objeto JSON del proxy
 
-A JSON object describing a Proxy configuration. <br><br>
+Un objeto JSON que describe una configuración de proxy. <br><br>
 
-<table><thead><tr><th><b>Key</b> </th><th><b>Type</b> </th><th><b>Description</b> </th></tr></thead><tbody>
-<tr><td> proxyType  </td><td> string      </td><td> (Required) The type of proxy being used. Possible values are: <b>direct</b> - A direct connection - no proxy in use, <b>manual</b> - Manual proxy settings configured, e.g. setting a proxy for HTTP, a proxy for FTP, etc, <b>pac</b> - Proxy autoconfiguration from a URL, <b>autodetect</b> - Proxy autodetection, probably with WPAD, <b>system</b> - Use system settings </td></tr>
-<tr><td> proxyAutoconfigUrl </td><td> string      </td><td> (Required if proxyType == <b>pac</b>, Ignored otherwise) Specifies the URL to be used for proxy autoconfiguration. Expected format example: <a href='http://hostname.com:1234/pacfile'>http://hostname.com:1234/pacfile</a> </td></tr>
-<tr><td> ftpProxy, httpProxy, sslProxy, socksProxy </td><td> string      </td><td> (Optional, Ignored if proxyType != <b>manual</b>) Specifies the proxies to be used for FTP, HTTP, HTTPS and SOCKS requests respectively. Behaviour is undefined if a request is made, where the proxy for the particular protocol is undefined, if proxyType is <b>manual</b>. Expected format example: hostname.com:1234 </td></tr>
-<tr><td> socksUsername </td><td> string      </td><td> (Optional, Ignored if proxyType != <b>manual</b> and socksProxy is not set) Specifies SOCKS proxy username. </td></tr>
-<tr><td> socksPassword </td><td> string      </td><td> (Optional, Ignored if proxyType != <b>manual</b> and socksProxy is not set) Specifies SOCKS proxy password. </td></tr>
-<tr><td> noProxy    </td><td> string      </td><td> (Optional, Ignored if proxyType != <b>manual</b>) Specifies proxy bypass addresses. Format is driver specific. </td></tr></tbody></table>
+<table><thead><tr><th><b>Tecla</b> </th><th><b>Tipo</b> </th><th><b>Descripción</b> </th></tr></thead><tbody>
+<tr><td> proxyType  </td><td> cadena      </td><td> (Requerido) El tipo de proxy que se está usando. Los valores posibles son: <b>directo</b> - Una conexión directa - no hay proxy en uso <b>manual</b> - Configuración manual del proxy configurada, p.ej. establecer un proxy para HTTP, un proxy para FTP, etc, <b>pac</b> - Configuración automática del proxy desde una URL, <b>autodetectar</b> - Detección automática del proxy, probablemente con WPAD, <b>sistema</b> - Usar ajustes del sistema </td></tr>
+<tr><td> proxyAutoconfigUrl </td><td> cadena      </td><td> (Requerida si proxyType == <b>pac</b>, Ignorada de otra manera) Especifica la URL que se utilizará para la configuración automática del proxy. Ejemplo de formato esperado: <a href='http://hostname.com:1234/pacfile'>http://hostname.com:1234/pacfile</a> </td></tr>
+<tr><td> ftpProxy, httpProxy, sslProxy, socksProxy </td><td> cadena      </td><td> (Opcional, Ignorado si proxyType != <b>manual</b>) Especifica los proxies que se usarán para las solicitudes FTP, HTTP, HTTPS y SOCKS respectivamente. El comportamiento no está definido si se hace una solicitud, donde el proxy del protocolo en particular no está definido, si proxyType es <b>manual</b>. Ejemplo de formato esperado: hostname.com:1234 </td></tr>
+<tr><td> socksUsername </td><td> cadena      </td><td> (Opcional, ignorado si proxyType != <b>manual</b> y socksProxy no está definido) Especifica el nombre de usuario del proxy SOCKS. </td></tr>
+<tr><td> socksPassword </td><td> cadena      </td><td> (Opcional, ignorado si proxyType != <b>manual</b> y socksProxy no está definido) Especifica la contraseña del proxy SOCKS. </td></tr>
+<tr><td> noProxy    </td><td> cadena      </td><td> (Opcional, ignorado si proxyType != <b>manual</b>) Especifica direcciones de bypass proxy. El formato es específico del controlador. </td></tr></tbody></table>
 
-## Messages
+## Mensajes
 
-### Commands
+### Comandos
 
-WebDriver command messages should conform to the [HTTP/1.1 request specification](http://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5). Although the server may be extended to respond to other content-types, the wire protocol dictates that all commands accept a content-type of `application/json;charset=UTF-8`. Likewise, the message bodies for POST and PUT request must use an `application/json;charset=UTF-8` content-type.
+Los mensajes de comando de WebDriver deben cumplir con la [especificación de solicitud HTTP/1.1](http://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5). Aunque el servidor puede ser extendido para responder a otros tipos de contenido, el protocolo de cable dicta que todos los comandos aceptan un tipo de contenido de `application/json;charset=UTF-8`. Del mismo modo, los cuerpos del mensaje para la solicitud POST y PUT deben usar un tipo de contenido `application/json;charset=UTF-8`.
 
-Each command in the WebDriver service will be mapped to an HTTP method at a specific path. Path segments prefixed with a colon (:) indicate that segment is a variable used to further identify the underlying resource. For example, consider an arbitrary resource mapped as:
+Cada comando en el servicio WebDriver se asignará a un método HTTP en una ruta específica. Los segmentos de ruta con dos puntos (:) indican que el segmento es una variable usada para identificar aún más el recurso subyacente. Por ejemplo, considere un recurso arbitrario mapeado como:
 
 ```
-GET /favorite/color/:name
+Obtener /favorito/color/:name
 ```
 
-Given this mapping, the server should respond to GET requests sent to "/favorite/color/Jack" and "/favorite/color/Jill", with the variable `:name` set to "Jack" and "Jill", respectively.
+Dado este mapeo, el servidor debe responder a las peticiones GET enviadas a "/favorite/color/Jack" y "/favorite/color/Jill", con la variable `:name` establecida a "Jack" y "Jill", respectivamente.
 
-### Responses
+### Respuestas
 
-Command responses shall be sent as [HTTP/1.1 response messages](http://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html#sec6). If the remote server must return a 4xx response, the response body shall have a Content-Type of text/plain and the message body shall be a descriptive message of the bad request. For all other cases, if a response includes a message body, it must have a Content-Type of application/json;charset=UTF-8 and will be a JSON object with the following properties:
+Las respuestas de comando se enviarán como [mensajes de respuesta HTTP/1.1](http://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html#sec6). Si el servidor remoto debe devolver una respuesta 4xx, el cuerpo de respuesta tendrá un Tipo de Contenido de texto/plano y el cuerpo del mensaje será un mensaje descriptivo de la mala petición. Para todos los demás casos, si una respuesta incluye un cuerpo de mensajes, debe tener un tipo de contenido de aplicación/json; harset=UTF-8 y será un objeto JSON con las siguientes propiedades:
 
-| **Key**   | **Type** | **Description**                                                                                                                          |                                                                                                                                                                                                                                                        |
-| :-------- | :------- | :--------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| sessionId | string   | null                                                                                                                                     | An opaque handle used by the server to determine where to route session-specific commands. This ID should be included in all future session-commands in place of the :sessionId path segment variable. |
-| status    | number   | A status code summarizing the result of the command. A non-zero value indicates that the command failed. |                                                                                                                                                                                                                                                        |
-| value     | `*`      | The response JSON value.                                                                                                 |                                                                                                                                                                                                                                                        |
+| **Clave**    | **Type** | **Descripción**                                                                                                                                |                                                                                                                                                                                                                                                                               |
+| :----------- | :------- | :--------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Id de sesión | cadena   | nulo                                                                                                                                           | Un manejador opaco usado por el servidor para determinar dónde enrutar comandos específicos de sesión. Este ID debe incluirse en todos los comandos de sesión futuros en lugar de la variable de segmento de ruta :sessionId. |
+| estado       | número   | Un código de estado que resume el resultado del comando. Un valor distinto a cero indica que el comando falló. |                                                                                                                                                                                                                                                                               |
+| valor        | `*`      | El valor de respuesta JSON.                                                                                                    |                                                                                                                                                                                                                                                                               |
 
-#### Response Status Codes
+#### Respuesta de códigos de estado
 
-The wire protocol will inherit its status codes from those used by the InternetExplorerDriver:
+El protocolo de cable heredará sus códigos de estado de los utilizados por el InternetExplorerDriver:
 
-| **Code** | **Summary**                  | **Detail**                                                                                                                                                                                             |
-| :------- | :--------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0        | `Success`                    | The command executed successfully.                                                                                                                                                     |
-| 6        | `NoSuchDriver`               | A session is either terminated or not started                                                                                                                                                          |
-| 7        | `NoSuchElement`              | An element could not be located on the page using the given search parameters.                                                                                                         |
-| 8        | `NoSuchFrame`                | A request to switch to a frame could not be satisfied because the frame could not be found.                                                                                            |
-| 9        | `UnknownCommand`             | The requested resource could not be found, or a request was received using an HTTP method that is not supported by the mapped resource.                                                |
-| 10       | `StaleElementReference`      | An element command failed because the referenced element is no longer attached to the DOM.                                                                                             |
-| 11       | `ElementNotVisible`          | An element command could not be completed because the element is not visible on the page.                                                                                              |
-| 12       | `InvalidElementState`        | An element command could not be completed because the element is in an invalid state (e.g. attempting to click a disabled element). |
-| 13       | `UnknownError`               | An unknown server-side error occurred while processing the command.                                                                                                                    |
-| 15       | `ElementIsNotSelectable`     | An attempt was made to select an element that cannot be selected.                                                                                                                      |
-| 17       | `JavaScriptError`            | An error occurred while executing user supplied JavaScript.                                                                                                                            |
-| 19       | `XPathLookupError`           | An error occurred while searching for an element by XPath.                                                                                                                             |
-| 21       | `Timeout`                    | An operation did not complete before its timeout expired.                                                                                                                              |
-| 23       | `NoSuchWindow`               | A request to switch to a different window could not be satisfied because the window could not be found.                                                                                |
-| 24       | `InvalidCookieDomain`        | An illegal attempt was made to set a cookie under a different domain than the current page.                                                                                            |
-| 25       | `UnableToSetCookie`          | A request to set a cookie's value could not be satisfied.                                                                                                                              |
-| 26       | `UnexpectedAlertOpen`        | A modal dialog was open, blocking this operation                                                                                                                                                       |
-| 27       | `NoAlertOpenError`           | An attempt was made to operate on a modal dialog when one was not open.                                                                                                                |
-| 28       | `ScriptTimeout`              | A script did not complete before its timeout expired.                                                                                                                                  |
-| 29       | `InvalidElementCoordinates`  | The coordinates provided to an interactions operation are invalid.                                                                                                                     |
-| 30       | `IMENotAvailable`            | IME was not available.                                                                                                                                                                 |
-| 31       | `IMEEngineActivationFailed`  | An IME engine could not be started.                                                                                                                                                    |
-| 32       | `InvalidSelector`            | Argument was an invalid selector (e.g. XPath/CSS).                                                                                  |
-| 33       | `SessionNotCreatedException` | A new session could not be created.                                                                                                                                                    |
-| 34       | `MoveTargetOutOfBounds`      | Target provided for a move action is out of bounds.                                                                                                                                    |
+| **Código** | **Summary**                       | **Detalles**                                                                                                                                                                                   |
+| :--------- | :-------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0          | `Éxito`                           | El comando se ha ejecutado correctamente.                                                                                                                                      |
+| 6          | `NoSuchDriver`                    | Una sesión se ha terminado o no se ha iniciado                                                                                                                                                 |
+| 7          | `No SuchElement`                  | Un elemento no pudo ser localizado en la página usando los parámetros de búsqueda dados.                                                                                       |
+| 8          | `NoSuchFrame`                     | Una solicitud para cambiar a un marco no pudo ser satisfecha porque el marco no pudo ser encontrado.                                                                           |
+| 9          | `Comando desconocido`             | El recurso solicitado no pudo ser encontrado, o una solicitud fue recibida usando un método HTTP que no es soportado por el recurso mapeado.                                   |
+| 10         | `StaleElementReference`           | Un comando de elemento falló porque el elemento referenciado ya no está conectado al DOM.                                                                                      |
+| 11         | `ElementoNoVisible`               | No se ha podido completar un comando de elemento porque el elemento no es visible en la página.                                                                                |
+| 12         | `InvalidElementState`             | No se pudo completar un comando de elemento porque el elemento está en un estado inválido (por ejemplo, al intentar hacer clic en un elemento desactivado). |
+| 13         | `Error desconocido`               | Se ha producido un error desconocido del lado del servidor mientras se procesaba el comando.                                                                                   |
+| 15         | `ElementIsNotSelectable`          | Se ha intentado seleccionar un elemento que no puede ser seleccionado.                                                                                                         |
+| 17         | `JavaScriptError`                 | Ocurrió un error mientras se ejecutaba el usuario proporcionaba JavaScript.                                                                                                    |
+| 19         | `XPathLookupError`                | Se ha producido un error al buscar un elemento por XPath.                                                                                                                      |
+| 21         | `Tiempo de espera`                | Una operación no se completó antes de que expirara el tiempo de espera.                                                                                                        |
+| 23         | `NoSuchWindow`                    | Una solicitud para cambiar a una ventana diferente no pudo ser satisfecha porque no se pudo encontrar la ventana.                                                              |
+| 24         | `Inválida CookieDomain`           | Se hizo un intento ilegal de establecer una cookie bajo un dominio diferente a la página actual.                                                                               |
+| 25         | `UnableToSetCookie`               | Una solicitud para establecer el valor de una cookie no pudo ser satisfecha.                                                                                                   |
+| 26         | `UnexpectedAlertOpen`             | Se abrió un diálogo modal, bloqueando esta operación                                                                                                                                           |
+| 27         | `NoAlertOpenError`                | Se intentó operar en un diálogo modal cuando uno no estaba abierto.                                                                                                            |
+| 28         | `ScriptTimeout`                   | Un script no se completó antes de que caducara su tiempo de espera.                                                                                                            |
+| 29         | `ElementCoordinates Inválidos`    | Las coordenadas proporcionadas a una operación de interacción no son válidas.                                                                                                  |
+| 30         | `IMENotAvailable`                 | IME no estaba disponible.                                                                                                                                                      |
+| 31         | `IMEEngineActivationFailed`       | No se pudo iniciar un motor IME.                                                                                                                                               |
+| 32         | `Selector Inválido`               | El argumento no era un selector válido (por ejemplo, XPath/CSS).                                                                                            |
+| 33         | `Sesión no creada Excepción`      | No se pudo crear una nueva sesión.                                                                                                                                             |
+| 34         | `Mover objetivo fuera de límites` | El objetivo proporcionado para una acción de movimiento está fuera de límites.                                                                                                 |
 
-The client should interpret a 404 Not Found response from the server as an "Unknown command" response. All other 4xx and 5xx responses from the server that do not define a status field should be interpreted as "Unknown error" responses.
+El cliente debe interpretar una respuesta 404 No encontrada del servidor como una respuesta de "comando desconocido". Todas las otras respuestas 4xx y 5xx del servidor que no definen un campo de estado deben interpretarse como respuestas de "Error desconocido".
 
-### Error Handling
+### Manejo de errores
 
-There are two levels of error handling specified by the wire protocol: invalid requests and failed commands.
+Hay dos niveles de manejo de errores especificados por el protocolo wire: peticiones inválidas y comandos fallidos.
 
-#### Invalid Requests
+#### Solicitudes inválidas
 
-All invalid requests should result in the server returning a 4xx HTTP response. The response Content-Type should be set to text/plain and the message body should be a descriptive error message. The categories of invalid requests are as follows:
+Todas las peticiones no válidas deben resultar en que el servidor devuelva una respuesta HTTP 4xx. El Tipo de Contenido de Respuesta debe establecerse en texto/plano y el cuerpo del mensaje debe ser un mensaje de error descriptivo. Las categorías de solicitudes no válidas son las siguientes:
 
 <dl>
 <dt><b>Unknown Commands</b></dt>
@@ -202,197 +202,197 @@ All invalid requests should result in the server returning a 4xx HTTP response. 
 <br>
 </dd>
 <dt><b>Unimplemented Commands</b></dt>
-<dd>Every server implementing the WebDriver wire protocol must respond to every defined command. If an individual command has not been implemented on the server, the server should respond with a <code>501 Not Implemented</code> error message. Note this is the only error in the Invalid Request category that does not return a <code>4xx</code> status code.<br>
+<dd>Cada servidor que implementa el protocolo de cable WebDriver debe responder a cada comando definido. Si un comando individual no ha sido implementado en el servidor, el servidor debe responder con un mensaje de error <code>501 no implementado</code>. Tenga en cuenta que este es el único error en la categoría Solicitud inválida que no devuelve un código de estado <code>4xx</code> .<br>
 <br>
 </dd>
-<dt><b>Variable Resource Not Found</b></dt>
-<dd>If a request path maps to a variable resource, but that resource does not exist, then the server should respond with a <code>404 Not Found</code>. For example, if ID <code>my-session</code> is not a valid session ID on the server, and a command is sent to <code>GET /session/my-session HTTP/1.1</code>, then the server should gracefully return a <code>404</code>.<br>
+<dt><b>Recurso Variable No encontrado</b></dt>
+<dd>Si una petición de ruta mapea un recurso variable, pero ese recurso no existe, entonces el servidor debería responder con un <code>404 no encontrado</code>. Por ejemplo, si el ID <code>my-session</code> no es un ID de sesión válido en el servidor, y se envía un comando a <code>GET /session/my-session HTTP/1.</code>, entonces el servidor debería devolver con elegancia un <code>404</code>.<br>
 <br>
 </dd>
 <dt><b>Invalid Command Method</b></dt>
-<dd>If a request path maps to a valid resource, but that resource does not respond to the request method, the server should respond with a <code>405 Method Not Allowed</code>. The response must include an Allows header with a list of the allowed methods for the requested resource.<br>
+<dd>Si una petición de ruta mapea un recurso válido, pero ese recurso no responde al método de solicitud, el servidor debe responder con un método <code>405 no permitido</code>. La respuesta debe incluir un encabezado Permitir con una lista de los métodos permitidos para el recurso solicitado.<br>
 <br>
 </dd>
-<dt><b>Missing Command Parameters</b></dt>
-<dd>If a POST/PUT command maps to a resource that expects a set of JSON parameters, and the response body does not include one of those parameters, the server should respond with a <code>400 Bad Request</code>. The response body should list the missing parameters.<br>
+<dt><b>Faltan parámetros de comando</b></dt>
+<dd>Si un comando POST/PUT mapea un recurso que espera un conjunto de parámetros JSON, y el cuerpo de respuesta no incluye uno de esos parámetros, el servidor debe responder con una <code>400 Solicitud Mala</code>. El cuerpo de respuesta debe listar los parámetros faltantes.<br>
 <br>
 </dd>
 </dl>
 
-#### Failed Commands
+#### Comandos fallidos
 
-If a request maps to a valid command and contains all of the expected parameters in the request body, yet fails to execute successfully, then the server should send a 500 Internal Server Error. This response should have a Content-Type of `application/json;charset=UTF-8` and the response body should be a well formed JSON response object.
+Si una solicitud se mapea a un comando válido y contiene todos los parámetros esperados en el cuerpo de la solicitud, pero falla al ejecutar con éxito, entonces el servidor debe enviar un error de servidor interno 500. Esta respuesta debe tener un Tipo de Contenido de `application/json;charset=UTF-8` y el cuerpo de respuesta debe ser un objeto de respuesta JSON bien formado.
 
-The response status should be one of the defined status codes and the response value should be another JSON object with detailed information for the failing command:
+El estado de respuesta debe ser uno de los códigos de estado definidos y el valor de respuesta debe ser otro objeto JSON con información detallada para el comando fallido:
 
-| Key        | Type   | Description                                                                                                                                                                                                                                                           |
-| :--------- | :----- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| message    | string | A descriptive message for the command failure.                                                                                                                                                                                                        |
-| screen     | string | (Optional) If included, a screenshot of the current page as a base64 encoded string.                                                                                                                                               |
-| class      | string | (Optional) If included, specifies the fully qualified class name for the exception that was thrown when the command failed.                                                                                                        |
-| stackTrace | array  | (Optional) If included, specifies an array of JSON objects describing the stack trace for the exception that was thrown when the command failed. The zeroeth element of the array represents the top of the stack. |
+| Clave      | Tipo   | Descripción                                                                                                                                                                                                                                                                   |
+| :--------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| mensaje    | cadena | Un mensaje descriptivo para el fallo del comando.                                                                                                                                                                                                             |
+| pantalla   | cadena | (Opcional) Si está incluido, una captura de pantalla de la página actual como una cadena codificada en base64.                                                                                                                             |
+| clase      | cadena | (Opcional) Si se incluye, especifica el nombre de la clase completamente calificada para la excepción que se arrojó cuando el comando falló.                                                                                               |
+| stackTrace | matriz | (Opcional) Si se incluye, especifica un array de objetos JSON que describen el stack trace para la excepción que se arrojó cuando el comando falló. El elemento cero de la matriz representa la parte superior de la pila. |
 
-Each JSON object in the stackTrace array must contain the following properties:
+Cada objeto JSON en la matriz stackTrace debe contener las siguientes propiedades:
 
-| **Key**    | **Type** | **Description**                                                                                                                                                                                                                                                      |
-| :--------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| fileName   | string   | The name of the source file containing the line represented by this frame.                                                                                                                                                                           |
-| className  | string   | The fully qualified class name for the class active in this frame. If the class name cannot be determined, or is not applicable for the language the server is implemented in, then this property should be set to the empty string. |
-| methodName | string   | The name of the method active in this frame, or the empty string if unknown/not applicable.                                                                                                                                                          |
-| lineNumber | number   | The line number in the original source file for the frame, or 0 if unknown.                                                                                                                                                                          |
+| **Clave**         | **Type** | **Descripción**                                                                                                                                                                                                                                                                              |
+| :---------------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| nombre de archivo | cadena   | El nombre del archivo de origen que contiene la línea representada por este fotograma.                                                                                                                                                                                       |
+| claseNombre       | cadena   | El nombre de clase completo para la clase activa en este fotograma. Si el nombre de la clase no se puede determinar, o no es aplicable para el idioma en el que está implementado el servidor, entonces esta propiedad debe establecerse en la cadena vacía. |
+| métodoNombre      | cadena   | El nombre del método activo en este fotograma, o la cadena vacía si es desconocido/no aplicable.                                                                                                                                                                             |
+| número de línea   | número   | El número de línea en el archivo original de origen para el cuadro, o 0 si se desconoce.                                                                                                                                                                                     |
 
-## Resource Mapping
+## Mapeo de recursos
 
-Resources in the WebDriver REST service are mapped to individual URL patterns. Each resource may respond to one or more HTTP request methods. If a resource responds to a GET request, then it should also respond to HEAD requests. All resources should respond to OPTIONS requests with an `Allow` header field, whose value is a list of all methods that resource responds to.
+Los recursos en el servicio WebDriver REST se asignan a patrones individuales de URL. Cada recurso puede responder a uno o más métodos de petición HTTP. Si un recurso responde a una solicitud GET, entonces también debería responder a peticiones HEAD. Todos los recursos deben responder a peticiones OPTIONS con un campo de cabecera `Permitir`, cuyo valor es una lista de todos los métodos a los que responde el recurso.
 
-If a resource is mapped to a URL containing a variable path segment name, that path segment should be used to further route the request. Variable path segments are indicated in the resource mapping by a colon-prefix. For example, consider the following:
+Si un recurso es mapeado a una URL que contiene un nombre de segmento de ruta variable, ese segmento de ruta debe ser usado para continuar la petición. Los segmentos de ruta variable se indican en el mapeo de recursos por un prefijo de dos puntos. Por ejemplo, consideremos lo siguiente:
 
 ```
-/favorite/color/:person
+/favorito/color/:person
 ```
 
-A resource mapped to this URL should parse the value of the `:person` path segment to further determine how to respond to the request. If this resource received a request for `/favorite/color/Jack`, then it should return Jack's favorite color. Likewise, the server should return Jill's favorite color for any requests to `/favorite/color/Jill`.
+Un recurso asignado a esta URL debería analizar el valor del segmento de ruta `:person` para determinar aún más cómo responder a la solicitud. Si este recurso recibió una solicitud para `/favorite/color/Jack`, entonces debería devolver el color favorito de Jack. Del mismo modo, el servidor debería devolver el color favorito de Jill para cualquier solicitud a `/favorite/color/Jill`.
 
-Two resources may only be mapped to the same URL pattern if one of those resources' patterns contains variable path segments, and the other does not. In these cases, the server should always route requests to the resource whose path is the best match for the request. Consider the following two resource paths:
+Dos recursos sólo pueden ser mapeados al mismo patrón de URL si uno de esos recursos contiene segmentos de ruta variables, y el otro no. En estos casos, el servidor siempre debe enrutar las peticiones al recurso cuya ruta sea la mejor coincidencia para la petición. Considere las siguientes dos rutas de recursos:
 
 1. `/session/:sessionId/element/active`
 2. `/session/:sessionId/element/:id`
 
-Given these mappings, the server should always route requests whose final path segment is active to the first resource. All other requests should be routed to second.
+Dados estos mapeos, el servidor siempre debe enrutar peticiones cuyo segmento de ruta final está activo en el primer recurso. Todas las demás peticiones deben ser enrutadas en segundo.
 
-## Command Reference
+## Referencia de comandos
 
-### Command Summary
+### Resumen del Comando
 
-| **HTTP Method** | **Path**                                                                                                                                                                     | **Summary**                                                                                                                                                           |         |                                                  |
-| :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------ |
-| GET             | [/status](#status)                                                                                                                                                           | Query the server's current status.                                                                                                                    |         |                                                  |
-| POST            | [/session](#session)                                                                                                                                                         | Create a new session.                                                                                                                                 |         |                                                  |
-| GET             | [/sessions](#sessions)                                                                                                                                                       | Returns a list of the currently active sessions.                                                                                                      |         |                                                  |
-| GET             | [/session/:sessionId](#sessionsessionid)                                                                                                                     | Retrieve the capabilities of the specified session.                                                                                                   |         |                                                  |
-| DELETE          | [/session/:sessionId](#sessionsessionid)                                                                                                                     | Delete the session.                                                                                                                                   |         |                                                  |
-| POST            | [/session/:sessionId/timeouts](#sessionsessionidtimeouts)                                                                                                    | Configure the amount of time that a particular type of operation can execute for before they are aborted and a                                                        | Timeout | error is returned to the client. |
-| POST            | [/session/:sessionId/timeouts/async\_script](#sessionsessionidtimeoutsasync_script)                                                    | Set the amount of time, in milliseconds, that asynchronous scripts executed by `/session/:sessionId/execute_async` are permitted to run before they are aborted and a | Timeout | error is returned to the client. |
-| POST            | [/session/:sessionId/timeouts/implicit\_wait](#sessionsessionidtimeoutsimplicit_wait)                                                  | Set the amount of time the driver should wait when searching for elements.                                                                            |         |                                                  |
-| GET             | [/session/:sessionId/window\_handle](#sessionsessionidwindow_handle)                                                                   | Retrieve the current window handle.                                                                                                                   |         |                                                  |
-| GET             | [/session/:sessionId/window\_handles](#sessionsessionidwindow_handles)                                                                 | Retrieve the list of all window handles available to the session.                                                                                     |         |                                                  |
-| GET             | [/session/:sessionId/url](#sessionsessionidurl)                                                                                                              | Retrieve the URL of the current page.                                                                                                                 |         |                                                  |
-| POST            | [/session/:sessionId/url](#sessionsessionidurl)                                                                                                              | Navigate to a new URL.                                                                                                                                |         |                                                  |
-| POST            | [/session/:sessionId/forward](#sessionsessionidforward)                                                                                                      | Navigate forwards in the browser history, if possible.                                                                                                |         |                                                  |
-| POST            | [/session/:sessionId/back](#sessionsessionidback)                                                                                                            | Navigate backwards in the browser history, if possible.                                                                                               |         |                                                  |
-| POST            | [/session/:sessionId/refresh](#sessionsessionidrefresh)                                                                                                      | Refresh the current page.                                                                                                                             |         |                                                  |
-| POST            | [/session/:sessionId/execute](#sessionsessionidexecute)                                                                                                      | Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame.                                            |         |                                                  |
-| POST            | [/session/:sessionId/execute\_async](#sessionsessionidexecute_async)                                                                   | Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame.                                            |         |                                                  |
-| GET             | [/session/:sessionId/screenshot](#sessionsessionidscreenshot)                                                                                                | Take a screenshot of the current page.                                                                                                                |         |                                                  |
-| GET             | [/session/:sessionId/ime/available\_engines](#sessionsessionidimeavailable_engines)                                                    | List all available engines on the machine.                                                                                                            |         |                                                  |
-| GET             | [/session/:sessionId/ime/active\_engine](#sessionsessionidimeactive_engine)                                                            | Get the name of the active IME engine.                                                                                                                |         |                                                  |
-| GET             | [/session/:sessionId/ime/activated](#sessionsessionidimeactivated)                                                                                           | Indicates whether IME input is active at the moment (not if it's available.                                                        |         |                                                  |
-| POST            | [/session/:sessionId/ime/deactivate](#sessionsessionidimedeactivate)                                                                                         | De-activates the currently-active IME engine.                                                                                                         |         |                                                  |
-| POST            | [/session/:sessionId/ime/activate](#sessionsessionidimeactivate)                                                                                             | Make an engines that is available (appears on the listreturned by getAvailableEngines) active.                                     |         |                                                  |
-| POST            | [/session/:sessionId/frame](#sessionsessionidframe)                                                                                                          | Change focus to another frame on the page.                                                                                                            |         |                                                  |
-| POST            | [/session/:sessionId/frame/parent](#sessionsessionidframeparent)                                                                                             | Change focus to the parent context.                                                                                                                   |         |                                                  |
-| POST            | [/session/:sessionId/window](#sessionsessionidwindow)                                                                                                        | Change focus to another window.                                                                                                                       |         |                                                  |
-| DELETE          | [/session/:sessionId/window](#sessionsessionidwindow)                                                                                                        | Close the current window.                                                                                                                             |         |                                                  |
-| POST            | [/session/:sessionId/window/:windowHandle/size](#sessionsessionidwindowwindowhandlesize)                                                     | Change the size of the specified window.                                                                                                              |         |                                                  |
-| GET             | [/session/:sessionId/window/:windowHandle/size](#sessionsessionidwindowwindowhandlesize)                                                     | Get the size of the specified window.                                                                                                                 |         |                                                  |
-| POST            | [/session/:sessionId/window/:windowHandle/position](#sessionsessionidwindowwindowhandleposition)                                             | Change the position of the specified window.                                                                                                          |         |                                                  |
-| GET             | [/session/:sessionId/window/:windowHandle/position](#sessionsessionidwindowwindowhandleposition)                                             | Get the position of the specified window.                                                                                                             |         |                                                  |
-| POST            | [/session/:sessionId/window/:windowHandle/maximize](#sessionsessionidwindowwindowhandlemaximize)                                             | Maximize the specified window if not already maximized.                                                                                               |         |                                                  |
-| GET             | [/session/:sessionId/cookie](#sessionsessionidcookie)                                                                                                        | Retrieve all cookies visible to the current page.                                                                                                     |         |                                                  |
-| POST            | [/session/:sessionId/cookie](#sessionsessionidcookie)                                                                                                        | Set a cookie.                                                                                                                                         |         |                                                  |
-| DELETE          | [/session/:sessionId/cookie](#sessionsessionidcookie)                                                                                                        | Delete all cookies visible to the current page.                                                                                                       |         |                                                  |
-| DELETE          | [/session/:sessionId/cookie/:name](#sessionsessionidcookiename)                                                                              | Delete the cookie with the given name.                                                                                                                |         |                                                  |
-| GET             | [/session/:sessionId/source](#sessionsessionidsource)                                                                                                        | Get the current page source.                                                                                                                          |         |                                                  |
-| GET             | [/session/:sessionId/title](#sessionsessionidtitle)                                                                                                          | Get the current page title.                                                                                                                           |         |                                                  |
-| POST            | [/session/:sessionId/element](#sessionsessionidelement)                                                                                                      | Search for an element on the page, starting from the document root.                                                                                   |         |                                                  |
-| POST            | [/session/:sessionId/elements](#sessionsessionidelements)                                                                                                    | Search for multiple elements on the page, starting from the document root.                                                                            |         |                                                  |
-| POST            | [/session/:sessionId/element/active](#sessionsessionidelementactive)                                                                                         | Get the element on the page that currently has focus.                                                                                                 |         |                                                  |
-| GET             | [/session/:sessionId/element/:id](#sessionsessionidelementid)                                                                                | Describe the identified element.                                                                                                                      |         |                                                  |
-| POST            | [/session/:sessionId/element/:id/element](#sessionsessionidelementidelement)                                                                 | Search for an element on the page, starting from the identified element.                                                                              |         |                                                  |
-| POST            | [/session/:sessionId/element/:id/elements](#sessionsessionidelementidelements)                                                               | Search for multiple elements on the page, starting from the identified element.                                                                       |         |                                                  |
-| POST            | [/session/:sessionId/element/:id/click](#sessionsessionidelementidclick)                                                                     | Click on an element.                                                                                                                                  |         |                                                  |
-| POST            | [/session/:sessionId/element/:id/submit](#sessionsessionidelementidsubmit)                                                                   | Submit a `FORM` element.                                                                                                                              |         |                                                  |
-| GET             | [/session/:sessionId/element/:id/text](#sessionsessionidelementidtext)                                                                       | Returns the visible text for the element.                                                                                                             |         |                                                  |
-| POST            | [/session/:sessionId/element/:id/value](#sessionsessionidelementidvalue)                                                                     | Send a sequence of key strokes to an element.                                                                                                         |         |                                                  |
-| POST            | [/session/:sessionId/keys](#sessionsessionidkeys)                                                                                                            | Send a sequence of key strokes to the active element.                                                                                                 |         |                                                  |
-| GET             | [/session/:sessionId/element/:id/name](#sessionsessionidelementidname)                                                                       | Query for an element's tag name.                                                                                                                      |         |                                                  |
-| POST            | [/session/:sessionId/element/:id/clear](#sessionsessionidelementidclear)                                                                     | Clear a `TEXTAREA` or `text INPUT` element's value.                                                                                                   |         |                                                  |
-| GET             | [/session/:sessionId/element/:id/selected](#sessionsessionidelementidselected)                                                               | Determine if an `OPTION` element, or an `INPUT` element of type `checkbox` or `radiobutton` is currently selected.                                    |         |                                                  |
-| GET             | [/session/:sessionId/element/:id/enabled](#sessionsessionidelementidenabled)                                                                 | Determine if an element is currently enabled.                                                                                                         |         |                                                  |
-| GET             | [/session/:sessionId/element/:id/attribute/:name](#sessionsessionidelementidattribute/:name)                                 | Get the value of an element's attribute.                                                                                                              |         |                                                  |
-| GET             | [/session/:sessionId/element/:id/equals/:other](#sessionsessionidelementidequals/:other)                                     | Test if two element IDs refer to the same DOM element.                                                                                                |         |                                                  |
-| GET             | [/session/:sessionId/element/:id/displayed](#sessionsessionidelementiddisplayed)                                                             | Determine if an element is currently displayed.                                                                                                       |         |                                                  |
-| GET             | [/session/:sessionId/element/:id/location](#sessionsessionidelementidlocation)                                                               | Determine an element's location on the page.                                                                                                          |         |                                                  |
-| GET             | [/session/:sessionId/element/:id/location\_in\_view](#sessionsessionidelementidlocation_in_view) | Determine an element's location on the screen once it has been scrolled into view.                                                                    |         |                                                  |
-| GET             | [/session/:sessionId/element/:id/size](#sessionsessionidelementidsize)                                                                       | Determine an element's size in pixels.                                                                                                                |         |                                                  |
-| GET             | [/session/:sessionId/element/:id/css/:propertyName](#sessionsessionidelementidcss/:propertyName)                             | Query the value of an element's computed CSS property.                                                                                                |         |                                                  |
-| GET             | [/session/:sessionId/orientation](#sessionsessionidorientation)                                                                                              | Get the current browser orientation.                                                                                                                  |         |                                                  |
-| POST            | [/session/:sessionId/orientation](#sessionsessionidorientation)                                                                                              | Set the browser orientation.                                                                                                                          |         |                                                  |
-| GET             | [/session/:sessionId/alert\_text](#sessionsessionidalert_text)                                                                         | Gets the text of the currently displayed JavaScript `alert()`, `confirm()`, or `prompt()` dialog.                                                     |         |                                                  |
-| POST            | [/session/:sessionId/alert\_text](#sessionsessionidalert_text)                                                                         | Sends keystrokes to a JavaScript `prompt()` dialog.                                                                                                   |         |                                                  |
-| POST            | [/session/:sessionId/accept\_alert](#sessionsessionidaccept_alert)                                                                     | Accepts the currently displayed alert dialog.                                                                                                         |         |                                                  |
-| POST            | [/session/:sessionId/dismiss\_alert](#sessionsessioniddismiss_alert)                                                                   | Dismisses the currently displayed alert dialog.                                                                                                       |         |                                                  |
-| POST            | [/session/:sessionId/moveto](#sessionsessionidmoveto)                                                                                                        | Move the mouse by an offset of the specificed element.                                                                                                |         |                                                  |
-| POST            | [/session/:sessionId/click](#sessionsessionidclick)                                                                                                          | Click any mouse button (at the coordinates set by the last moveto command).                                                        |         |                                                  |
-| POST            | [/session/:sessionId/buttondown](#sessionsessionidbuttondown)                                                                                                | Click and hold the left mouse button (at the coordinates set by the last moveto command).                                          |         |                                                  |
-| POST            | [/session/:sessionId/buttonup](#sessionsessionidbuttonup)                                                                                                    | Releases the mouse button previously held (where the mouse is currently at).                                                       |         |                                                  |
-| POST            | [/session/:sessionId/doubleclick](#sessionsessioniddoubleclick)                                                                                              | Double-clicks at the current mouse coordinates (set by moveto).                                                                    |         |                                                  |
-| POST            | [/session/:sessionId/touch/click](#sessionsessionidtouchclick)                                                                                               | Single tap on the touch enabled device.                                                                                                               |         |                                                  |
-| POST            | [/session/:sessionId/touch/down](#sessionsessionidtouchdown)                                                                                                 | Finger down on the screen.                                                                                                                            |         |                                                  |
-| POST            | [/session/:sessionId/touch/up](#sessionsessionidtouchup)                                                                                                     | Finger up on the screen.                                                                                                                              |         |                                                  |
-| POST            | [session/:sessionId/touch/move](#sessionsessionidtouchmove)                                                                                                  | Finger move on the screen.                                                                                                                            |         |                                                  |
-| POST            | [session/:sessionId/touch/scroll](#sessionsessionidtouchscroll)                                                                                              | Scroll on the touch screen using finger based motion events.                                                                                          |         |                                                  |
-| POST            | [session/:sessionId/touch/scroll](#sessionsessionidtouchscroll)                                                                                              | Scroll on the touch screen using finger based motion events.                                                                                          |         |                                                  |
-| POST            | [session/:sessionId/touch/doubleclick](#sessionsessionidtouchdoubleclick)                                                                                    | Double tap on the touch screen using finger motion events.                                                                                            |         |                                                  |
-| POST            | [session/:sessionId/touch/longclick](#sessionsessionidtouchlongclick)                                                                                        | Long press on the touch screen using finger motion events.                                                                                            |         |                                                  |
-| POST            | [session/:sessionId/touch/flick](#sessionsessionidtouchflick)                                                                                                | Flick on the touch screen using finger motion events.                                                                                                 |         |                                                  |
-| POST            | [session/:sessionId/touch/flick](#sessionsessionidtouchflick)                                                                                                | Flick on the touch screen using finger motion events.                                                                                                 |         |                                                  |
-| GET             | [/session/:sessionId/location](#sessionsessionidlocation)                                                                                                    | Get the current geo location.                                                                                                                         |         |                                                  |
-| POST            | [/session/:sessionId/location](#sessionsessionidlocation)                                                                                                    | Set the current geo location.                                                                                                                         |         |                                                  |
-| GET             | [/session/:sessionId/local\_storage](#sessionsessionidlocal_storage)                                                                   | Get all keys of the storage.                                                                                                                          |         |                                                  |
-| POST            | [/session/:sessionId/local\_storage](#sessionsessionidlocal_storage)                                                                   | Set the storage item for the given key.                                                                                                               |         |                                                  |
-| DELETE          | [/session/:sessionId/local\_storage](#sessionsessionidlocal_storage)                                                                   | Clear the storage.                                                                                                                                    |         |                                                  |
-| GET             | [/session/:sessionId/local\_storage/key/:key](#sessionsessionidlocal_storagekeykey)                                    | Get the storage item for the given key.                                                                                                               |         |                                                  |
-| DELETE          | [/session/:sessionId/local\_storage/key/:key](#sessionsessionidlocal_storagekeykey)                                    | Remove the storage item for the given key.                                                                                                            |         |                                                  |
-| GET             | [/session/:sessionId/local\_storage/size](#sessionsessionidlocal_storagesize)                                                          | Get the number of items in the storage.                                                                                                               |         |                                                  |
-| GET             | [/session/:sessionId/session\_storage](#sessionsessionidsession_storage)                                                               | Get all keys of the storage.                                                                                                                          |         |                                                  |
-| POST            | [/session/:sessionId/session\_storage](#sessionsessionidsession_storage)                                                               | Set the storage item for the given key.                                                                                                               |         |                                                  |
-| DELETE          | [/session/:sessionId/session\_storage](#sessionsessionidsession_storage)                                                               | Clear the storage.                                                                                                                                    |         |                                                  |
-| GET             | [/session/:sessionId/session\_storage/key/:key](#sessionsessionidsession_storagekeykey)                                | Get the storage item for the given key.                                                                                                               |         |                                                  |
-| DELETE          | [/session/:sessionId/session\_storage/key/:key](#sessionsessionidsession_storagekeykey)                                | Remove the storage item for the given key.                                                                                                            |         |                                                  |
-| GET             | [/session/:sessionId/session\_storage/size](#sessionsessionidsession_storagesize)                                                      | Get the number of items in the storage.                                                                                                               |         |                                                  |
-| POST            | [/session/:sessionId/log](#sessionsessionidlog)                                                                                                              | Get the log for a given log type.                                                                                                                     |         |                                                  |
-| GET             | [/session/:sessionId/log/types](#sessionsessionidlogtypes)                                                                                                   | Get available log types.                                                                                                                              |         |                                                  |
-| GET             | [/session/:sessionId/application\_cache/status](#sessionsessionidapplication_cachestatus)                                              | Get the status of the html5 application cache.                                                                                                        |         |                                                  |
+| **Método HTTP** | **Ruta**                                                                                                                                                                     | **Summary**                                                                                                                                                           |                |                                            |
+| :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------ |
+| RECOGER         | [/status](#status)                                                                                                                                                           | Consultar el estado actual del servidor.                                                                                                              |                |                                            |
+| POST            | [/session](#session)                                                                                                                                                         | Crear una nueva sesión.                                                                                                                               |                |                                            |
+| RECOGER         | [/sessions](#sessions)                                                                                                                                                       | Devuelve una lista de las sesiones activas actualmente.                                                                                               |                |                                            |
+| RECOGER         | [/session/:sessionId](#sessionsessionid)                                                                                                                     | Recuperar las capacidades de la sesión especificada.                                                                                                  |                |                                            |
+| BORRAR          | [/session/:sessionId](#sessionsessionid)                                                                                                                     | Eliminar la sesión.                                                                                                                                   |                |                                            |
+| POST            | [/session/:sessionId/timeouts](#sessionsessionidtimeouts)                                                                                                    | Configurar la cantidad de tiempo que un tipo de operación en particular puede ejecutar antes de que se aborten y un                                                   | Tiempo agotado | se ha devuelto al cliente. |
+| POST            | [/session/:sessionId/timeouts/async\_script](#sessionsessionidtimeoutsasync_script)                                                    | Establece el tiempo en milisegundos, que los scripts asíncronos ejecutados por `/session/:sessionId/execute_async` pueden ejecutarse antes de que sean abortados y un | Tiempo agotado | se ha devuelto al cliente. |
+| POST            | [/session/:sessionId/timeouts/implicit\_wait](#sessionsessionidtimeoutsimplicit_wait)                                                  | Establecer la cantidad de tiempo que el controlador debe esperar al buscar elementos.                                                                 |                |                                            |
+| RECOGER         | [/session/:sessionId/window\_handle](#sessionsessionidwindow_handle)                                                                   | Recuperar el manejador de ventana actual.                                                                                                             |                |                                            |
+| RECOGER         | [/session/:sessionId/window\_handles](#sessionsessionidwindow_handles)                                                                 | Recuperar la lista de todos los manejadores de ventanas disponibles para la sesión.                                                                   |                |                                            |
+| RECOGER         | [/session/:sessionId/url](#sessionsessionidurl)                                                                                                              | Recuperar la URL de la página actual.                                                                                                                 |                |                                            |
+| POST            | [/session/:sessionId/url](#sessionsessionidurl)                                                                                                              | Navega a una nueva URL.                                                                                                                               |                |                                            |
+| POST            | [/session/:sessionId/forward](#sessionsessionidforward)                                                                                                      | Navegar hacia adelante en el historial del navegador, si es posible.                                                                                  |                |                                            |
+| POST            | [/session/:sessionId/back](#sessionsessionidback)                                                                                                            | Navegar hacia atrás en el historial del navegador, si es posible.                                                                                     |                |                                            |
+| POST            | [/session/:sessionId/refresh](#sessionsessionidrefresh)                                                                                                      | Actualizar la página actual.                                                                                                                          |                |                                            |
+| POST            | [/session/:sessionId/execute](#sessionsessionidexecute)                                                                                                      | Inyectar un fragmento de JavaScript en la página para su ejecución en el contexto del fotograma seleccionado actualmente.                             |                |                                            |
+| POST            | [/session/:sessionId/execute\_async](#sessionsessionidexecute_async)                                                                   | Inyectar un fragmento de JavaScript en la página para su ejecución en el contexto del fotograma seleccionado actualmente.                             |                |                                            |
+| RECOGER         | [/session/:sessionId/screenshot](#sessionsessionidscreenshot)                                                                                                | Tomar una captura de pantalla de la página actual.                                                                                                    |                |                                            |
+| RECOGER         | [/session/:sessionId/ime/available\_engines](#sessionsessionidimeavailable_engines)                                                    | Listar todos los motores disponibles en la máquina.                                                                                                   |                |                                            |
+| RECOGER         | [/session/:sessionId/ime/active\_engine](#sessionsessionidimeactive_engine)                                                            | Obtener el nombre del motor IME activo.                                                                                                               |                |                                            |
+| RECOGER         | [/session/:sessionId/ime/activated](#sessionsessionidimeactivated)                                                                                           | Indica si la entrada IME está activa en este momento (no si está disponible.                                                       |                |                                            |
+| POST            | [/session/:sessionId/ime/deactivate](#sessionsessionidimedeactivate)                                                                                         | Desactiva el motor IME actualmente activo.                                                                                                            |                |                                            |
+| POST            | [/session/:sessionId/ime/activate](#sessionsessionidimeactivate)                                                                                             | Hacer activos un motor que esté disponible (aparece en la lista devuelta por getAvailable Engines).                                |                |                                            |
+| POST            | [/session/:sessionId/frame](#sessionsessionidframe)                                                                                                          | Cambia el enfoque a otro fotograma de la página.                                                                                                      |                |                                            |
+| POST            | [/session/:sessionId/frame/parent](#sessionsessionidframeparent)                                                                                             | Cambie el enfoque al contexto padre.                                                                                                                  |                |                                            |
+| POST            | [/session/:sessionId/window](#sessionsessionidwindow)                                                                                                        | Cambia el enfoque a otra ventana.                                                                                                                     |                |                                            |
+| BORRAR          | [/session/:sessionId/window](#sessionsessionidwindow)                                                                                                        | Cerrar la ventana actual.                                                                                                                             |                |                                            |
+| POST            | [/session/:sessionId/window/:windowHandle/size](#sessionsessionidwindowwindowhandlesize)                                                     | Cambia el tamaño de la ventana especificada.                                                                                                          |                |                                            |
+| RECOGER         | [/session/:sessionId/window/:windowHandle/size](#sessionsessionidwindowwindowhandlesize)                                                     | Obtener el tamaño de la ventana especificada.                                                                                                         |                |                                            |
+| POST            | [/session/:sessionId/window/:windowHandle/position](#sessionsessionidwindowwindowhandleposition)                                             | Cambia la posición de la ventana especificada.                                                                                                        |                |                                            |
+| RECOGER         | [/session/:sessionId/window/:windowHandle/position](#sessionsessionidwindowwindowhandleposition)                                             | Obtiene la posición de la ventana especificada.                                                                                                       |                |                                            |
+| POST            | [/session/:sessionId/window/:windowHandle/maximize](#sessionsessionidwindowwindowhandlemaximize)                                             | Maximice la ventana especificada si no está maximizada.                                                                                               |                |                                            |
+| RECOGER         | [/session/:sessionId/cookie](#sessionsessionidcookie)                                                                                                        | Recuperar todas las cookies visibles en la página actual.                                                                                             |                |                                            |
+| POST            | [/session/:sessionId/cookie](#sessionsessionidcookie)                                                                                                        | Establecer una cookie.                                                                                                                                |                |                                            |
+| BORRAR          | [/session/:sessionId/cookie](#sessionsessionidcookie)                                                                                                        | Borrar todas las cookies visibles en la página actual.                                                                                                |                |                                            |
+| BORRAR          | [/session/:sessionId/cookie/:name](#sessionsessionidcookiename)                                                                              | Elimina la cookie con el nombre dado.                                                                                                                 |                |                                            |
+| RECOGER         | [/session/:sessionId/source](#sessionsessionidsource)                                                                                                        | Obtener la fuente de la página actual.                                                                                                                |                |                                            |
+| RECOGER         | [/session/:sessionId/title](#sessionsessionidtitle)                                                                                                          | Obtener el título de la página actual.                                                                                                                |                |                                            |
+| POST            | [/session/:sessionId/element](#sessionsessionidelement)                                                                                                      | Buscar un elemento en la página, comenzando por la raíz del documento.                                                                                |                |                                            |
+| POST            | [/session/:sessionId/elements](#sessionsessionidelements)                                                                                                    | Buscar múltiples elementos en la página, comenzando desde la raíz del documento.                                                                      |                |                                            |
+| POST            | [/session/:sessionId/element/activo](#sessionsessionidelementactive)                                                                                         | Obtener el elemento en la página que actualmente se ha centrado.                                                                                      |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id](#sessionsessionidelementid)                                                                                | Describa el elemento identificado.                                                                                                                    |                |                                            |
+| POST            | [/session/:sessionId/element/:id/element](#sessionsessionidelementidelement)                                                                 | Buscar un elemento en la página, comenzando por el elemento identificado.                                                                             |                |                                            |
+| POST            | [/session/:sessionId/element/:id/elements](#sessionsessionidelementidelements)                                                               | Buscar múltiples elementos en la página, comenzando por el elemento identificado.                                                                     |                |                                            |
+| POST            | [/session/:sessionId/element/:id/click](#sessionsessionidelementidclick)                                                                     | Haga clic en un elemento.                                                                                                                             |                |                                            |
+| POST            | [/session/:sessionId/element/:id/submit](#sessionsessionidelementidsubmit)                                                                   | Enviar un elemento `FORM`.                                                                                                                            |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id/text](#sessionsessionidelementidtext)                                                                       | Devuelve el texto visible para el elemento.                                                                                                           |                |                                            |
+| POST            | [/session/:sessionId/element/:id/valor](#sessionsessionidelementidvalue)                                                                     | Enviar una secuencia de trazos clave a un elemento.                                                                                                   |                |                                            |
+| POST            | [/session/:sessionId/keys](#sessionsessionidkeys)                                                                                                            | Envía una secuencia de teclas al elemento activo.                                                                                                     |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id/name](#sessionsessionidelementidname)                                                                       | Consulta para el nombre de la etiqueta de un elemento.                                                                                                |                |                                            |
+| POST            | [/session/:sessionId/element/:id/clear](#sessionsessionidelementidclear)                                                                     | Elimina el valor de un elemento `TEXTAREA` o `text INPUT`.                                                                                            |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id/seleccionado](#sessionsessionidelementidselected)                                                           | Determina si un elemento `OPTION`, o un elemento `INPUT` de tipo `checkbox` o `radiobutton` está seleccionado actualmente.                            |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id/enabled](#sessionsessionidelementidenabled)                                                                 | Determinar si un elemento está habilitado actualmente.                                                                                                |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id/attribute/:name](#sessionsessionidelementidattribute/:name)                                 | Obtener el valor del atributo de un elemento.                                                                                                         |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id/equals/:other](#sessionsessionidelementidequals/:other)                                     | Evalúa si dos IDs de elementos se refieren al mismo elemento DOM.                                                                                     |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id/displayed](#sessionsessionidelementiddisplayed)                                                             | Determinar si un elemento se muestra actualmente.                                                                                                     |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id/location](#sessionsessionidelementidlocation)                                                               | Determinar la ubicación de un elemento en la página.                                                                                                  |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id/location\_in\_view](#sessionsessionidelementidlocation_in_view) | Determina la ubicación de un elemento en la pantalla una vez que haya sido desplazado a la vista.                                                     |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id/size](#sessionsessionidelementidsize)                                                                       | Determina el tamaño de un elemento en píxeles.                                                                                                        |                |                                            |
+| RECOGER         | [/session/:sessionId/element/:id/css/:propertyName](#sessionsessionidelementidcss/:propertyName)                             | Consulta el valor de la propiedad CSS computada de un elemento.                                                                                       |                |                                            |
+| RECOGER         | [/session/:sessionId/orientation](#sessionsessionidorientation)                                                                                              | Obtener la orientación actual del navegador.                                                                                                          |                |                                            |
+| POST            | [/session/:sessionId/orientation](#sessionsessionidorientation)                                                                                              | Establecer la orientación del navegador.                                                                                                              |                |                                            |
+| RECOGER         | [/session/:sessionId/alert\_text](#sessionsessionidalert_text)                                                                         | Obtiene el texto del cuadro de diálogo `alert()` de JavaScript mostrado actualmente, `confirm()` o `prompt()`.                                        |                |                                            |
+| POST            | [/session/:sessionId/alert\_text](#sessionsessionidalert_text)                                                                         | Envía pulsaciones de teclado a un diálogo JavaScript `prompt()`.                                                                                      |                |                                            |
+| POST            | [/session/:sessionId/accept\_alert](#sessionsessionidaccept_alert)                                                                     | Acepta el diálogo de alerta que se muestra actualmente.                                                                                               |                |                                            |
+| POST            | [/session/:sessionId/dismiss\_alert](#sessionsessioniddismiss_alert)                                                                   | Descarta el diálogo de alerta que se muestra actualmente.                                                                                             |                |                                            |
+| POST            | [/session/:sessionId/moveto](#sessionsessionidmoveto)                                                                                                        | Mueva el ratón por un desplazamiento del elemento especificado.                                                                                       |                |                                            |
+| POST            | [/session/:sessionId/click](#sessionsessionidclick)                                                                                                          | Haga clic en cualquier botón del ratón (en las coordenadas definidas por el último comando de movet).                              |                |                                            |
+| POST            | [/session/:sessionId/buttondown](#sessionsessionidbuttondown)                                                                                                | Haga clic y mantenga pulsado el botón izquierdo del ratón (en las coordenadas fijadas por el último comando de move).              |                |                                            |
+| POST            | [/session/:sessionId/buttonup](#sessionsessionidbuttonup)                                                                                                    | Libera el botón del ratón previamente presionado (donde el ratón está actualmente).                                                |                |                                            |
+| POST            | [/session/:sessionId/doubleclick](#sessionsessioniddoubleclick)                                                                                              | Haga doble clic en las coordenadas actuales del ratón (definidas por moveto).                                                      |                |                                            |
+| POST            | [/session/:sessionId/touch/click](#sessionsessionidtouchclick)                                                                                               | Toque un solo en el dispositivo habilitado.                                                                                                           |                |                                            |
+| POST            | [/session/:sessionId/touch/down](#sessionsessionidtouchdown)                                                                                                 | Dedo abajo en la pantalla.                                                                                                                            |                |                                            |
+| POST            | [/session/:sessionId/touch/up](#sessionsessionidtouchup)                                                                                                     | Deduzca en la pantalla.                                                                                                                               |                |                                            |
+| POST            | [sesión/:sessionId/toque/move](#sessionsessionidtouchmove)                                                                                                   | Mover el dedo en la pantalla.                                                                                                                         |                |                                            |
+| POST            | [session/:sessionId/touch/scroll](#sessionsessionidtouchscroll)                                                                                              | Desplácese en la pantalla táctil utilizando eventos de movimiento basados en dedos.                                                                   |                |                                            |
+| POST            | [session/:sessionId/touch/scroll](#sessionsessionidtouchscroll)                                                                                              | Desplácese en la pantalla táctil utilizando eventos de movimiento basados en dedos.                                                                   |                |                                            |
+| POST            | [session/:sessionId/touch/doubleclick](#sessionsessionidtouchdoubleclick)                                                                                    | Doble toque en la pantalla táctil usando eventos de movimiento de dedos.                                                                              |                |                                            |
+| POST            | [session/:sessionId/touch/longclick](#sessionsessionidtouchlongclick)                                                                                        | Pulsación larga en la pantalla táctil usando eventos de movimiento de dedos.                                                                          |                |                                            |
+| POST            | [session/:sessionId/touch/flick](#sessionsessionidtouchflick)                                                                                                | Desliza en la pantalla táctil usando eventos de movimiento de dedos.                                                                                  |                |                                            |
+| POST            | [session/:sessionId/touch/flick](#sessionsessionidtouchflick)                                                                                                | Desliza en la pantalla táctil usando eventos de movimiento de dedos.                                                                                  |                |                                            |
+| RECOGER         | [/session/:sessionId/location](#sessionsessionidlocation)                                                                                                    | Obtener la geolocalización actual.                                                                                                                    |                |                                            |
+| POST            | [/session/:sessionId/location](#sessionsessionidlocation)                                                                                                    | Establecer la geolocalización actual.                                                                                                                 |                |                                            |
+| RECOGER         | [/session/:sessionId/local\_storage](#sessionsessionidlocal_storage)                                                                   | Obtener todas las claves del almacenamiento.                                                                                                          |                |                                            |
+| POST            | [/session/:sessionId/local\_storage](#sessionsessionidlocal_storage)                                                                   | Establece el elemento de almacenamiento para la clave dada.                                                                                           |                |                                            |
+| BORRAR          | [/session/:sessionId/local\_storage](#sessionsessionidlocal_storage)                                                                   | Limpiar el almacenamiento.                                                                                                                            |                |                                            |
+| RECOGER         | [/session/:sessionId/local\_storage/key/:key](#sessionsessionidlocal_storagekeykey)                                    | Obtener el elemento de almacenamiento para la clave dada.                                                                                             |                |                                            |
+| BORRAR          | [/session/:sessionId/local\_storage/key/:key](#sessionsessionidlocal_storagekeykey)                                    | Elimina el elemento de almacenamiento de la clave dada.                                                                                               |                |                                            |
+| RECOGER         | [/session/:sessionId/local\_storage/size](#sessionsessionidlocal_storagesize)                                                          | Obtener el número de elementos en el almacenamiento.                                                                                                  |                |                                            |
+| RECOGER         | [/session/:sessionId/session\_storage](#sessionsessionidsession_storage)                                                               | Obtener todas las claves del almacenamiento.                                                                                                          |                |                                            |
+| POST            | [/session/:sessionId/session\_storage](#sessionsessionidsession_storage)                                                               | Establece el elemento de almacenamiento para la clave dada.                                                                                           |                |                                            |
+| BORRAR          | [/session/:sessionId/session\_storage](#sessionsessionidsession_storage)                                                               | Limpiar el almacenamiento.                                                                                                                            |                |                                            |
+| RECOGER         | [/session/:sessionId/session\_storage/key/:key](#sessionsessionidsession_storagekeykey)                                | Obtener el elemento de almacenamiento para la clave dada.                                                                                             |                |                                            |
+| BORRAR          | [/session/:sessionId/session\_storage/key/:key](#sessionsessionidsession_storagekeykey)                                | Elimina el elemento de almacenamiento de la clave dada.                                                                                               |                |                                            |
+| RECOGER         | [/session/:sessionId/session\_storage/size](#sessionsessionidsession_storagesize)                                                      | Obtener el número de elementos en el almacenamiento.                                                                                                  |                |                                            |
+| POST            | [/session/:sessionId/log](#sessionsessionidlog)                                                                                                              | Obtener el registro para un tipo de registro determinado.                                                                                             |                |                                            |
+| RECOGER         | [/session/:sessionId/log/types](#sessionsessionidlogtypes)                                                                                                   | Obtener tipos de registro disponibles.                                                                                                                |                |                                            |
+| RECOGER         | [/session/:sessionId/application\_cache/status](#sessionsessionidapplication_cachestatus)                                              | Obtener el estado de la caché de aplicaciones html5.                                                                                                  |                |                                            |
 
-### Command Detail
+### Detalle del comando
 
-#### /status
+#### /estado
 
 <dl>
 <dd>
-<h4>GET /status</h4>
+<h4>GET /estado</h4>
 </dd>
 <dd>
 <dl>
 <dd>
-Query the server's current status.  The server should respond with a general "HTTP 200 OK" response if it is alive and accepting commands. The response body should be a JSON object describing the state of the server. All server implementations should return two basic objects describing the server's current platform and when the server was built. All fields are optional; if omitted, the client should assume the value is uknown. Furthermore, server implementations may include additional fields not listed here.<br>
+Consultar el estado actual del servidor.  El servidor debe responder con una respuesta general "HTTP 200 OK" si está vivo y acepta comandos. El cuerpo de respuesta debe ser un objeto JSON que describa el estado del servidor. Todas las implementaciones del servidor deben devolver dos objetos básicos que describen la plataforma actual del servidor y cuando el servidor fue construido. Todos los campos son opcionales; si se omite, el cliente debe asumir que el valor es uknown. Además, las implementaciones del servidor pueden incluir campos adicionales no listados aquí.<br>
 <br>
-<table><thead><tr><th><b>Key</b> </th><th><b>Type</b> </th><th><b>Description</b> </th></tr></thead><tbody>
-<tr><td> build      </td><td> object      </td><td>                    </td></tr>
-<tr><td> build.version </td><td> string      </td><td> A generic release label (i.e. "2.0rc3") </td></tr>
-<tr><td> build.revision </td><td> string      </td><td> The revision of the local source control client from which the server was built </td></tr>
-<tr><td> build.time </td><td> string      </td><td> A timestamp from when the server was built. </td></tr>
-<tr><td> os         </td><td> object      </td><td>                    </td></tr>
-<tr><td> os.arch    </td><td> string      </td><td> The current system architecture. </td></tr>
-<tr><td> os.name    </td><td> string      </td><td> The name of the operating system the server is currently running on: "windows", "linux", etc. </td></tr>
-<tr><td> os.version </td><td> string      </td><td> The operating system version. </td></tr></tbody></table>
+<table><thead><tr><th><b>Tecla</b> </th><th><b>Tipo</b> </th><th><b>Descripción</b> </th></tr></thead><tbody>
+<tr><td> construir      </td><td> objeto      </td><td>                    </td></tr>
+<tr><td> build.version </td><td> cadena      </td><td> Una etiqueta genérica de liberación (es decir, "2.0rc3") </td></tr>
+<tr><td> crear.revisión </td><td> cadena      </td><td> La revisión del cliente de control de código fuente local desde el cual se construyó el servidor </td></tr>
+<tr><td> construir.hora </td><td> cadena      </td><td> Una marca de tiempo desde cuando se construyó el servidor. </td></tr>
+<tr><td> os         </td><td> objeto      </td><td>                    </td></tr>
+<tr><td> os.arch    </td><td> cadena      </td><td> La arquitectura actual del sistema. </td></tr>
+<tr><td> os.name    </td><td> cadena      </td><td> El nombre del sistema operativo que el servidor está ejecutando actualmente: "windows", "linux", etc. </td></tr>
+<tr><td> os.version </td><td> cadena      </td><td> La versión del sistema operativo. </td></tr></tbody></table>
 
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{object}</code> An object describing the general status of the server.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{object}</code> Un objeto que describe el estado general del servidor.</dd>
 </dl>
 </dd>
 </dl>
@@ -401,7 +401,7 @@ Query the server's current status.  The server should respond with a general "HT
 
 ---
 
-#### /session
+#### /sesión
 
 <dl>
 <dd>
@@ -410,24 +410,24 @@ Query the server's current status.  The server should respond with a general "HT
 <dd>
 <dl>
 <dd>
-Create a new session. The server should attempt to create a session that most closely matches the desired and required capabilities. Required capabilities have higher priority than desired capabilities and must be set for the session to be created.</dd>
+Crear una nueva sesión. El servidor debería intentar crear una sesión que coincida más estrechamente con las capacidades deseadas y requeridas. Las capacidades requeridas tienen mayor prioridad que las capacidades deseadas y deben establecerse para que la sesión sea creada.</dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>desiredCapabilities</code> - <code>{object}</code> An object describing the session's <a href='#Desired_Capabilities.md'>desired capabilities</a>.</dd>
-<dd><code>requiredCapabilities</code> - <code>{object}</code> An object describing the session's <a href='#Desired_Capabilities.md'>required capabilities</a> (Optional).</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>deseadas capacidades</code> - <code>{object}</code> Un objeto que describe las capacidades deseadas <a href='#Desired_Capabilities.md'>de la sesión</a>.</dd>
+<dd><code>requerimientos</code> - <code>{object}</code> Un objeto que describe las capacidades requeridas <a href='#Desired_Capabilities.md'>de la sesión</a> (Opcional).</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{object}</code> An object describing the session's <a href='#Actual_Capabilities.md'>capabilities</a>.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{object}</code> Un objeto que describe las capacidades <a href='#Actual_Capabilities.md'>de la sesión</a>.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>SessionNotCreatedException</code> - If a required capability could not be set.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>SessionNotCreatedException</code> - Si no se pudo establecer una capacidad requerida.</dd>
 </dl>
 </dd>
 </dl>
@@ -436,7 +436,7 @@ Create a new session. The server should attempt to create a session that most cl
 
 ---
 
-#### /sessions
+#### /sesiones
 
 <dl>
 <dd>
@@ -445,17 +445,17 @@ Create a new session. The server should attempt to create a session that most cl
 <dd>
 <dl>
 <dd>
-Returns a list of the currently active sessions. Each session will be returned as a list of JSON objects with the following keys:<br>
+Devuelve una lista de las sesiones activas actualmente. Cada sesión se devolverá como una lista de objetos JSON con las siguientes claves:<br>
 <br>
-<table><thead><tr><th><b>Key</b> </th><th><b>Type</b> </th><th><b>Description</b></th></tr></thead><tbody>
-<tr><td> id         </td><td> string      </td><td> The session ID. </td></tr>
-<tr><td> capabilities </td><td> object      </td><td> An object describing the session's <a href='#Actual_Capabilities.md'>capabilities</a>. </td></tr></tbody></table>
+<table><thead><tr><th><b>Tecla</b> </th><th><b>Tipo</b> </th><th><b>Descripción</b></th></tr></thead><tbody>
+<tr><td> id         </td><td> cadena      </td><td> La sesión ID. </td></tr>
+<tr><td> capacidades </td><td> objeto      </td><td> Un objeto que describe las capacidades <a href='#Actual_Capabilities.md'>de la sesión</a>. </td></tr></tbody></table>
 
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{Array.&lt;Object&gt;}</code> A list of the currently active sessions.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{Array.&lt;Object&gt;}</code> Una lista de las sesiones activas.</dd>
 </dl>
 </dd>
 </dl>
@@ -472,17 +472,17 @@ Returns a list of the currently active sessions. Each session will be returned a
 </dd>
 <dd>
 <dl>
-<dd>Retrieve the capabilities of the specified session.</dd>
+<dd>Recuperar las capacidades de la sesión especificada.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{object}</code> An object describing the session's <a href='#Actual_Capabilities.md'>capabilities</a>.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{object}</code> Un objeto que describe las capacidades <a href='#Actual_Capabilities.md'>de la sesión</a>.</dd>
 </dl>
 </dd>
 </dl>
@@ -495,11 +495,11 @@ Returns a list of the currently active sessions. Each session will be returned a
 </dd>
 <dd>
 <dl>
-<dd>Delete the session.</dd>
+<dd>Eliminar la sesión.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 </dl>
@@ -520,15 +520,15 @@ Returns a list of the currently active sessions. Each session will be returned a
 Configure the amount of time that a particular type of operation can execute for before they are aborted and a |Timeout| error is returned to the client.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>type</code> - <code>{string}</code> The type of operation to set the timeout for. Valid values are: "script" for script timeouts, "implicit" for modifying the implicit wait timeout and "page load" for setting a page load timeout.</dd>
-<dd><code>ms</code> - <code>{number}</code> The amount of time, in milliseconds, that time-limited commands are permitted to run.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>tipo</code> - <code>{string}</code> El tipo de operación para establecer el tiempo de espera. Los valores válidos son: "script" para los tiempos de espera del script, "implicit" para modificar el tiempo de espera implícito y "carga de página" para establecer un tiempo de espera de la página de espera.</dd>
+<dd><code>ms</code> - <code>{number}</code> La cantidad de tiempo, en milisegundos, que los comandos por tiempo limitado pueden ejecutar.</dd>
 </dl>
 </dd>
 </dl>
@@ -545,17 +545,17 @@ Configure the amount of time that a particular type of operation can execute for
 </dd>
 <dd>
 <dl>
-<dd>Set the amount of time, in milliseconds, that asynchronous scripts executed by <code>/session/:sessionId/execute_async</code> are permitted to run before they are aborted and a |Timeout| error is returned to the client.</dd>
+<dd>Ajusta la cantidad de tiempo, en milisegundos, que se permita ejecutar scripts asíncronos ejecutados por <code>/session/:sessionId/execute_async</code> antes de que sean abortados y se devuelva un error |Timeout| al cliente.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>ms</code> - <code>{number}</code> The amount of time, in milliseconds, that time-limited commands are permitted to run.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>ms</code> - <code>{number}</code> La cantidad de tiempo, en milisegundos, que los comandos por tiempo limitado pueden ejecutar.</dd>
 </dl>
 </dd>
 </dl>
@@ -572,23 +572,23 @@ Configure the amount of time that a particular type of operation can execute for
 </dd>
 <dd>
 <dl>
-<dd>Set the amount of time the driver should wait when searching for elements. When<br>
-searching for a single element, the driver should poll the page until an element is found or<br>
-the timeout expires, whichever occurs first. When searching for multiple elements, the driver<br>
-should poll the page until at least one element is found or the timeout expires, at which point<br>
-it should return an empty list.<br>
+<dd>Establecer la cantidad de tiempo que el controlador debe esperar al buscar elementos. Cuando<br>
+busca un solo elemento, el controlador debe sondear la página hasta que se encuentre un elemento o<br>
+el tiempo de espera expire, lo que ocurra primero. Al buscar múltiples elementos, el controlador<br>
+debería sondear la página hasta que al menos se encuentre un elemento o el tiempo de espera caduque, en cuyo punto<br>
+debería devolver una lista vacía.<br>
 <br>
 If this command is never sent, the driver should default to an implicit wait of 0ms.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>ms</code> - <code>{number}</code> The amount of time to wait, in milliseconds. This value has a lower bound of 0.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>ms</code> - <code>{number}</code> La cantidad de tiempo para esperar, en milisegundos. Este valor tiene un límite inferior a 0.</dd>
 </dl>
 </dd>
 </dl>
@@ -605,23 +605,23 @@ If this command is never sent, the driver should default to an implicit wait of 
 </dd>
 <dd>
 <dl>
-<dd>Retrieve the current window handle.</dd>
+<dd>Recuperar el manejador de ventana actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{string}</code> The current window handle.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{string}</code> El manejador de ventana actual.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -638,17 +638,17 @@ If this command is never sent, the driver should default to an implicit wait of 
 </dd>
 <dd>
 <dl>
-<dd>Retrieve the list of all window handles available to the session.</dd>
+<dd>Recuperar la lista de todos los manejadores de ventanas disponibles para la sesión.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{Array.&lt;string&gt;}</code> A list of window handles.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{Array.&lt;string&gt;}</code> Una lista de manejadores de ventanas.</dd>
 </dl>
 </dd>
 </dl>
@@ -665,23 +665,23 @@ If this command is never sent, the driver should default to an implicit wait of 
 </dd>
 <dd>
 <dl>
-<dd>Retrieve the URL of the current page.</dd>
+<dd>Recuperar la URL de la página actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{string}</code> The current URL.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{string}</code> La URL actual.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -694,23 +694,23 @@ If this command is never sent, the driver should default to an implicit wait of 
 </dd>
 <dd>
 <dl>
-<dd>Navigate to a new URL.</dd>
+<dd>Navega a una nueva URL.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>url</code> - <code>{string}</code> The URL to navigate to.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>url</code> - <code>{string}</code> La URL a la que navegar.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -727,17 +727,17 @@ If this command is never sent, the driver should default to an implicit wait of 
 </dd>
 <dd>
 <dl>
-<dd>Navigate forwards in the browser history, if possible.</dd>
+<dd>Navegar hacia adelante en el historial del navegador, si es posible.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -754,17 +754,17 @@ If this command is never sent, the driver should default to an implicit wait of 
 </dd>
 <dd>
 <dl>
-<dd>Navigate backwards in the browser history, if possible.</dd>
+<dd>Navegar hacia atrás en el historial del navegador, si es posible.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -777,21 +777,21 @@ If this command is never sent, the driver should default to an implicit wait of 
 
 <dl>
 <dd>
-<h4>POST /session/:sessionId/refresh</h4>
+<h4>POST /session/:sessionId/refrescar</h4>
 </dd>
 <dd>
 <dl>
-<dd>Refresh the current page.</dd>
+<dd>Actualizar la página actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -809,35 +809,35 @@ If this command is never sent, the driver should default to an implicit wait of 
 <dd>
 <dl>
 <dd>
-Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame. The executed script is assumed to be synchronous and the result of evaluating the script is returned to the client.<br>
+Inyectar un fragmento de JavaScript en la página para su ejecución en el contexto del fotograma seleccionado actualmente. Se asume que el script ejecutado es sincrónico y que el resultado de la evaluación del script es devuelto al cliente.<br>
 <br>
-The <code>script</code> argument defines the script to execute in the form of a function body.  The value returned by that function will be returned to the client.  The function will be invoked with the provided <code>args</code> array and the values may be accessed via the <code>arguments</code> object in the order specified.<br>
+El argumento <code>script</code> define el script a ejecutar en forma de un cuerpo de función.  El valor devuelto por esa función será devuelto al cliente.  The function will be invoked with the provided <code>args</code> array and the values may be accessed via the <code>arguments</code> object in the order specified.<br>
 <br>
-Arguments may be any JSON-primitive, array, or JSON object.  JSON objects that define a <a href='#WebElement_JSON_Object.md'>WebElement reference</a> will be converted to the corresponding DOM element. Likewise, any WebElements in the script result will be returned to the client as <a href='#WebElement_JSON_Object.md'>WebElement JSON objects</a>.</dd>
+Los argumentos pueden ser cualquier objeto JSON-primitivo, array o JSON.  Los objetos JSON que definen una referencia <a href='#WebElement_JSON_Object.md'>WebElement</a> se convertirán al elemento DOM correspondiente. Del mismo modo, cualquier WebElements en el resultado del script será devuelto al cliente como objetos <a href='#WebElement_JSON_Object.md'>WebElement JSON</a>.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>script</code> - <code>{string}</code> The script to execute.</dd>
-<dd><code>args</code> - <code>{Array.&lt;*&gt;}</code> The script arguments.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>script</code> - <code>{string}</code> El script a ejecutar.</dd>
+<dd><code>args</code> - <code>{Array.&lt;*&gt;}</code> Los argumentos del script.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
+<dt><b>Devuelve:</b></dt>
 <dd><code>{*}</code> The script result.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If one of the script arguments is a WebElement that is not attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si uno de los argumentos del script es un WebElement que no está conectado al DOM de la página.</dd>
 <dd><code>JavaScriptError</code> - If the script throws an Error.</dd>
 </dl>
 </dd>
@@ -856,39 +856,39 @@ Arguments may be any JSON-primitive, array, or JSON object.  JSON objects that d
 <dd>
 <dl>
 <dd>
-Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame. The executed script is assumed to be asynchronous and must signal that is done by invoking the provided callback, which is always provided as the final argument to the function.  The value to this callback will be returned to the client.<br>
+Inyectar un fragmento de JavaScript en la página para su ejecución en el contexto del fotograma seleccionado actualmente. Se asume que el script ejecutado es asíncrono y debe indicar que se hace invocando el callback proporcionado, que siempre se proporciona como argumento final a la función.  El valor de este callback será devuelto al cliente.<br>
 <br>
-Asynchronous script commands may not span page loads.  If an <code>unload</code> event is fired while waiting for a script result, an error should be returned to the client.<br>
+Los comandos de script asincrónicos no pueden expandir la carga de página.  Si se dispara un evento <code>descargando</code> mientras se espera un resultado del script, se debe devolver un error al cliente.<br>
 <br>
-The <code>script</code> argument defines the script to execute in teh form of a function body.  The function will be invoked with the provided <code>args</code> array and the values may be accessed via the <code>arguments</code> object in the order specified. The final argument will always be a callback function that must be invoked to signal that the script has finished.<br>
+El argumento <code>script</code> define el script a ejecutar en forma teh del cuerpo de una función.  The function will be invoked with the provided <code>args</code> array and the values may be accessed via the <code>arguments</code> object in the order specified. El argumento final siempre será una función de devolución de llamada que debe ser invocada para indicar que el script ha terminado.<br>
 <br>
-Arguments may be any JSON-primitive, array, or JSON object.  JSON objects that define a <a href='#WebElement_JSON_Object.md'>WebElement reference</a> will be converted to the corresponding DOM element. Likewise, any WebElements in the script result will be returned to the client as <a href='#WebElement_JSON_Object.md'>WebElement JSON objects</a>.</dd>
+Los argumentos pueden ser cualquier objeto JSON-primitivo, array o JSON.  Los objetos JSON que definen una referencia <a href='#WebElement_JSON_Object.md'>WebElement</a> se convertirán al elemento DOM correspondiente. Del mismo modo, cualquier WebElements en el resultado del script será devuelto al cliente como objetos <a href='#WebElement_JSON_Object.md'>WebElement JSON</a>.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>script</code> - <code>{string}</code> The script to execute.</dd>
-<dd><code>args</code> - <code>{Array.&lt;*&gt;}</code> The script arguments.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>script</code> - <code>{string}</code> El script a ejecutar.</dd>
+<dd><code>args</code> - <code>{Array.&lt;*&gt;}</code> Los argumentos del script.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
+<dt><b>Devuelve:</b></dt>
 <dd><code>{*}</code> The script result.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If one of the script arguments is a WebElement that is not attached to the page's DOM.</dd>
-<dd><code>Timeout</code> - If the script callback is not invoked before the timout expires. Timeouts are controlled by the <code>/session/:sessionId/timeout/async_script</code> command.</dd>
-<dd><code>JavaScriptError</code> - If the script throws an Error or if an <code>unload</code> event is fired while waiting for the script to finish.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si uno de los argumentos del script es un WebElement que no está conectado al DOM de la página.</dd>
+<dd><code>Tiempo de espera</code> - Si el callback del script no es invocado antes de que el tiempo de espera caduque. Los tiempos de espera son controlados por el comando <code>/session/:sessionId/timeout/async_script</code>.</dd>
+<dd><code>JavaScriptError</code> - Si el script arroja un Error o si un evento <code>de descarga</code> es disparado mientras espera que el script termine.</dd>
 </dl>
 </dd>
 </dl>
@@ -905,23 +905,23 @@ Arguments may be any JSON-primitive, array, or JSON object.  JSON objects that d
 </dd>
 <dd>
 <dl>
-<dd>Take a screenshot of the current page.</dd>
+<dd>Tomar una captura de pantalla de la página actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{string}</code> The screenshot as a base64 encoded PNG.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{string}</code> La captura de pantalla como PNG codificado en base64.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -938,23 +938,23 @@ Arguments may be any JSON-primitive, array, or JSON object.  JSON objects that d
 </dd>
 <dd>
 <dl>
-<dd>List all available engines on the machine. To use an engine, it has to be present in this list.</dd>
+<dd>Listar todos los motores disponibles en la máquina. Para utilizar un motor, tiene que estar presente en esta lista.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{Array.&lt;string&gt;}</code> A list of available engines</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{Array.&lt;string&gt;}</code> Una lista de motores disponibles</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>ImeNotAvailableException</code> - If the host does not support IME</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>ImeNotavailableException</code> - Si el host no soporta IME</dd>
 </dl>
 </dd>
 </dl>
@@ -971,56 +971,23 @@ Arguments may be any JSON-primitive, array, or JSON object.  JSON objects that d
 </dd>
 <dd>
 <dl>
-<dd>Get the name of the active IME engine. The name string is platform specific.</dd>
+<dd>Obtener el nombre del motor IME activo. El nombre de cadena es específico de la plataforma.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{string}</code> The name of the active IME engine.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{string}</code> El nombre del motor IME activo.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>ImeNotAvailableException</code> - If the host does not support IME</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-
----
-
-#### /session/:sessionId/ime/activated
-
-<dl>
-<dd>
-<h4>GET /session/:sessionId/ime/activated</h4>
-</dd>
-<dd>
-<dl>
-<dd>Indicates whether IME input is active at the moment (not if it's available.</dd>
-<dd>
-<dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-</dl>
-</dd>
-<dd>
-<dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{boolean}</code> true if IME input is available and currently active, false otherwise</dd>
-</dl>
-</dd>
-<dd>
-<dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>ImeNotAvailableException</code> - If the host does not support IME</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>ImeNotavailableException</code> - Si el host no soporta IME</dd>
 </dl>
 </dd>
 </dl>
@@ -1029,25 +996,58 @@ Arguments may be any JSON-primitive, array, or JSON object.  JSON objects that d
 
 ---
 
-#### /session/:sessionId/ime/deactivate
+#### /session/:sessionId/ime/activado
 
 <dl>
 <dd>
-<h4>POST /session/:sessionId/ime/deactivate</h4>
+<h4>GET /session/:sessionId/ime/activado</h4>
 </dd>
 <dd>
 <dl>
-<dd>De-activates the currently-active IME engine.</dd>
+<dd>Indica si la entrada IME está activa en este momento (no si está disponible.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>ImeNotAvailableException</code> - If the host does not support IME</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{boolean}</code> verdadero si la entrada IME está disponible y actualmente está activa, de lo contrario es falso</dd>
+</dl>
+</dd>
+<dd>
+<dl>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>ImeNotavailableException</code> - Si el host no soporta IME</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+
+---
+
+#### /session/:sessionId/ime/deactivar
+
+<dl>
+<dd>
+<h4>POST /session/:sessionId/ime/deactivar</h4>
+</dd>
+<dd>
+<dl>
+<dd>Desactiva el motor IME actualmente activo.</dd>
+<dd>
+<dl>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+</dl>
+</dd>
+<dd>
+<dl>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>ImeNotavailableException</code> - Si el host no soporta IME</dd>
 </dl>
 </dd>
 </dl>
@@ -1064,29 +1064,29 @@ Arguments may be any JSON-primitive, array, or JSON object.  JSON objects that d
 </dd>
 <dd>
 <dl>
-<dd>Make an engines that is available (appears on the list<br>
-returned by getAvailableEngines) active. After this call, the engine will<br>
-be added to the list of engines loaded in the IME daemon and the input sent<br>
-using sendKeys will be converted by the active engine.<br>
-Note that this is a platform-independent method of activating IME<br>
-(the platform-specific way being using keyboard shortcuts</dd>
+<dd>Hacer activo un motor disponible (aparece en la lista<br>
+devuelto por getResourableEngines). Después de esta llamada, el motor<br>
+será añadido a la lista de motores cargados en el daemon IME y la entrada enviada<br>
+usando sendKeys será convertida por el motor activo.<br>
+Tenga en cuenta que este es un método independiente de la plataforma para activar IME<br>
+(la forma específica de la plataforma usando atajos de teclado</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>engine</code> - <code>{string}</code> Name of the engine to activate.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>engine</code> - <code>{string}</code> Nombre del motor a activar.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>ImeActivationFailedException</code> - If the engine is not available or if the activation fails for other reasons.</dd>
-<dd><code>ImeNotAvailableException</code> - If the host does not support IME</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>ImeActivationFailedException</code> - Si el motor no está disponible o si la activación falla por otras razones.</dd>
+<dd><code>ImeNotavailableException</code> - Si el host no soporta IME</dd>
 </dl>
 </dd>
 </dl>
@@ -1095,7 +1095,7 @@ Note that this is a platform-independent method of activating IME<br>
 
 ---
 
-#### /session/:sessionId/frame
+#### /sesión/:sessionId/frame
 
 <dl>
 <dd>
@@ -1103,25 +1103,25 @@ Note that this is a platform-independent method of activating IME<br>
 </dd>
 <dd>
 <dl>
-<dd>Change focus to another frame on the page. If the frame <code>id</code> is <code>null</code>, the server<br>
-should switch to the page's default content.</dd>
+<dd>Cambia el enfoque a otro fotograma de la página. Si el frame <code>id</code> es <code>nulo</code>, el servidor<br>
+debería cambiar al contenido predeterminado de la página.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>id</code> - <code>{string|number|null|WebElement JSON Object}</code> Identifier for the frame to change focus to.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>id</code> - <code>{string|number|null|WebElement JSON Object}</code> Identificador para que el fotograma cambie de enfoque.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>NoSuchFrame</code> - If the frame specified by <code>id</code> cannot be found.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>NochFrame</code> - Si el fotograma especificado por <code>id</code> no se puede encontrar.</dd>
 </dl>
 </dd>
 </dl>
@@ -1138,11 +1138,11 @@ should switch to the page's default content.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Change focus to the parent context. If the current context is the top level browsing context, the context remains unchanged.</dd>
+<dd>Cambie el enfoque al contexto padre. Si el contexto actual es el contexto de navegación de más alto nivel, el contexto permanece sin cambios.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 </dl>
@@ -1159,24 +1159,24 @@ should switch to the page's default content.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Change focus to another window. The window to change focus to may be specified by its<br>
-server assigned window handle, or by the value of its <code>name</code> attribute.</dd>
+<dd>Cambia el enfoque a otra ventana. La ventana a la que cambiar de enfoque puede ser especificada por su manejador de ventanas asignado<br>
+del servidor, o por el valor de su atributo <code>nombre</code>.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>name</code> - <code>{string}</code> The window to change focus to.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>nombre</code> - <code>{string}</code> La ventana a la que cambiar de enfoque.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the window specified by <code>name</code> cannot be found.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana especificada por <code>name</code> no se puede encontrar.</dd>
 </dl>
 </dd>
 </dl>
@@ -1189,17 +1189,17 @@ server assigned window handle, or by the value of its <code>name</code> attribut
 </dd>
 <dd>
 <dl>
-<dd>Close the current window.</dd>
+<dd>Cerrar la ventana actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window is already closed</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ya está cerrada</dd>
 </dl>
 </dd>
 </dl>
@@ -1216,18 +1216,18 @@ server assigned window handle, or by the value of its <code>name</code> attribut
 </dd>
 <dd>
 <dl>
-<dd>Change the size of the specified window. If the :windowHandle URL parameter is "current", the currently active window will be resized.</dd>
+<dd>Cambia el tamaño de la ventana especificada. Si el parámetro URL de :windowHandle es "actual", la ventana activa será redimensionada.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>width</code> - <code>{number}</code> The new window width.</dd>
-<dd><code>height</code> - <code>{number}</code> The new window height.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>ancho</code> - <code>{number}</code> El ancho de la nueva ventana.</dd>
+<dd><code>altura</code> - <code>{number}</code> La nueva altura de la ventana.</dd>
 </dl>
 </dd>
 </dl>
@@ -1240,23 +1240,23 @@ server assigned window handle, or by the value of its <code>name</code> attribut
 </dd>
 <dd>
 <dl>
-<dd>Get the size of the specified window. If the :windowHandle URL parameter is "current", the size of the currently active window will be returned.</dd>
+<dd>Obtener el tamaño de la ventana especificada. Si el parámetro URL :windowHandle es "actual", se devolverá el tamaño de la ventana activa.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{width: number, height: number}</code> The size of the window.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{width: number, height: number}</code> El tamaño de la ventana.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the specified window cannot be found.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si no se encuentra la ventana especificada.</dd>
 </dl>
 </dd>
 </dl>
@@ -1273,24 +1273,24 @@ server assigned window handle, or by the value of its <code>name</code> attribut
 </dd>
 <dd>
 <dl>
-<dd>Change the position of the specified window. If the :windowHandle URL parameter is "current", the currently active window will be moved.</dd>
+<dd>Cambia la posición de la ventana especificada. Si el parámetro URL de :windowHandle es "actual", la ventana activa se moverá.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>x</code> - <code>{number}</code> The X coordinate to position the window at, relative to the upper left corner of the screen.</dd>
-<dd><code>y</code> - <code>{number}</code> The Y coordinate to position the window at, relative to the upper left corner of the screen.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>x</code> - <code>{number}</code> La coordenada X para colocar la ventana, relativa a la esquina superior izquierda de la pantalla.</dd>
+<dd><code>y</code> - <code>{number}</code> La coordenada Y para colocar la ventana, relativa a la esquina superior izquierda de la pantalla.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the specified window cannot be found.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si no se encuentra la ventana especificada.</dd>
 </dl>
 </dd>
 </dl>
@@ -1303,23 +1303,23 @@ server assigned window handle, or by the value of its <code>name</code> attribut
 </dd>
 <dd>
 <dl>
-<dd>Get the position of the specified window. If the :windowHandle URL       parameter is "current", the position of the currently active window will be returned.</dd>
+<dd>Obtiene la posición de la ventana especificada. Si el parámetro URL de :windowHandle es "actual", la posición de la ventana actual será retornada.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
+<dt><b>Devuelve:</b></dt>
 <dd><code>{x: number, y: number}</code> The X and Y coordinates for the window, relative to the upper left corner of the screen.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the specified window cannot be found.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si no se encuentra la ventana especificada.</dd>
 </dl>
 </dd>
 </dl>
@@ -1336,17 +1336,17 @@ server assigned window handle, or by the value of its <code>name</code> attribut
 </dd>
 <dd>
 <dl>
-<dd>Maximize the specified window if not already maximized. If the :windowHandle URL parameter is "current", the currently active window will be maximized.</dd>
+<dd>Maximice la ventana especificada si no está maximizada. Si el parámetro :windowHandle URL es "actual", la ventana activa se maximizará.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the specified window cannot be found.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si no se encuentra la ventana especificada.</dd>
 </dl>
 </dd>
 </dl>
@@ -1363,23 +1363,23 @@ server assigned window handle, or by the value of its <code>name</code> attribut
 </dd>
 <dd>
 <dl>
-<dd>Retrieve all cookies visible to the current page.</dd>
+<dd>Recuperar todas las cookies visibles en la página actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{Array.&lt;object&gt;}</code> A list of <a href='#Cookie_JSON_Object.md'>cookies</a>.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{Array.&lt;object&gt;}</code> Una lista de <a href='#Cookie_JSON_Object.md'>galletas</a>.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -1392,17 +1392,17 @@ server assigned window handle, or by the value of its <code>name</code> attribut
 </dd>
 <dd>
 <dl>
-<dd>Set a cookie. If the <a href='#Cookie_JSON_Object.md'>cookie</a> path is not specified, it should be set to <code>"/"</code>. Likewise, if the domain is omitted, it should default to the current page's domain.</dd>
+<dd>Establecer una cookie. Si la ruta <a href='#Cookie_JSON_Object.md'>de la cookie</a> no se especifica, debería establecerse en <code>"/"</code>. De la misma manera, si el dominio es omitido, debe ser por defecto en el dominio de la página actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>cookie</code> - <code>{object}</code> A <a href='#Cookie_JSON_Object.md'>JSON object</a> defining the cookie to add.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>cookie</code> - <code>{object}</code> Un objeto <a href='#Cookie_JSON_Object.md'>JSON</a> que define la cookie a añadir.</dd>
 </dl>
 </dd>
 </dl>
@@ -1415,19 +1415,19 @@ server assigned window handle, or by the value of its <code>name</code> attribut
 </dd>
 <dd>
 <dl>
-<dd>Delete all cookies visible to the current page.</dd>
+<dd>Borrar todas las cookies visibles en la página actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>InvalidCookieDomain</code> - If the cookie's <code>domain</code> is not visible from the current page.</dd>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>UnableToSetCookie</code> - If attempting to set a cookie on a page that does not support cookies (e.g. pages with mime-type <code>text/plain</code>).</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>InvalidCookieDomain</code> - Si el dominio <code></code> de la cookie no es visible desde la página actual.</dd>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>UnableToSetCookie</code> - Si intenta configurar una cookie en una página que no soporta cookies (e. . páginas con tipo mime <code>text/plain</code>).</dd>
 </dl>
 </dd>
 </dl>
@@ -1444,19 +1444,19 @@ server assigned window handle, or by the value of its <code>name</code> attribut
 </dd>
 <dd>
 <dl>
-<dd>Delete the cookie with the given name. This command should be a no-op if there is no<br>
-such cookie visible to the current page.</dd>
+<dd>Elimina la cookie con el nombre dado. Este comando debería ser un no-op si no hay<br>
+tal cookie visible para la página actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:name</code> - The name of the cookie to delete.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:name</code> - El nombre de la cookie a eliminar.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -1473,23 +1473,23 @@ such cookie visible to the current page.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get the current page source.</dd>
+<dd>Obtener la fuente de la página actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{string}</code> The current page source.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{string}</code> La fuente actual de la página.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -1498,7 +1498,7 @@ such cookie visible to the current page.</dd>
 
 ---
 
-#### /session/:sessionId/title
+#### /session/:sessionId/título
 
 <dl>
 <dd>
@@ -1506,23 +1506,23 @@ such cookie visible to the current page.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get the current page title.</dd>
+<dd>Obtener el título de la página actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{string}</code> The current page title.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{string}</code> El título de la página actual.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -1531,7 +1531,7 @@ such cookie visible to the current page.</dd>
 
 ---
 
-#### /session/:sessionId/element
+#### /session/:sessionId/elemento
 
 <dl>
 <dd>
@@ -1539,44 +1539,44 @@ such cookie visible to the current page.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Search for an element on the page, starting from the document root. The located element will be returned as a WebElement JSON object. The table below lists the locator strategies that each server should support. Each locator must return the first matching element located in the DOM.<br>
+<dd>Buscar un elemento en la página, comenzando por la raíz del documento. El elemento localizado será devuelto como un objeto WebElement JSON. La siguiente tabla muestra las estrategias de localización que cada servidor debería soportar. Cada locador debe retornar el primer elemento que coincida ubicado en el DOM.<br>
 <br>
-<table><thead><tr><th><b>Strategy</b> </th><th><b>Description</b> </th></tr></thead><tbody>
-<tr><td> class name      </td><td> Returns an element whose class name contains the search value; compound class names are not permitted. </td></tr>
-<tr><td> css selector    </td><td> Returns an element matching a CSS selector. </td></tr>
-<tr><td> id              </td><td> Returns an element whose ID attribute matches the search value. </td></tr>
-<tr><td> name            </td><td> Returns an element whose NAME attribute matches the search value. </td></tr>
-<tr><td> link text       </td><td> Returns an anchor element whose visible text matches the search value. </td></tr>
-<tr><td> partial link text </td><td> Returns an anchor element whose visible text partially matches the search value. </td></tr>
-<tr><td> tag name        </td><td> Returns an element whose tag name matches the search value. </td></tr>
-<tr><td> xpath           </td><td> Returns an element matching an XPath expression. </td></tr></tbody></table>
+<table><thead><tr><th><b>Estrategia</b> </th><th><b>Descripción</b> </th></tr></thead><tbody>
+<tr><td> nombre de clase      </td><td> Devuelve un elemento cuyo nombre de clase contiene el valor de búsqueda; no se permiten nombres compuestos de clases. </td></tr>
+<tr><td> selector de censos    </td><td> Devuelve un elemento que coincide con un selector CSS. </td></tr>
+<tr><td> id              </td><td> Devuelve un elemento cuyo atributo ID coincide con el valor de búsqueda. </td></tr>
+<tr><td> nombre            </td><td> Devuelve un elemento cuyo atributo NOMBRE coincide con el valor de búsqueda. </td></tr>
+<tr><td> texto del enlace       </td><td> Devuelve un elemento de ancla cuyo texto visible coincide con el valor de búsqueda. </td></tr>
+<tr><td> texto de enlace parcial </td><td> Devuelve un elemento de ancla cuyo texto visible coincide parcialmente con el valor de búsqueda. </td></tr>
+<tr><td> nombre de etiqueta        </td><td> Devuelve un elemento cuyo nombre de etiqueta coincide con el valor de búsqueda. </td></tr>
+<tr><td> xpath           </td><td> Devuelve un elemento que coincide con una expresión XPath. </td></tr></tbody></table>
 
 </dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>using</code> - <code>{string}</code> The locator strategy to use.</dd>
-<dd><code>value</code> - <code>{string}</code> The The search target.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>usando</code> - <code>{string}</code> La estrategia de localización a utilizar.</dd>
+<dd><code>valor</code> - <code>{string}</code> El objetivo de búsqueda.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{ELEMENT:string}</code> A WebElement JSON object for the located element.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{ELEMENT:string}</code> Un objeto WebElement JSON para el elemento ubicado.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>NoSuchElement</code> - If the element cannot be found.</dd>
-<dd><code>XPathLookupError</code> - If using XPath and the input expression is invalid.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>NochElement</code> - Si el elemento no puede ser encontrado.</dd>
+<dd><code>XPathLookupError</code> - Si usar XPath y la expresión de entrada no es válida.</dd>
 </dl>
 </dd>
 </dl>
@@ -1593,43 +1593,43 @@ such cookie visible to the current page.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Search for multiple elements on the page, starting from the document root. The located elements will be returned as a WebElement JSON objects. The table below lists the locator strategies that each server should support. Elements should be returned in the order located in the DOM.<br>
+<dd>Buscar múltiples elementos en la página, comenzando desde la raíz del documento. Los elementos ubicados serán devueltos como un objeto WebElement JSON. La siguiente tabla muestra las estrategias de localización que cada servidor debería soportar. Los elementos deben ser devueltos en el pedido ubicado en el DOM.<br>
 <br>
-<table><thead><tr><th><b>Strategy</b> </th><th><b>Description</b> </th></tr></thead><tbody>
-<tr><td> class name      </td><td> Returns all elements whose class name contains the search value; compound class names are not permitted. </td></tr>
-<tr><td> css selector    </td><td> Returns all elements matching a CSS selector. </td></tr>
-<tr><td> id              </td><td> Returns all elements whose ID attribute matches the search value. </td></tr>
-<tr><td> name            </td><td> Returns all elements whose NAME attribute matches the search value. </td></tr>
-<tr><td> link text       </td><td> Returns all anchor elements whose visible text matches the search value. </td></tr>
-<tr><td> partial link text </td><td> Returns all anchor elements whose visible text partially matches the search value. </td></tr>
-<tr><td> tag name        </td><td> Returns all elements whose tag name matches the search value. </td></tr>
-<tr><td> xpath           </td><td> Returns all elements matching an XPath expression. </td></tr></tbody></table>
+<table><thead><tr><th><b>Estrategia</b> </th><th><b>Descripción</b> </th></tr></thead><tbody>
+<tr><td> nombre de clase      </td><td> Devuelve todos los elementos cuyo nombre de clase contiene el valor de búsqueda; no se permiten nombres compuestos de clases. </td></tr>
+<tr><td> selector de censos    </td><td> Devuelve todos los elementos que coinciden con un selector CSS. </td></tr>
+<tr><td> id              </td><td> Devuelve todos los elementos cuyo atributo ID coincide con el valor de búsqueda. </td></tr>
+<tr><td> nombre            </td><td> Devuelve todos los elementos cuyo atributo NOMBRE coincide con el valor de búsqueda. </td></tr>
+<tr><td> texto del enlace       </td><td> Devuelve todos los elementos de ancla cuyo texto visible coincide con el valor de búsqueda. </td></tr>
+<tr><td> texto de enlace parcial </td><td> Devuelve todos los elementos de ancla cuyo texto visible coincide parcialmente con el valor de búsqueda. </td></tr>
+<tr><td> nombre de etiqueta        </td><td> Devuelve todos los elementos cuyo nombre de etiqueta coincide con el valor de búsqueda. </td></tr>
+<tr><td> xpath           </td><td> Devuelve todos los elementos que coinciden con una expresión XPath. </td></tr></tbody></table>
 
 </dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>using</code> - <code>{string}</code> The locator strategy to use.</dd>
-<dd><code>value</code> - <code>{string}</code> The The search target.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>usando</code> - <code>{string}</code> La estrategia de localización a utilizar.</dd>
+<dd><code>valor</code> - <code>{string}</code> El objetivo de búsqueda.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
+<dt><b>Devuelve:</b></dt>
 <dd><code>{Array.&lt;{ELEMENT:string}&gt;}</code> A list of WebElement JSON objects for the located elements.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>XPathLookupError</code> - If using XPath and the input expression is invalid.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>XPathLookupError</code> - Si usar XPath y la expresión de entrada no es válida.</dd>
 </dl>
 </dd>
 </dl>
@@ -1638,7 +1638,7 @@ such cookie visible to the current page.</dd>
 
 ---
 
-#### /session/:sessionId/element/active
+#### /session/:sessionId/element/activo
 
 <dl>
 <dd>
@@ -1646,23 +1646,23 @@ such cookie visible to the current page.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get the element on the page that currently has focus. The element will be returned as a WebElement JSON object.</dd>
+<dd>Obtener el elemento en la página que actualmente se ha centrado. El elemento será devuelto como un objeto WebElement JSON.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{ELEMENT:string}</code> A WebElement JSON object for the active element.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{ELEMENT:string}</code> Un objeto WebElement JSON para el elemento activo.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -1679,21 +1679,21 @@ such cookie visible to the current page.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Describe the identified element.<br>
+<dd>Describa el elemento identificado.<br>
 <br>
-<b>Note:</b> This command is reserved for future use; its return type is currently undefined.</dd>
+<b>Nota:</b> Este comando está reservado para uso futuro; su tipo de retorno no está definido actualmente.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -1710,46 +1710,46 @@ such cookie visible to the current page.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Search for an element on the page, starting from the identified element. The located element will be returned as a WebElement JSON object. The table below lists the locator strategies that each server should support. Each locator must return the first matching element located in the DOM.<br>
+<dd>Buscar un elemento en la página, comenzando por el elemento identificado. El elemento localizado será devuelto como un objeto WebElement JSON. La siguiente tabla muestra las estrategias de localización que cada servidor debería soportar. Cada locador debe retornar el primer elemento que coincida ubicado en el DOM.<br>
 <br>
-<table><thead><tr><th><b>Strategy</b> </th><th><b>Description</b> </th></tr></thead><tbody>
-<tr><td> class name      </td><td> Returns an element whose class name contains the search value; compound class names are not permitted. </td></tr>
-<tr><td> css selector    </td><td> Returns an element matching a CSS selector. </td></tr>
-<tr><td> id              </td><td> Returns an element whose ID attribute matches the search value. </td></tr>
-<tr><td> name            </td><td> Returns an element whose NAME attribute matches the search value. </td></tr>
-<tr><td> link text       </td><td> Returns an anchor element whose visible text matches the search value. </td></tr>
-<tr><td> partial link text </td><td> Returns an anchor element whose visible text partially matches the search value. </td></tr>
-<tr><td> tag name        </td><td> Returns an element whose tag name matches the search value. </td></tr>
-<tr><td> xpath           </td><td> Returns an element matching an XPath expression. The provided XPath expression must be applied to the server "as is"; if the expression is not relative to the element root, the server should not modify it. Consequently, an XPath query may return elements not contained in the root element's subtree. </td></tr></tbody></table>
+<table><thead><tr><th><b>Estrategia</b> </th><th><b>Descripción</b> </th></tr></thead><tbody>
+<tr><td> nombre de clase      </td><td> Devuelve un elemento cuyo nombre de clase contiene el valor de búsqueda; no se permiten nombres compuestos de clases. </td></tr>
+<tr><td> selector de censos    </td><td> Devuelve un elemento que coincide con un selector CSS. </td></tr>
+<tr><td> id              </td><td> Devuelve un elemento cuyo atributo ID coincide con el valor de búsqueda. </td></tr>
+<tr><td> nombre            </td><td> Devuelve un elemento cuyo atributo NOMBRE coincide con el valor de búsqueda. </td></tr>
+<tr><td> texto del enlace       </td><td> Devuelve un elemento de ancla cuyo texto visible coincide con el valor de búsqueda. </td></tr>
+<tr><td> texto de enlace parcial </td><td> Devuelve un elemento de ancla cuyo texto visible coincide parcialmente con el valor de búsqueda. </td></tr>
+<tr><td> nombre de etiqueta        </td><td> Devuelve un elemento cuyo nombre de etiqueta coincide con el valor de búsqueda. </td></tr>
+<tr><td> xpath           </td><td> Devuelve un elemento que coincide con una expresión XPath. La expresión XPath proporcionada debe aplicarse al servidor "tal cual"; si la expresión no es relativa a la raíz del elemento, el servidor no debería modificarla. En consecuencia, una consulta XPath puede devolver elementos no contenidos en el subárbol del elemento raíz. </td></tr></tbody></table>
 
 </dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>using</code> - <code>{string}</code> The locator strategy to use.</dd>
-<dd><code>value</code> - <code>{string}</code> The The search target.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>usando</code> - <code>{string}</code> La estrategia de localización a utilizar.</dd>
+<dd><code>valor</code> - <code>{string}</code> El objetivo de búsqueda.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{ELEMENT:string}</code> A WebElement JSON object for the located element.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{ELEMENT:string}</code> Un objeto WebElement JSON para el elemento ubicado.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
-<dd><code>NoSuchElement</code> - If the element cannot be found.</dd>
-<dd><code>XPathLookupError</code> - If using XPath and the input expression is invalid.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
+<dd><code>NochElement</code> - Si el elemento no puede ser encontrado.</dd>
+<dd><code>XPathLookupError</code> - Si usar XPath y la expresión de entrada no es válida.</dd>
 </dl>
 </dd>
 </dl>
@@ -1766,45 +1766,45 @@ such cookie visible to the current page.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Search for multiple elements on the page, starting from the identified element. The located elements will be returned as a WebElement JSON objects. The table below lists the locator strategies that each server should support. Elements should be returned in the order located in the DOM.<br>
+<dd>Buscar múltiples elementos en la página, comenzando por el elemento identificado. Los elementos ubicados serán devueltos como un objeto WebElement JSON. La siguiente tabla muestra las estrategias de localización que cada servidor debería soportar. Los elementos deben ser devueltos en el pedido ubicado en el DOM.<br>
 <br>
-<table><thead><tr><th><b>Strategy</b> </th><th><b>Description</b> </th></tr></thead><tbody>
-<tr><td> class name      </td><td> Returns all elements whose class name contains the search value; compound class names are not permitted. </td></tr>
-<tr><td> css selector    </td><td> Returns all elements matching a CSS selector. </td></tr>
-<tr><td> id              </td><td> Returns all elements whose ID attribute matches the search value. </td></tr>
-<tr><td> name            </td><td> Returns all elements whose NAME attribute matches the search value. </td></tr>
-<tr><td> link text       </td><td> Returns all anchor elements whose visible text matches the search value. </td></tr>
-<tr><td> partial link text </td><td> Returns all anchor elements whose visible text partially matches the search value. </td></tr>
-<tr><td> tag name        </td><td> Returns all elements whose tag name matches the search value. </td></tr>
-<tr><td> xpath           </td><td> Returns all elements matching an XPath expression. The provided XPath expression must be applied to the server "as is"; if the expression is not relative to the element root, the server should not modify it. Consequently, an XPath query may return elements not contained in the root element's subtree. </td></tr></tbody></table>
+<table><thead><tr><th><b>Estrategia</b> </th><th><b>Descripción</b> </th></tr></thead><tbody>
+<tr><td> nombre de clase      </td><td> Devuelve todos los elementos cuyo nombre de clase contiene el valor de búsqueda; no se permiten nombres compuestos de clases. </td></tr>
+<tr><td> selector de censos    </td><td> Devuelve todos los elementos que coinciden con un selector CSS. </td></tr>
+<tr><td> id              </td><td> Devuelve todos los elementos cuyo atributo ID coincide con el valor de búsqueda. </td></tr>
+<tr><td> nombre            </td><td> Devuelve todos los elementos cuyo atributo NOMBRE coincide con el valor de búsqueda. </td></tr>
+<tr><td> texto del enlace       </td><td> Devuelve todos los elementos de ancla cuyo texto visible coincide con el valor de búsqueda. </td></tr>
+<tr><td> texto de enlace parcial </td><td> Devuelve todos los elementos de ancla cuyo texto visible coincide parcialmente con el valor de búsqueda. </td></tr>
+<tr><td> nombre de etiqueta        </td><td> Devuelve todos los elementos cuyo nombre de etiqueta coincide con el valor de búsqueda. </td></tr>
+<tr><td> xpath           </td><td> Devuelve todos los elementos que coinciden con una expresión XPath. La expresión XPath proporcionada debe aplicarse al servidor "tal cual"; si la expresión no es relativa a la raíz del elemento, el servidor no debería modificarla. En consecuencia, una consulta XPath puede devolver elementos no contenidos en el subárbol del elemento raíz. </td></tr></tbody></table>
 
 </dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>using</code> - <code>{string}</code> The locator strategy to use.</dd>
-<dd><code>value</code> - <code>{string}</code> The The search target.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>usando</code> - <code>{string}</code> La estrategia de localización a utilizar.</dd>
+<dd><code>valor</code> - <code>{string}</code> El objetivo de búsqueda.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
+<dt><b>Devuelve:</b></dt>
 <dd><code>{Array.&lt;{ELEMENT:string}&gt;}</code> A list of WebElement JSON objects for the located elements.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
-<dd><code>XPathLookupError</code> - If using XPath and the input expression is invalid.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
+<dd><code>XPathLookupError</code> - Si usar XPath y la expresión de entrada no es válida.</dd>
 </dl>
 </dd>
 </dl>
@@ -1821,20 +1821,20 @@ such cookie visible to the current page.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Click on an element.</dd>
+<dd>Haga clic en un elemento.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
-<dd><code>ElementNotVisible</code> - If the referenced element is not visible on the page (either is hidden by CSS, has 0-width, or has 0-height)</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
+<dd><code>ElementNotVisible</code> - Si el elemento referenciado no es visible en la página (ya sea que esté oculto por CSS, tiene 0-anchura o tiene 0-altura)</dd>
 </dl>
 </dd>
 </dl>
@@ -1851,19 +1851,19 @@ such cookie visible to the current page.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Submit a <code>FORM</code> element. The submit command may also be applied to any element that is a descendant of a <code>FORM</code> element.</dd>
+<dd>Envía un elemento <code>FORM</code>. El comando de envío también se puede aplicar a cualquier elemento que sea un descendiente de un elemento <code>FORM</code>.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -1880,19 +1880,19 @@ such cookie visible to the current page.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Returns the visible text for the element.</dd>
+<dd>Devuelve el texto visible para el elemento.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -1901,54 +1901,54 @@ such cookie visible to the current page.</dd>
 
 ---
 
-#### /session/:sessionId/element/:id/value
+#### /session/:sessionId/element/:id/valor
 
 <dl>
 <dd>
-<h4>POST /session/:sessionId/element/:id/value</h4>
+<h4>POST /session/:sessionId/element/:id/valor</h4>
 </dd>
 <dd>
 <dl>
-<dd>Send a sequence of key strokes to an element.<br>
+<dd>Envía una secuencia de toques clave a un elemento.<br>
 <br>
-Any UTF-8 character may be specified, however, if the server does not support native key events, it should simulate key strokes for a standard US keyboard layout. The Unicode <a href='http://unicode.org/faq/casemap_charprop.html#8'>Private Use Area</a> code points, 0xE000-0xF8FF, are used to represent pressable, non-text  keys (see table below).<br>
+Any UTF-8 character may be specified, however, if the server does not support native key events, it should simulate key strokes for a standard US keyboard layout. Los puntos de código de Unicode <a href='http://unicode.org/faq/casemap_charprop.html#8'>Área de Uso Privado</a> , 0xE000-0xF8FF, se utilizan para representar teclas pressables y no de texto (ver tabla abajo).<br>
 <br>
 <br>
 <table cellpadding='5' cellspacing='5'>
 <tbody><tr><td valign='top'>
-<table><thead><tr><th><b>Key</b> </th><th><b>Code</b> </th></tr></thead><tbody>
-<tr><td> NULL       </td><td> U+E000      </td></tr>
-<tr><td> Cancel     </td><td> U+E001      </td></tr>
-<tr><td> Help       </td><td> U+E002      </td></tr>
-<tr><td> Back space </td><td> U+E003      </td></tr>
+<table><thead><tr><th><b>Tecla</b> </th><th><b>Código</b> </th></tr></thead><tbody>
+<tr><td> NÚLL       </td><td> U+E000      </td></tr>
+<tr><td> Cancelar     </td><td> U+E001      </td></tr>
+<tr><td> Ayuda       </td><td> U+E002      </td></tr>
+<tr><td> Retroceso </td><td> U+E003      </td></tr>
 <tr><td> Tab        </td><td> U+E004      </td></tr>
-<tr><td> Clear      </td><td> U+E005      </td></tr>
-<tr><td> Return<sup>1</sup> </td><td> U+E006      </td></tr>
-<tr><td> Enter<sup>1</sup> </td><td> U+E007      </td></tr>
-<tr><td> Shift      </td><td> U+E008      </td></tr>
+<tr><td> Claro      </td><td> U+E005      </td></tr>
+<tr><td> Devuelve<sup>1</sup> </td><td> U+E006      </td></tr>
+<tr><td> Introduzca<sup>1</sup> </td><td> U+E007      </td></tr>
+<tr><td> Cambio      </td><td> U+E008      </td></tr>
 <tr><td> Control    </td><td> U+E009      </td></tr>
 <tr><td> Alt        </td><td> U+E00A      </td></tr>
-<tr><td> Pause      </td><td> U+E00B      </td></tr>
+<tr><td> Pausa      </td><td> U+E00B      </td></tr>
 <tr><td> Escape     </td><td> U+E00C      </td></tr></tbody></table>
 
 </td><td valign='top'>
-<table><thead><tr><th><b>Key</b> </th><th><b>Code</b> </th></tr></thead><tbody>
-<tr><td> Space      </td><td> U+E00D      </td></tr>
+<table><thead><tr><th><b>Tecla</b> </th><th><b>Código</b> </th></tr></thead><tbody>
+<tr><td> Espacio      </td><td> U+E00D      </td></tr>
 <tr><td> Pageup     </td><td> U+E00E      </td></tr>
 <tr><td> Pagedown   </td><td> U+E00F      </td></tr>
-<tr><td> End        </td><td> U+E010      </td></tr>
-<tr><td> Home       </td><td> U+E011      </td></tr>
-<tr><td> Left arrow </td><td> U+E012      </td></tr>
-<tr><td> Up arrow   </td><td> U+E013      </td></tr>
-<tr><td> Right arrow </td><td> U+E014      </td></tr>
-<tr><td> Down arrow </td><td> U+E015      </td></tr>
+<tr><td> Fin        </td><td> U+E010      </td></tr>
+<tr><td> Inicio       </td><td> U+E011      </td></tr>
+<tr><td> Flecha izquierda </td><td> U+E012      </td></tr>
+<tr><td> Flecha hacia arriba   </td><td> U+E013      </td></tr>
+<tr><td> Flecha derecha </td><td> U+E014      </td></tr>
+<tr><td> Flecha abajo </td><td> U+E015      </td></tr>
 <tr><td> Insert     </td><td> U+E016      </td></tr>
-<tr><td> Delete     </td><td> U+E017      </td></tr>
+<tr><td> Eliminar     </td><td> U+E017      </td></tr>
 <tr><td> Semicolon  </td><td> U+E018      </td></tr>
-<tr><td> Equals     </td><td> U+E019      </td></tr></tbody></table>
+<tr><td> Iguales     </td><td> U+E019      </td></tr></tbody></table>
 
 </td><td valign='top'>
-<table><thead><tr><th><b>Key</b> </th><th><b>Code</b> </th></tr></thead><tbody>
+<table><thead><tr><th><b>Tecla</b> </th><th><b>Código</b> </th></tr></thead><tbody>
 <tr><td> Numpad 0   </td><td> U+E01A      </td></tr>
 <tr><td> Numpad 1   </td><td> U+E01B      </td></tr>
 <tr><td> Numpad 2   </td><td> U+E01C      </td></tr>
@@ -1961,16 +1961,16 @@ Any UTF-8 character may be specified, however, if the server does not support na
 <tr><td> Numpad 9   </td><td> U+E023      </td></tr></tbody></table>
 
 </td><td valign='top'>
-<table><thead><tr><th><b>Key</b> </th><th><b>Code</b> </th></tr></thead><tbody>
-<tr><td> Multiply   </td><td> U+E024      </td></tr>
-<tr><td> Add        </td><td> U+E025      </td></tr>
-<tr><td> Separator  </td><td> U+E026      </td></tr>
-<tr><td> Subtract   </td><td> U+E027      </td></tr>
+<table><thead><tr><th><b>Tecla</b> </th><th><b>Código</b> </th></tr></thead><tbody>
+<tr><td> Multiplicar   </td><td> U+E024      </td></tr>
+<tr><td> Añadir        </td><td> U+E025      </td></tr>
+<tr><td> Separador  </td><td> U+E026      </td></tr>
+<tr><td> Restar   </td><td> U+E027      </td></tr>
 <tr><td> Decimal    </td><td> U+E028      </td></tr>
-<tr><td> Divide     </td><td> U+E029      </td></tr></tbody></table>
+<tr><td> Dividir     </td><td> U+E029      </td></tr></tbody></table>
 
 </td><td valign='top'>
-<table><thead><tr><th><b>Key</b> </th><th><b>Code</b> </th></tr></thead><tbody>
+<table><thead><tr><th><b>Tecla</b> </th><th><b>Código</b> </th></tr></thead><tbody>
 <tr><td> F1         </td><td> U+E031      </td></tr>
 <tr><td> F2         </td><td> U+E032      </td></tr>
 <tr><td> F3         </td><td> U+E033      </td></tr>
@@ -1983,38 +1983,38 @@ Any UTF-8 character may be specified, however, if the server does not support na
 <tr><td> F10        </td><td> U+E03A      </td></tr>
 <tr><td> F11        </td><td> U+E03B      </td></tr>
 <tr><td> F12        </td><td> U+E03C      </td></tr>
-<tr><td> Command/Meta </td><td> U+E03D      </td></tr></tbody></table>
+<tr><td> Comando/Meta </td><td> U+E03D      </td></tr></tbody></table>
 
 </td></tr>
-<tr><td><sup>1</sup> The return key is <i>not the same</i> as the <a href='http://en.wikipedia.org/wiki/Enter_key'>enter key</a>.</td></tr></tbody></table>
+<tr><td><sup>1</sup> La clave de retorno es <i>no la misma</i> que la <a href='http://en.wikipedia.org/wiki/Enter_key'>ingrese la tecla</a>.</td></tr></tbody></table>
 
-The server must process the key sequence as follows:<br>
+El servidor debe procesar la secuencia de claves de la siguiente manera:<br>
 
-<ul><li>Each key that appears on the keyboard without requiring modifiers are sent as a keydown followed by a key up.<br>
-</li><li>If the server does not support native events and must simulate key strokes with JavaScript, it must generate keydown, keypress, and keyup events, in that order. The keypress event should only be fired when the corresponding key is for a printable character.<br>
-</li><li>If a key requires a modifier key (e.g. "!" on a standard US keyboard), the sequence is: <var>modifier</var> down, <var>key</var> down, <var>key</var> up, <var>modifier</var> up, where <var>key</var> is the ideal unmodified key value (using the previous example, a "1").<br>
-</li><li>Modifier keys (Ctrl, Shift, Alt, and Command/Meta) are assumed to be "sticky"; each modifier should be held down (e.g. only a keydown event) until either the modifier is encountered again in the sequence, or the <code>NULL</code> (U+E000) key is encountered.<br>
-</li><li>Each key sequence is terminated with an implicit <code>NULL</code> key. Subsequently, all depressed modifier keys must be released (with corresponding keyup events) at the end of the sequence.<br>
+<ul><li>Cada tecla que aparece en el teclado sin necesidad de modificadores se envía como una tecla hacia abajo, seguida de una tecla hacia arriba.<br>
+</li><li>Si el servidor no soporta eventos nativos y debe simular trazos de teclas con JavaScript, debe generar eventos de teclado, teclas y teclas, en ese orden. El evento de la tecla solo debe dispararse cuando la tecla correspondiente es para un carácter imprimible.<br>
+</li><li>Si una clave requiere una clave modificadora (p. ej. "!" en un teclado estándar estadounidense), la secuencia es: <var>modificador</var> abajo, <var>tecla</var> abajo, <var>tecla</var> arriba, Modificador <var></var> arriba, donde la tecla <var></var> es el valor de clave ideal sin modificar (usando el ejemplo anterior, un "1").<br>
+</li><li>Las teclas de modificador (Ctrl, Mayúsculas, Alt y Comando/Meta) se asumen como "pegajosas"; cada modificador debe mantenerse presionado (p.e. sólo un evento de tecla) hasta que el modificador se encuentre de nuevo en la secuencia, o la tecla <code>NULL</code> (U+E000) se encuentra.<br>
+</li><li>Cada secuencia de teclas se termina con una clave implícita <code>NULL</code>. Posteriormente, todas las teclas modificadoras deprimidas deben ser liberadas (con los eventos de teclado correspondientes) al final de la secuencia.<br>
 </dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>value</code> - <code>{Array.&lt;string&gt;}</code> The sequence of keys to type. An array must be provided. The server should flatten the array items to a single string to be typed.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>valor</code> - <code>{Array.&lt;string&gt;}</code> La secuencia de claves para escribir. Debe proporcionarse una matriz. El servidor debe aplanar los elementos de la matriz a una sola cadena que se va a teclear.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
-<dd><code>ElementNotVisible</code> - If the referenced element is not visible on the page (either is hidden by CSS, has 0-width, or has 0-height)</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
+<dd><code>ElementNotVisible</code> - Si el elemento referenciado no es visible en la página (ya sea que esté oculto por CSS, tiene 0-anchura o tiene 0-altura)</dd>
 </dl>
 </dd>
 </dl>
@@ -2031,23 +2031,23 @@ The server must process the key sequence as follows:<br>
 </dd>
 <dd>
 <dl>
-<dd>Send a sequence of key strokes to the active element. This command is similar to the <a href='JsonWireProtocol#/session/:sessionId/element/:id/value.md'>send keys</a> command in every aspect except the implicit termination: The modifiers are <b>not</b> released at the end of the call. Rather, the state of the modifier keys is kept between calls, so mouse interactions can be performed while modifier keys are depressed.</dd>
+<dd>Envía una secuencia de teclas al elemento activo. Este comando es similar al comando <a href='JsonWireProtocol#/session/:sessionId/element/:id/value.md'>enviar las teclas</a> en cada aspecto excepto la terminación implícita: Los modificadores son <b>no</b> liberados al final de la llamada. Más bien, el estado de las teclas modificadoras se mantiene entre las llamadas, así que las interacciones del ratón se pueden realizar mientras se depresionan las teclas modificadoras.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>value</code> - <code>{Array.&lt;string&gt;}</code> The keys sequence to be sent. The sequence is defined in the<a href='JsonWireProtocol#/session/:sessionId/element/:id/value.md'>send keys</a> command.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>valor</code> - <code>{Array.&lt;string&gt;}</code> La secuencia de teclas a enviar. La secuencia está definida en el comando<a href='JsonWireProtocol#/session/:sessionId/element/:id/value.md'>enviar las teclas</a>.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -2064,25 +2064,25 @@ The server must process the key sequence as follows:<br>
 </dd>
 <dd>
 <dl>
-<dd>Query for an element's tag name.</dd>
+<dd>Consulta para el nombre de la etiqueta de un elemento.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{string}</code> The element's tag name, as a lowercase string.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{string}</code> El nombre de la etiqueta del elemento, como una cadena en minúscula.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -2102,18 +2102,18 @@ The server must process the key sequence as follows:<br>
 <dd>Clear a <code>TEXTAREA</code> or <code>text INPUT</code> element's value.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
-<dd><code>ElementNotVisible</code> - If the referenced element is not visible on the page (either is hidden by CSS, has 0-width, or has 0-height)</dd>
-<dd><code>InvalidElementState</code> - If the referenced element is disabled.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
+<dd><code>ElementNotVisible</code> - Si el elemento referenciado no es visible en la página (ya sea que esté oculto por CSS, tiene 0-anchura o tiene 0-altura)</dd>
+<dd><code>InválidElementState</code> - Si el elemento referenciado está desactivado.</dd>
 </dl>
 </dd>
 </dl>
@@ -2122,7 +2122,7 @@ The server must process the key sequence as follows:<br>
 
 ---
 
-#### /session/:sessionId/element/:id/selected
+#### /session/:sessionId/element/:id/seleccionado
 
 <dl>
 <dd>
@@ -2130,25 +2130,25 @@ The server must process the key sequence as follows:<br>
 </dd>
 <dd>
 <dl>
-<dd>Determine if an <code>OPTION</code> element, or an <code>INPUT</code> element of type <code>checkbox</code> or <code>radiobutton</code> is currently selected.</dd>
+<dd>Determinar si un elemento <code>OPTION</code> o un elemento <code>INPUT</code> de tipo <code>checkbox</code> o <code>radiobutton</code> está seleccionado actualmente.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{boolean}</code> Whether the element is selected.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{boolean}</code> Si el elemento está seleccionado.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -2157,33 +2157,33 @@ The server must process the key sequence as follows:<br>
 
 ---
 
-#### /session/:sessionId/element/:id/enabled
+#### /session/:sessionId/element/:id/habilitado
 
 <dl>
 <dd>
-<h4>GET /session/:sessionId/element/:id/enabled</h4>
+<h4>GET /session/:sessionId/element/:id/habilitado</h4>
 </dd>
 <dd>
 <dl>
-<dd>Determine if an element is currently enabled.</dd>
+<dd>Determinar si un elemento está habilitado actualmente.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{boolean}</code> Whether the element is enabled.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{boolean}</code> Si el elemento está activado.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -2200,25 +2200,25 @@ The server must process the key sequence as follows:<br>
 </dd>
 <dd>
 <dl>
-<dd>Get the value of an element's attribute.</dd>
+<dd>Obtener el valor del atributo de un elemento.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
+<dt><b>Devuelve:</b></dt>
 <dd><code>{string|null}</code> The value of the attribute, or null if it is not set on the element.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -2235,26 +2235,26 @@ The server must process the key sequence as follows:<br>
 </dd>
 <dd>
 <dl>
-<dd>Test if two element IDs refer to the same DOM element.</dd>
+<dd>Evalúa si dos IDs de elementos se refieren al mismo elemento DOM.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
-<dd><code>:other</code> - ID of the element to compare against.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
+<dd><code>:other</code> - ID del elemento a comparar.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{boolean}</code> Whether the two IDs refer to the same element.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{boolean}</code> Si los dos IDs se refieren al mismo elemento.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If either the element refered to by <code>:id</code> or <code>:other</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento al que hace referencia <code>:id</code> o <code>:other</code> ya no está vinculado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -2271,25 +2271,25 @@ The server must process the key sequence as follows:<br>
 </dd>
 <dd>
 <dl>
-<dd>Determine if an element is currently displayed.</dd>
+<dd>Determinar si un elemento se muestra actualmente.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{boolean}</code> Whether the element is displayed.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{boolean}</code> Si se muestra el elemento.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -2306,25 +2306,25 @@ The server must process the key sequence as follows:<br>
 </dd>
 <dd>
 <dl>
-<dd>Determine an element's location on the page. The point <code>(0, 0)</code> refers to the upper-left corner of the page. The element's coordinates are returned as a JSON object with <code>x</code> and <code>y</code> properties.</dd>
+<dd>Determinar la ubicación de un elemento en la página. El punto <code>(0, 0)</code> se refiere a la esquina superior izquierda de la página. Las coordenadas del elemento se retornan como un objeto JSON con propiedades <code>x</code> y <code>y</code>.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{x:number, y:number}</code> The X and Y coordinates for the element on the page.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{x:number, y:number}</code> Las coordenadas X e Y del elemento de la página.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -2341,28 +2341,28 @@ The server must process the key sequence as follows:<br>
 </dd>
 <dd>
 <dl>
-<dd>Determine an element's location on the screen once it has been scrolled into view.<br>
+<dd>Determina la ubicación de un elemento en la pantalla una vez que se ha desplazado a la vista.<br>
 <br>
-<b>Note:</b> This is considered an internal command and should <b>only</b> be used to determine an element's<br>
-location for correctly generating native events.</dd>
+<b>Nota:</b> Esto se considera un comando interno y debe <b>sólo</b> ser utilizado para determinar la ubicación de un elemento<br>
+para generar correctamente eventos nativos.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{x:number, y:number}</code> The X and Y coordinates for the element.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{x:number, y:number}</code> Las coordenadas X e Y del elemento.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -2379,25 +2379,25 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Determine an element's size in pixels. The size will be returned as a JSON object  with <code>width</code> and <code>height</code> properties.</dd>
+<dd>Determina el tamaño de un elemento en píxeles. El tamaño se devolverá como un objeto JSON con propiedades <code>ancho</code> y <code>altura</code>.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{width:number, height:number}</code> The width and height of the element, in pixels.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{width:number, height:number}</code> El ancho y la altura del elemento, en píxeles.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -2414,25 +2414,25 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Query the value of an element's computed CSS property. The CSS property to query should be specified using the CSS property name, <b>not</b> the JavaScript property name (e.g. <code>background-color</code> instead of <code>backgroundColor</code>).</dd>
+<dd>Consulta el valor de la propiedad CSS computada de un elemento. La propiedad CSS a consultar debe especificarse usando el nombre de propiedad CSS, <b>no</b> el nombre de la propiedad JavaScript (e. . <code>color de fondo</code> en lugar de <code>fondo Color</code>).</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:id</code> - ID of the element to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:id</code> - ID del elemento al que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{string}</code> The value of the specified CSS property.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{string}</code> El valor de la propiedad CSS especificada.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
-<dd><code>StaleElementReference</code> - If the element referenced by <code>:id</code> is no longer attached to the page's DOM.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
+<dd><code>StaleElementReference</code> - Si el elemento referenciado por <code>:id</code> ya no está conectado al DOM de la página.</dd>
 </dl>
 </dd>
 </dl>
@@ -2449,23 +2449,23 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get the current browser orientation. The server should return a valid orientation value as defined in <a href='http://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/ScreenOrientation.html'>ScreenOrientation</a>: <code>{LANDSCAPE|PORTRAIT}</code>.</dd>
+<dd>Obtener la orientación actual del navegador. El servidor debe devolver un valor de orientación válido como se define en <a href='http://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/ScreenOrientation.html'>ScreenOrientation</a>: <code>{LANDSCAPE|PORTRAIT}</code>.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{string}</code> The current browser orientation corresponding to a value defined in <a href='http://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/ScreenOrientation.html'>ScreenOrientation</a>: <code>{LANDSCAPE|PORTRAIT}</code>.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{string}</code> La orientación actual del navegador correspondiente a un valor definido en <a href='http://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/ScreenOrientation.html'>ScreenOrientation</a>: <code>{LANDSCAPE|PORTRAIT}</code>.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -2478,23 +2478,23 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Set the browser orientation. The orientation should be specified as defined in <a href='http://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/ScreenOrientation.html'>ScreenOrientation</a>: <code>{LANDSCAPE|PORTRAIT}</code>.</dd>
+<dd>Establecer la orientación del navegador. La orientación debe especificarse como se define en <a href='http://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/ScreenOrientation.html'>ScreenOrientation</a>: <code>{LANDSCAPE|PORTRAIT}</code>.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>orientation</code> - <code>{string}</code> The new browser orientation as defined in <a href='http://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/ScreenOrientation.html'>ScreenOrientation</a>: <code>{LANDSCAPE|PORTRAIT}</code>.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>orientación</code> - <code>{string}</code> La nueva orientación del navegador como se define en <a href='http://selenium.googlecode.com/git/docs/api/java/org/openqa/selenium/ScreenOrientation.html'>ScreenOrientation</a>: <code>{LANDSCAPE|PORTRAIT}</code>.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -2503,7 +2503,7 @@ location for correctly generating native events.</dd>
 
 ---
 
-#### /session/:sessionId/alert\_text
+#### /session/:sessionId/alert\_texto
 
 <dl>
 <dd>
@@ -2511,23 +2511,23 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Gets the text of the currently displayed JavaScript <code>alert()</code>, <code>confirm()</code>, or <code>prompt()</code> dialog.</dd>
+<dd>Obtiene el texto de la visualización actual de JavaScript <code>alert()</code>, <code>confirmar</code>o <code>prompt()</code>.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{string}</code> The text of the currently displayed alert.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{string}</code> El texto de la alerta que se muestra actualmente.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoAlertPresent</code> - If there is no alert displayed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoAlertPresent</code> - Si no se muestra ninguna alerta.</dd>
 </dl>
 </dd>
 </dl>
@@ -2540,23 +2540,23 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Sends keystrokes to a JavaScript <code>prompt()</code> dialog.</dd>
+<dd>Envía toques de teclado a un diálogo <code>prompt()</code>.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>text</code> - <code>{string}</code> Keystrokes to send to the <code>prompt()</code> dialog.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>texto</code> - <code>{string}</code> golpes de teclado para enviar al diálogo <code>prompt()</code>.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoAlertPresent</code> - If there is no alert displayed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoAlertPresent</code> - Si no se muestra ninguna alerta.</dd>
 </dl>
 </dd>
 </dl>
@@ -2573,17 +2573,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Accepts the currently displayed alert dialog. Usually, this is equivalent to clicking on the 'OK' button in the dialog.</dd>
+<dd>Acepta el diálogo de alerta que se muestra actualmente. Normalmente, esto equivale a hacer clic en el botón 'OK' en el diálogo.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoAlertPresent</code> - If there is no alert displayed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoAlertPresent</code> - Si no se muestra ninguna alerta.</dd>
 </dl>
 </dd>
 </dl>
@@ -2600,17 +2600,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Dismisses the currently displayed alert dialog. For <code>confirm()</code> and <code>prompt()</code> dialogs, this is equivalent to clicking the 'Cancel' button. For <code>alert()</code> dialogs, this is equivalent to clicking the 'OK' button.</dd>
+<dd>Descarta el diálogo de alerta que se muestra actualmente. Para los diálogos <code>confirm()</code> y <code>prompt()</code> , esto es equivalente a hacer clic en el botón 'Cancelar'. Para diálogos <code>alert()</code> , esto es equivalente a hacer clic en el botón 'OK'.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoAlertPresent</code> - If there is no alert displayed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoAlertPresent</code> - Si no se muestra ninguna alerta.</dd>
 </dl>
 </dd>
 </dl>
@@ -2627,19 +2627,19 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Move the mouse by an offset of the specificed element. If no element is specified, the move is relative to the current mouse cursor. If an element is provided but no offset, the mouse will be moved to the center of the element. If the element is not visible, it will be scrolled into view.</dd>
+<dd>Mueva el ratón por un desplazamiento del elemento especificado. Si no se especifica ningún elemento, el movimiento es relativo al cursor actual del ratón. Si se proporciona un elemento pero no se desplaza, el ratón se moverá al centro del elemento. Si el elemento no es visible, será desplazado a la vista.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>element</code> - <code>{string}</code> Opaque ID assigned to the element to move to, as described in the WebElement JSON Object. If not specified or is null, the offset is relative to current position of the mouse.</dd>
-<dd><code>xoffset</code> - <code>{number}</code> X offset to move to, relative to the top-left corner of the element. If not specified, the mouse will move to the middle of the element.</dd>
-<dd><code>yoffset</code> - <code>{number}</code> Y offset to move to, relative to the top-left corner of the element. If not specified, the mouse will move to the middle of the element.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>element</code> - <code>{string}</code> ID opaco asignado al elemento al que mover, como se describe en el objeto WebElement JSON. Si no se especifica o es nulo, el desplazamiento es relativo a la posición actual del ratón.</dd>
+<dd><code>xoffset</code> - <code>{number}</code> desplazamiento X al que mover, en relación con la esquina superior izquierda del elemento. Si no se especifica, el ratón se moverá al centro del elemento.</dd>
+<dd><code>yoffset</code> - <code>{number}</code> Y desplazamiento al que mover, en relación con la esquina superior izquierda del elemento. Si no se especifica, el ratón se moverá al centro del elemento.</dd>
 </dl>
 </dd>
 </dl>
@@ -2656,17 +2656,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Click any mouse button (at the coordinates set by the last moveto command). Note that calling this command after calling buttondown and before calling button up (or any out-of-order interactions sequence) will yield undefined behaviour).</dd>
+<dd>Haga clic en cualquier botón del ratón (en las coordenadas definidas por el último comando de movet). Tenga en cuenta que llamar este comando después de llamar al botón y antes de llamar al botón arriba (o a cualquier secuencia de interacciones fuera de orden) producirá un comportamiento indefinido).</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>button</code> - <code>{number}</code> Which button, enum: <code>{LEFT = 0, MIDDLE = 1 , RIGHT = 2}</code>. Defaults to the left mouse button if not specified.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>button</code> - <code>{number}</code> Cual botón, enum: <code>{LEFT = 0, MIDDLE = 1 , DERECHO = 2}</code>. Por defecto es el botón izquierdo del ratón si no se especifica.</dd>
 </dl>
 </dd>
 </dl>
@@ -2683,17 +2683,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Click and hold the left mouse button (at the coordinates set by the last moveto command). Note that the next mouse-related command that should follow is buttonup . Any other mouse command (such as click or another call to buttondown) will yield undefined behaviour.</dd>
+<dd>Haga clic y mantenga pulsado el botón izquierdo del ratón (en las coordenadas fijadas por el último comando de move). Tenga en cuenta que el siguiente comando relacionado con el ratón que debería seguir es el botón . Cualquier otro comando del ratón (como clic u otra llamada al botón) producirá un comportamiento indefinido.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>button</code> - <code>{number}</code> Which button, enum: <code>{LEFT = 0, MIDDLE = 1 , RIGHT = 2}</code>. Defaults to the left mouse button if not specified.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>button</code> - <code>{number}</code> Cual botón, enum: <code>{LEFT = 0, MIDDLE = 1 , DERECHO = 2}</code>. Por defecto es el botón izquierdo del ratón si no se especifica.</dd>
 </dl>
 </dd>
 </dl>
@@ -2710,17 +2710,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Releases the mouse button previously held (where the mouse is currently at). Must be called once for every buttondown command issued. See the note in click and buttondown about implications of out-of-order commands.</dd>
+<dd>Libera el botón del ratón previamente presionado (donde el ratón está actualmente). Debe llamarse una vez por cada comando de botón. Vea la nota con clic y botón sobre las implicaciones de los comandos fuera de orden.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>button</code> - <code>{number}</code> Which button, enum: <code>{LEFT = 0, MIDDLE = 1 , RIGHT = 2}</code>. Defaults to the left mouse button if not specified.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>button</code> - <code>{number}</code> Cual botón, enum: <code>{LEFT = 0, MIDDLE = 1 , DERECHO = 2}</code>. Por defecto es el botón izquierdo del ratón si no se especifica.</dd>
 </dl>
 </dd>
 </dl>
@@ -2737,11 +2737,11 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Double-clicks at the current mouse coordinates (set by moveto).</dd>
+<dd>Haga doble clic en las coordenadas actuales del ratón (definidas por moveto).</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 </dl>
@@ -2758,17 +2758,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Single tap on the touch enabled device.</dd>
+<dd>Toque un solo en el dispositivo habilitado.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>element</code> - <code>{string}</code> ID of the element to single tap on.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>elemento</code> - <code>{string}</code> ID del elemento en el que tocar un solo toque.</dd>
 </dl>
 </dd>
 </dl>
@@ -2785,18 +2785,18 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Finger down on the screen.</dd>
+<dd>Dedo abajo en la pantalla.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>x</code> - <code>{number}</code> X coordinate on the screen.</dd>
-<dd><code>y</code> - <code>{number}</code> Y coordinate on the screen.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>x</code> - <code>{number}</code> coordenada X en la pantalla.</dd>
+<dd><code>y</code> - <code>{number}</code> coordenada Y en la pantalla.</dd>
 </dl>
 </dd>
 </dl>
@@ -2813,18 +2813,18 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Finger up on the screen.</dd>
+<dd>Deduzca en la pantalla.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>x</code> - <code>{number}</code> X coordinate on the screen.</dd>
-<dd><code>y</code> - <code>{number}</code> Y coordinate on the screen.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>x</code> - <code>{number}</code> coordenada X en la pantalla.</dd>
+<dd><code>y</code> - <code>{number}</code> coordenada Y en la pantalla.</dd>
 </dl>
 </dd>
 </dl>
@@ -2833,55 +2833,26 @@ location for correctly generating native events.</dd>
 
 ---
 
-#### session/:sessionId/touch/move
+#### sesión/:sessionId/tocar/mover
 
 <dl>
 <dd>
-<h4>POST session/:sessionId/touch/move</h4>
+<h4>POST sesión/:sessionId/tocar/mover</h4>
 </dd>
 <dd>
 <dl>
-<dd>Finger move on the screen.</dd>
+<dd>Mover el dedo en la pantalla.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>x</code> - <code>{number}</code> X coordinate on the screen.</dd>
-<dd><code>y</code> - <code>{number}</code> Y coordinate on the screen.</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-
----
-
-#### session/:sessionId/touch/scroll
-
-<dl>
-<dd>
-<h4>POST session/:sessionId/touch/scroll</h4>
-</dd>
-<dd>
-<dl>
-<dd>Scroll on the touch screen using finger based motion events. Use this command to start scrolling at a particular screen location.</dd>
-<dd>
-<dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-</dl>
-</dd>
-<dd>
-<dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>element</code> - <code>{string}</code> ID of the element where the scroll starts.</dd>
-<dd><code>xoffset</code> - <code>{number}</code> The x offset in pixels to scroll by.</dd>
-<dd><code>yoffset</code> - <code>{number}</code> The y offset in pixels to scroll by.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>x</code> - <code>{number}</code> coordenada X en la pantalla.</dd>
+<dd><code>y</code> - <code>{number}</code> coordenada Y en la pantalla.</dd>
 </dl>
 </dd>
 </dl>
@@ -2890,53 +2861,27 @@ location for correctly generating native events.</dd>
 
 ---
 
-#### session/:sessionId/touch/scroll
+#### sesión/:sessionId/touch/scroll
 
 <dl>
 <dd>
-<h4>POST session/:sessionId/touch/scroll</h4>
+<h4>Sesión POST/:sessionId/touch/scroll</h4>
 </dd>
 <dd>
 <dl>
-<dd>Scroll on the touch screen using finger based motion events. Use this command if you don't care where the scroll starts on the screen.</dd>
+<dd>Desplácese en la pantalla táctil utilizando eventos de movimiento basados en dedos. Utilice este comando para comenzar a desplazarse en una ubicación de pantalla en particular.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>xoffset</code> - <code>{number}</code> The x offset in pixels to scrollby.</dd>
-<dd><code>yoffset</code> - <code>{number}</code> The y offset in pixels to scrollby.</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-
----
-
-#### session/:sessionId/touch/doubleclick
-
-<dl>
-<dd>
-<h4>POST session/:sessionId/touch/doubleclick</h4>
-</dd>
-<dd>
-<dl>
-<dd>Double tap on the touch screen using finger motion events.</dd>
-<dd>
-<dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-</dl>
-</dd>
-<dd>
-<dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>element</code> - <code>{string}</code> ID of the element to double tap on.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>element</code> - <code>{string}</code> ID del elemento donde comienza el desplazamiento.</dd>
+<dd><code>xoffset</code> - <code>{number}</code> El desplazamiento x en píxeles para desplazar.</dd>
+<dd><code>yoffset</code> - <code>{number}</code> El desplazamiento y en píxeles hacia adentro.</dd>
 </dl>
 </dd>
 </dl>
@@ -2945,7 +2890,62 @@ location for correctly generating native events.</dd>
 
 ---
 
-#### session/:sessionId/touch/longclick
+#### sesión/:sessionId/touch/scroll
+
+<dl>
+<dd>
+<h4>Sesión POST/:sessionId/touch/scroll</h4>
+</dd>
+<dd>
+<dl>
+<dd>Desplácese en la pantalla táctil utilizando eventos de movimiento basados en dedos. Utilice este comando si no le importa dónde se inicia el desplazamiento en la pantalla.</dd>
+<dd>
+<dl>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+</dl>
+</dd>
+<dd>
+<dl>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>xoffset</code> - <code>{number}</code> El desplazamiento x en píxeles a desplazar.</dd>
+<dd><code>yoffset</code> - <code>{number}</code> El desplazamiento y en píxeles a desplazar.</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+
+---
+
+#### sesión/:sessionId/touch/doubleclick
+
+<dl>
+<dd>
+<h4>Sesión POST/:sessionId/touch/doubleclick</h4>
+</dd>
+<dd>
+<dl>
+<dd>Doble toque en la pantalla táctil usando eventos de movimiento de dedos.</dd>
+<dd>
+<dl>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+</dl>
+</dd>
+<dd>
+<dl>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>elemento</code> - <code>{string}</code> ID del elemento en el que tocar doble.</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+
+---
+
+#### sesión/:sessionId/touch/longclick
 
 <dl>
 <dd>
@@ -2953,17 +2953,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Long press on the touch screen using finger motion events.</dd>
+<dd>Pulsación larga en la pantalla táctil usando eventos de movimiento de dedos.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>element</code> - <code>{string}</code> ID of the element to long press on.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>element</code> - <code>{string}</code> ID del elemento al que se va a mantener presionado.</dd>
 </dl>
 </dd>
 </dl>
@@ -2972,56 +2972,28 @@ location for correctly generating native events.</dd>
 
 ---
 
-#### session/:sessionId/touch/flick
+#### sesión/:sessionId/touch/flick
 
 <dl>
 <dd>
-<h4>POST session/:sessionId/touch/flick</h4>
+<h4>Sesión POST/:sessionId/touch/flick</h4>
 </dd>
 <dd>
 <dl>
-<dd>Flick on the touch screen using finger motion events. This flickcommand starts at a particulat screen location.</dd>
+<dd>Desliza en la pantalla táctil usando eventos de movimiento de dedos. Este comando de parpadeo comienza en una ubicación de la pantalla de particulatos.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>element</code> - <code>{string}</code> ID of the element where the flick starts.</dd>
-<dd><code>xoffset</code> - <code>{number}</code> The x offset in pixels to flick by.</dd>
-<dd><code>yoffset</code> - <code>{number}</code> The y offset in pixels to flick by.</dd>
-<dd><code>speed</code> - <code>{number}</code> The speed in pixels per seconds.</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-
----
-
-#### session/:sessionId/touch/flick
-
-<dl>
-<dd>
-<h4>POST session/:sessionId/touch/flick</h4>
-</dd>
-<dd>
-<dl>
-<dd>Flick on the touch screen using finger motion events. Use this flick command if you don't care where the flick starts on the screen.</dd>
-<dd>
-<dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-</dl>
-</dd>
-<dd>
-<dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>xspeed</code> - <code>{number}</code> The x speed in pixels per second.</dd>
-<dd><code>yspeed</code> - <code>{number}</code> The y speed in pixels per second.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>elemento</code> - <code>{string}</code> ID del elemento donde comienza el parpadeo.</dd>
+<dd><code>xoffset</code> - <code>{number}</code> El desplazamiento x en píxeles para flicear.</dd>
+<dd><code>yoffset</code> - <code>{number}</code> El desplazamiento y en píxeles a los que parpadear.</dd>
+<dd><code>velocidad</code> - <code>{number}</code> La velocidad en píxeles por segundos.</dd>
 </dl>
 </dd>
 </dl>
@@ -3030,7 +3002,35 @@ location for correctly generating native events.</dd>
 
 ---
 
-#### /session/:sessionId/location
+#### sesión/:sessionId/touch/flick
+
+<dl>
+<dd>
+<h4>Sesión POST/:sessionId/touch/flick</h4>
+</dd>
+<dd>
+<dl>
+<dd>Desliza en la pantalla táctil usando eventos de movimiento de dedos. Utilice este comando de flick si no le importa dónde comienza el flick en la pantalla.</dd>
+<dd>
+<dl>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+</dl>
+</dd>
+<dd>
+<dl>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>xspeed</code> - <code>{number}</code> La velocidad x en píxeles por segundo.</dd>
+<dd><code>velocidad</code> - <code>{number}</code> Velocidad y en píxeles por segundo.</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+
+---
+
+#### /sesión/:sessionId/ubicación
 
 <dl>
 <dd>
@@ -3038,17 +3038,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get the current geo location.</dd>
+<dd>Obtener la geolocalización actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{latitude: number, longitude: number, altitude: number}</code> The current geo location.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{latitude: number, longitude: number, altitude: number}</code> La geolocalización actual.</dd>
 </dl>
 </dd>
 </dl>
@@ -3061,17 +3061,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Set the current geo location.</dd>
+<dd>Establecer la geolocalización actual.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>location</code> - <code>{latitude: number, longitude: number, altitude: number}</code> The new location.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>ubicación</code> - <code>{latitude: number, longitude: number, altitude: number}</code> La nueva ubicación.</dd>
 </dl>
 </dd>
 </dl>
@@ -3088,23 +3088,23 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get all keys of the storage.</dd>
+<dd>Obtener todas las claves del almacenamiento.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{Array.&lt;string&gt;}</code> The list of keys.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{Array.&lt;string&gt;}</code> La lista de claves.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3117,24 +3117,24 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Set the storage item for the given key.</dd>
+<dd>Establece el elemento de almacenamiento para la clave dada.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>key</code> - <code>{string}</code> The key to set.</dd>
-<dd><code>value</code> - <code>{string}</code> The value to set.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>tecla</code> - <code>{string}</code> La clave a establecer.</dd>
+<dd><code>valor</code> - <code>{string}</code> El valor a establecer.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3147,17 +3147,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Clear the storage.</dd>
+<dd>Limpiar el almacenamiento.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3174,18 +3174,18 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get the storage item for the given key.</dd>
+<dd>Obtener el elemento de almacenamiento para la clave dada.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:key</code> - The key to get.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:key</code> - La clave a obtener.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3198,18 +3198,18 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Remove the storage item for the given key.</dd>
+<dd>Elimina el elemento de almacenamiento de la clave dada.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:key</code> - The key to remove.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:key</code> - La clave a eliminar.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3226,23 +3226,23 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get the number of items in the storage.</dd>
+<dd>Obtener el número de elementos en el almacenamiento.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{number}</code> The number of items in the storage.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{number}</code> El número de elementos en el almacenamiento.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3259,23 +3259,23 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get all keys of the storage.</dd>
+<dd>Obtener todas las claves del almacenamiento.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{Array.&lt;string&gt;}</code> The list of keys.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{Array.&lt;string&gt;}</code> La lista de claves.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3288,24 +3288,24 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Set the storage item for the given key.</dd>
+<dd>Establece el elemento de almacenamiento para la clave dada.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>key</code> - <code>{string}</code> The key to set.</dd>
-<dd><code>value</code> - <code>{string}</code> The value to set.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>tecla</code> - <code>{string}</code> La clave a establecer.</dd>
+<dd><code>valor</code> - <code>{string}</code> El valor a establecer.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3318,17 +3318,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Clear the storage.</dd>
+<dd>Limpiar el almacenamiento.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3345,18 +3345,18 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get the storage item for the given key.</dd>
+<dd>Obtener el elemento de almacenamiento para la clave dada.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:key</code> - The key to get.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:key</code> - La clave a obtener.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3369,18 +3369,18 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Remove the storage item for the given key.</dd>
+<dd>Elimina el elemento de almacenamiento de la clave dada.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
-<dd><code>:key</code> - The key to remove.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
+<dd><code>:key</code> - La clave a eliminar.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3397,23 +3397,23 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get the number of items in the storage.</dd>
+<dd>Obtener el número de elementos en el almacenamiento.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{number}</code> The number of items in the storage.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{number}</code> El número de elementos en el almacenamiento.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Potential Errors:</b></dt>
-<dd><code>NoSuchWindow</code> - If the currently selected window has been closed.</dd>
+<dt><b>Errores potenciales:</b></dt>
+<dd><code>NoSuchWindow</code> - Si la ventana seleccionada ha sido cerrada.</dd>
 </dl>
 </dd>
 </dl>
@@ -3430,22 +3430,22 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get the log for a given log type. Log buffer is reset after each request.</dd>
+<dd>Obtener el registro para un tipo de registro determinado. El búfer de registro se restablece después de cada petición.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>JSON Parameters:</b></dt>
-<dd><code>type</code> - <code>{string}</code> The <a href='#Log_Type.md'>log type</a>. This must be provided.</dd>
+<dt><b>Parámetros JSON:</b></dt>
+<dd><code>type</code> - <code>{string}</code> El tipo <a href='#Log_Type.md'>de registro</a>. Esto es algo que hay que hacer.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
+<dt><b>Devuelve:</b></dt>
 <dd><code>{Array.&lt;object&gt;}</code> The list of <a href='#Log_Entry_JSON_Object.md'>log entries</a>.</dd>
 </dl>
 </dd>
@@ -3463,17 +3463,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get available log types.</dd>
+<dd>Obtener tipos de registro disponibles.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{Array.&lt;string&gt;}</code> The list of available <a href='#Log_Type.md'>log types</a>.</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{Array.&lt;string&gt;}</code> La lista de registros <a href='#Log_Type.md'>disponibles tipos</a>.</dd>
 </dl>
 </dd>
 </dl>
@@ -3490,17 +3490,17 @@ location for correctly generating native events.</dd>
 </dd>
 <dd>
 <dl>
-<dd>Get the status of the html5 application cache.</dd>
+<dd>Obtener el estado de la caché de aplicaciones html5.</dd>
 <dd>
 <dl>
-<dt><b>URL Parameters:</b></dt>
-<dd><code>:sessionId</code> - ID of the session to route the command to.</dd>
+<dt><b>Parámetros URL:</b></dt>
+<dd><code>:sessionId</code> - ID de la sesión a la que enrutar el comando.</dd>
 </dl>
 </dd>
 <dd>
 <dl>
-<dt><b>Returns:</b></dt>
-<dd><code>{number}</code> Status code for application cache: {UNCACHED = 0, IDLE = 1, CHECKING = 2, DOWNLOADING = 3, UPDATE_READY = 4, OBSOLETE = 5}</dd>
+<dt><b>Devuelve:</b></dt>
+<dd><code>{number}</code> Código de estado para el caché de la aplicación: {UNCACHED = 0, IDLE = 1, CHECKING = 2, DOWNLOADING = 3, UPDATE_READY = 4, OBSOLETE = 5}</dd>
 </dl>
 </dd>
 </dl>
