@@ -8,7 +8,7 @@ aliases:
   - /documentation/en/legacy_docs/selenium_ide/
 ---
 
-## Introduction
+## Introducción
 
 The Selenium-IDE (Integrated Development Environment) is the tool you use to
 develop your Selenium test cases. It’s an easy-to-use Firefox plug-in and is
@@ -436,7 +436,7 @@ action below).
 ## Script Syntax
 
 Selenium commands are simple, they consist of the command and two parameters.
-For example:
+Por ejemplo:
 
 |            |                                                                 |       |
 | ---------- | --------------------------------------------------------------- | ----- |
@@ -1259,11 +1259,11 @@ This next example illustrates how a JavaScript snippet can include calls to
 methods, in this case the JavaScript String object's `toUpperCase` method
 and `toLowerCase` method.
 
-| Command   | Target                                                                                                                  | Value |
-| --------- | ----------------------------------------------------------------------------------------------------------------------- | ----- |
-| store     | Edith Wharton                                                                                                           | name  |
-| storeEval | storedVars['name'].toUpperCase() | uc    |
-| storeEval | storedVars['name'].toUpperCase() | lc    |
+| Command   | Target                                                                                                                  | Value  |
+| --------- | ----------------------------------------------------------------------------------------------------------------------- | ------ |
+| store     | Edith Wharton                                                                                                           | nombre |
+| storeEval | storedVars['name'].toUpperCase() | uc     |
+| storeEval | storedVars['name'].toUpperCase() | lc     |
 
 #### JavaScript Usage with Non-Script Parameters
 
@@ -1354,7 +1354,7 @@ But before we begin covering alerts/confirms/prompts in individual detail, it is
 helpful to understand the commonality between them. Alerts, confirmation boxes
 and prompts all have variations of the following
 
-| Command                                      | Description                                                           |
+| Command                                      | Descripción                                                           |
 | -------------------------------------------- | --------------------------------------------------------------------- |
 | assertFoo(pattern)        | throws error if pattern doesn’t match the text of the pop-up          |
 | assertFooPresent                             | throws error if pop-up is not available                               |
