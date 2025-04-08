@@ -1,63 +1,63 @@
 ---
-title: Backing Selenium with WebDriver
-linkTitle: Emulations
+title: Respaldar Selenium con WebDriver
+linkTitle: Emulaciones
 weight: 3
 description: |
-  The Java and .NET versions of Selenium 2 provided implementations of the original Selenium API
+  Las versiones Java y .NET de Selenium 2 proporcionaron implementaciones de la API original de Selenium
 ---
 
-(Previously located: https://github.com/SeleniumHQ/selenium/wiki/Selenium-Emulation)
+(Alocado anteriormente: https://github.com/SeleniumHQ/selenium/wiki/Selenium-Emulation)
 
-## Backing Selenium with WebDriver
+## Respaldar Selenium con WebDriver
 
-The Java and .NET versions of WebDriver provide implementations of the existing Selenium API. In Java, it is used like so:
+Las versiones Java y .NET de WebDriver proporcionan implementaciones de la API Selenium existente. En Java, se utiliza así:
 
 ```
-// You may use any WebDriver implementation. Firefox is used here as an example
-WebDriver driver = new FirefoxDriver();
+// Puede utilizar cualquier implementación de WebDriver . Firefox se utiliza aquí como ejemplo
+controlador WebDriver = new FirefoxDriver();
 
-// A "base url", used by selenium to resolve relative URLs
-String baseUrl = "http://www.google.com";
+// Una "base url", utilizada por selenium para resolver URLs relativas
+String baseUrl = "http://www. oogle.com";
 
-// Create the Selenium implementation
+// Crear la implementación de Selenium
 Selenium selenium = new WebDriverBackedSelenium(driver, baseUrl);
 
-// Perform actions with selenium
-selenium.open("http://www.google.com");
+// Realizar acciones con selenium
+selenium. pen("http://www.google.com");
 selenium.type("name=q", "cheese");
 selenium.click("name=btnG");
 
-// And get the underlying WebDriver implementation back. This will refer to the
-// same WebDriver instance as the "driver" variable above.
-WebDriver driverInstance = ((WebDriverBackedSelenium) selenium).getUnderlyingWebDriver();
+// Y recuperar la implementación de WebDriver subyacente. Esto se referirá a la instancia
+// misma de WebDriver que la variable "driver" arriba.
+controlador WebDriver driverInstance = ((WebDriverBackedSelenium) selenium).getUnderlyingWebDriver();
 ```
 
 ## Pros
 
-- Allows for WebDriver and Selenium to live side-by-side.
-- Provides a simple mechanism for a managed migration from the existing Selenium API to WebDriver's.
-- Does not require the standalone Selenium RC server to be run
+- Permite a WebDriver y Selenium vivir lado a lado.
+- Proporciona un mecanismo sencillo para una migración administrada de la API Selenium existente a WebDriver.
+- No requiere que el servidor RC de Selenium sea ejecutado
 
-## Cons
+## Contra
 
-- Does not implement every method
-    - But we'd love feedback!
-- Does also emulate Selenium Core
-    - So more advanced Selenium usage (that is, using "browserbot" or other built-in Javascript methods from Selenium Core) may need work
-- Some methods may be slower due to underlying implementation differences
-- Does not support Selenium's "user extensions" (_i.e._, user-extensions.js)
+- No implementa todos los métodos
+    - ¡Pero nos encantarían los comentarios!
+- También emula el Núcleo de Selenium
+    - Por lo tanto, el uso más avanzado de Selenium (es decir, el uso de "browserbot" u otros métodos incorporados de Javascript de Selenium Core) puede necesitar trabajo
+- Algunos métodos pueden ser más lentos debido a las diferencias subyacentes en la implementación
+- No soporta "extensiones de usuario" de Selenium (_i.e._, user-extensions.js)
 
-### Notes
+### Notas
 
-After creating a `WebDriverBackedSelenium` instance with a given Driver, one does not have to call `start()` - as the creation of the Driver already started the session. At the end of the test, `stop()` should be called **instead** of the Driver's `quit()` method.
+Después de crear una instancia `WebDriverBackedSelenium` con un controlador dado, uno no tiene que llamar a `start()` - ya que la creación del controlador ya comenzó la sesión. Al final de la prueba, `stop()` debe llamarse **en su lugar** del método `quit()` del Motivador.
 
-This is more similar to WebDriver's behaviour - as creating a Driver instance starts a session, yet it has to be terminated explicitly with a call to `quit()`.
+Esto es más similar al comportamiento de WebDriver - al crear una instancia de Drivers inicia una sesión, sin embargo tiene que ser terminada explícitamente con una llamada a `quit()`.
 
-## Backing Selenium with RemoteWebDriver
+## Respaldar Selenium con RemoteWebDriver
 
-Starting with release 2.19, `WebDriverBackedSelenium` can be used from any language supported by WebDriver and Selenium.
+A partir de la versión 2.19, `WebDriverBackedSelenium` puede ser usada desde cualquier idioma soportado por WebDriver y Selenium.
 
-For example, in Python:
+Por ejemplo, en Python:
 
 ```
 driver = RemoteWebDriver(desired_capabilities = DesiredCapabilities.FIREFOX)
@@ -65,11 +65,11 @@ selenium = DefaultSelenium('localhost', '4444', '*webdriver', 'http://www.google
 selenium.start(driver = driver)
 ```
 
-Provided you keep a reference to the original WebDriver and Selenium objects you created, you can use even the two APIs interchangeably.  The magic is the "`*webdriver`" browser name passed to the Selenium instance, and that you pass the WebDriver instance when calling `start()`.
+Proporcionado que usted mantiene una referencia a los objetos originales WebDriver y Selenium que usted creó, usted puede usar incluso las dos APIs de forma intercambiable.  La magia es el nombre del navegador "\*webdriver" pasado a la instancia de Selenium y que pasas la instancia de WebDriver cuando llamas a `start()`.
 
-In languages where DefaultSelenium doesn't have `start(driver)`, you can connect the WebDriver and Selenium objects together yourself, by supplying the WebDriver session ID to the Selenium object.
+En idiomas donde DefaultSelenium no tiene `start(driver)`, usted puede conectar los objetos WebDriver y Selenium juntos, suministrando el ID de sesión WebDriver al objeto Selenium.
 
-For example, in C#:
+Por ejemplo, en C#:
 
 ```
 
@@ -79,15 +79,15 @@ DefaultSelenium selenium = new DefaultSelenium("localhost", 4444, "*webdriver", 
 selenium.Start("webdriver.remote.sessionid=" + sessionId);
 ```
 
-## Backing WebDriver with Selenium
+## Colaborando WebDriver con Selenium
 
-WebDriver doesn't support as many browsers as Selenium does, so in order to provide that support while still using the webdriver API, you can make use of the `SeleneseCommandExecutor` It is done like this:
+WebDriver no es compatible con tantos navegadores como Selenium , así que para proporcionar ese soporte mientras todavía se utiliza la API del controlador web, puedes hacer uso del `SeleneseCommandExecutor` Se hace así:
 
 ```
-Capabilities capabilities = new DesiredCapabilities()
+Capacidades capacidades = new DesiredCapabilities()
 capabilities.setBrowserName("safari");
-CommandExecutor executor = new SeleneseCommandExecutor("http:localhost:4444/", "http://www.google.com/", capabilities);
-WebDriver driver = new RemoteWebDriver(executor, capabilities);
+Ejecutor de CommandExecutor = new SeleneseCommandExecutor("http:localhost:4444/", "http://www.google.com/", capacidades);
+controlador WebDriver = new RemoteWebDriver(executor, capacidades);
 ```
 
-There are currently some major limitations with this approach, notably that `findElements` doesn't work as expected. Also, because we're using Selenium Core for the heavy lifting of driving the browser, you are limited by the Javascript sandbox.
+Actualmente hay algunas limitaciones importantes con este enfoque, principalmente que `findElements` no funciona como se esperaba. Además, debido a que estamos usando Selenium Core para la pesada carga de conducir el navegador, usted está limitado por el sandbox Javascript.
