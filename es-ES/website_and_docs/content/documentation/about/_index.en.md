@@ -1,34 +1,34 @@
 ---
-title: About this documentation
-linkTitle: About
+title: Sobre esta documentación
+linkTitle: Acerca de
 weight: 16
 aliases:
-  - /documentation/en/introduction/about_this_documentation/
-  - /documentation/en/front_matter/
+  - /documentation/es/introduction/about_this_documentation/
+  - /documentation/es/front_matter/
 ---
 
-These docs, like the code itself, are maintained 100% by volunteers
-within the Selenium community.
-Many have been using it since its inception,
-but many more have only been using it for a short while,
-and have given their time to help improve the onboarding experience
-for new users.
+Estos documentos, como el propio código, son mantenidos 100% por los voluntarios
+dentro de la comunidad Selenium.
+Muchos lo han estado usando desde su inicio,
+pero muchos más solo lo han estado usando por un corto tiempo.
+y han dado su tiempo para ayudar a mejorar la experiencia de incorporación
+para nuevos usuarios.
 
-If there is an issue with the documentation, we want to know!
-The best way to communicate an issue is to visit
-[https://github.com/seleniumhq/seleniumhq.github.io/issues](//github.com/seleniumhq/seleniumhq.github.io/issues)
-and search to see whether or not the issue has been filed already.
-If not, feel free to open one!
+Si hay un problema con la documentación, ¡queremos saber!
+La mejor manera de comunicar un problema es visitar
+[https://github.com/seleniumhq/seleniumhq.github.io/issues](//github. om/seleniumhq/seleniumhq.github.io/issues)
+y busque si el problema ya ha sido archivado o no.
+Si no, ¡siéntete libre de abrir uno!
 
-Many members of the community
-are present at the #selenium
-Libera chat at [Libera.chat](https://libera.chat/).
-Feel free to drop in and ask questions
-and if you get help which you think could be of use within these documents,
-be sure to add your contribution!
-We can update these documents,
-but it is much easier for everyone when we get contributions
-from outside the normal committers.
+Muchos miembros de la comunidad
+están presentes en el chat de #selenium
+Libera en [Libera.chat](https://libera.chat/).
+Siéntete libre de entrar y hacer preguntas
+y si recibes ayuda que crees que podría ser útil en estos documentos,
+¡asegúrate de añadir tu contribución!
+Podemos actualizar estos documentos,
+pero es mucho más fácil para todos cuando obtenemos contribuciones
+de fuera de los compromisos normales.
 
 
 
