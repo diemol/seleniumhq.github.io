@@ -1,93 +1,93 @@
 ---
-title: Stealing focus from Firefox in Linux
-linkTitle: Focus Stealing
+title: Robar foco de Firefox en Linux
+linkTitle: Robo de foco
 weight: 12
 description: |
-  How to work with Native Events in the Legacy Firefox extension.
+  Cómo trabajar con eventos nativos en la extensión Legacy Firefox.
 ---
 
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/Focus-Stealing-On-Linux)
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/Focus-Stealing-On-Linux)
 
-This page describes an essential component of the native events implementation on Linux - focus maintaining.
-In order for native events to be processed in Firefox, it must always retain focus.
-In case the user decides to switch to another window (a thing which could be understood),
-Firefox must not know it lost focus.
+Esta página describe un componente esencial de la implementación de eventos nativos en Linux - mantenimiento del enfoque.
+Para que los eventos nativos sean procesados en Firefox, siempre debe mantener el foco.
+En caso de que el usuario decida cambiar a otra ventana (algo que podría ser entendido),
+Firefox no debe saber que perdió el enfoque.
 
-### Solution overview
+### Resumen de soluciones
 
-#### Basic idea
+#### idea básica
 
-The basic idea is to get between the XLib (X-Windows client library) layer and the application. X-Windows notifies the application of events (user input, windows being destroyed, mouse movements) by asynchronous events. The events that indicate loss of focus [FocusOut](http://tronche.com/gui/x/xlib/events/input-focus/) are discarded. The idea is based on Jordan Sissel's implementation of a pre-loaded library that over-rides XNextEvent - see http://www.semicomplete.com/blog/geekery/xsendevent-xdotool-and-ld_preload.html.
+La idea básica es obtener entre la capa XLib (X-Windows cliente) y la aplicación. X-Windows notifica la aplicación de eventos (entrada de usuario, ventanas que están siendo destruidas, movimientos del ratón) por eventos asíncronos. Los eventos que indican la pérdida del foco [FocusOut](http://tronche.com/gui/x/xlib/events/input-focus/) son descartados. La idea se basa en la implementación de Jordan Sisel de una biblioteca precargada que sobre-rides XNextEvent - vea http://www.semicomplete.com/blog/geekery/xsendevent-xdotool-and-ld_preload.html.
 
-#### Extension
+#### Extensión
 
-This simple implementation works well as long as there's one browser window. When multiple windows are involved, several challenges arise:
+Esta sencilla implementación funciona bien siempre y cuando haya una ventana del navegador. Cuando se implican múltiples ventanas, surgen varios desafíos:
 
-- Even  though new windows may be opened, native events must continue to flow to the active window. However, most window managers will give focus to newly-opened windows.
-- Window Switching: When wishing to switch to another window, the focus has to be moved. This requires cooperation between WebDriver's Firefox extension and this component.
-- Closing windows: When a window is closed, focus must move to another window. By design, WebDriver does not guarantee anything if the active window is closed - until a new window is being switched to. In this situation, special care must be taken.
+- Aunque se pueden abrir nuevas ventanas, los eventos nativos deben continuar fluyendo hacia la ventana activa. Sin embargo, la mayoría de los gestores de ventanas se centrarán en las ventanas recién abiertas.
+- Cambio de ventana: Cuando se desea cambiar a otra ventana, el enfoque tiene que ser movido. Esto requiere cooperación entre la extensión de Firefox de WebDriver y este componente.
+- Cerrando ventanas: cuando una ventana está cerrada, el foco debe moverse a otra ventana. Por diseño, WebDriver no garantiza nada si la ventana activa está cerrada - hasta que se cambie una nueva ventana. En esta situación, hay que prestar especial atención.
 
-### Interaction with other components
+### Interacción con otros componentes
 
-The basic idea requires no interaction with other components of WebDriver.
-However, when multiple windows are involved - creating, switching or destroying, this component should be aware of it.
-New window creation cannot be tracked - as it may happen as a side effect of many operations.
-Switching and closing can be tracked.
+La idea básica no requiere ninguna interacción con otros componentes de WebDriver.
+Sin embargo, cuando hay múltiples ventanas involucradas - creando, cambiando o destruyendo, este componente debe ser consciente de ello.
+La creación de nuevas ventanas no puede ser rastreada - ya que puede ocurrir como un efecto secundario de muchas operaciones.
+Se puede seguir el cambio y el cierre.
 
-### Involved technologies
+### Tecnologías implicadas
 
-To understand this solution, one should be familiar with X-Windows and its events.
-Knowledge of the GDK event processing loop is also useful.
+Para entender esta solución, uno debe estar familiarizado con X-Windows y sus eventos.
+El conocimiento del ciclo de procesamiento de eventos GDK también es útil.
 
-## Implementation Details
+## Detalles de Implementación
 
-All of this describes the code in `firefox/src/cpp/linux-specific/x_ignore_nofocus.c`.
+Todo esto describe el código en `firefox/src/cpp/linux-specific/x_ignore_nofocus.c`.
 
-### The shared library
+### La biblioteca compartida
 
-Hijacking the events is done by over-riding XNextEvent.
-A shared library containing a modified implementation of `XNextEvent` is loaded using `LD_PRELOAD`.
-The modified function opens `/usr/lib/libX11.so.6` and invokes the real function.
-Then the event that the real function returns (i.e. the real event) is inspected.
+Los eventos de Pekín se realizan a través de XNextEvent.
+Una biblioteca compartida que contiene una implementación modificada de `XNextEvent` se carga usando `LD_PRELOAD`.
+La función modificada abre `/usr/lib/libX11.so.6` e invoca la función real.
+Luego se inspecciona el evento que retorna la función real (es decir, el evento real).
 
-### Identifying events
+### Identificando eventos
 
-Under the basic idea, `FocusOut` events will be simply discarded. However, window switching complicates matters.
+Bajo la idea básica, los eventos `FocusOut` serán simplemente descartados. Sin embargo, el interruptor de ventanas complica las cosas.
 
-#### Data structure
+#### Estructura de datos
 
-There's a global data structure that remembers the following information:
+Hay una estructura global de datos que recuerda la siguiente información:
 
-- The active window ID (if there is such one at the moment)
-- The ID of a new window that's being created (again, if exists)
-- If window switching is in progress.
-- If window closing is in progress.
-- Was the focus given to another window and should be stolen back to the active one?
-- Was a `FocusIn` event already received by the active window?
-- Did we set the currently active window as a result of a close operation?
+- El ID de la ventana activa (si existe uno en este momento)
+- El ID de una nueva ventana que se está creando (nuevamente, si existe)
+- Si el interruptor de ventana está en curso.
+- Si se está cerrando la ventana.
+- ¿Se ha dado el foco a otra ventana y debería ser robado de nuevo a la activa?
+- ¿Un evento `FocusIn` ya fue recibido por la ventana activa?
+- ¿Hemos establecido la ventana activa como resultado de una operación de cierre?
 
-#### Firefox starts up
+#### Firefox inicia
 
-`FocusIn` event arrives and the active window ID is 0. A new active window is set. Note that during the creation of the main window, another sub-window is created and a `FocusOut` event is sent to the active window. Fortunately, this `FocusOut` event indicates that the focus is going to move to a sub-window (identified by `NotifyInferior`) so it is allowed.
+El evento `FocusIn` llega y el ID de la ventana activa es 0. Se ha establecido una nueva ventana activa. Tenga en cuenta que durante la creación de la ventana principal, se crea otra sub-ventana y se envía un evento `FocusOut` a la ventana activa. Afortunadamente, este evento `FocusOut` indica que el foco se va a mover a una sub-ventana (identificado por `NotifyInferior`) así que está permitido.
 
-#### The user has switched to another window
+#### El usuario ha cambiado a otra ventana
 
-This is indicated by a `FocusOut` event with a detail field that is neither `NotifyAncestor` nor `NotifyInferior`. This event is simply discarded and replaced with a `KeymapNotify` event, which is promptly discarded by GDK.
+Esto está indicado por un evento `FocusOut` con un campo de detalle que no es `NotifyAncestor` ni `NotifyInferior`. Este evento es simplemente descartado y reemplazado por un evento `KeymapNotify`, que es descartado rápidamente por GDK.
 
-#### A new window is being created
+#### Se está creando una nueva ventana
 
-This condition is identified by a `ReparentNotify` event. When this happens, the new\_window field will be set to the ID of the newly created window. Subsequent `FocusOut` events will be allowed - during the new window creation events will flow as usual (`FocusOut` event from the active window, `FocusIn` event to the new window, `FocusOut` to the new window and `FocusIn` to a sub-window of the new window). After the sub-window of the new window receives `FocusIn`, a call to `XSetInputFocus` will be issued to return the focus to the active window.
+Esta condición es identificada por un evento `ReparentNotify`. Cuando esto sucede, el campo new\_window se establecerá en el ID de la ventana recién creada. Los eventos posteriores 'FocusOut' serán permitidos - durante la creación de nueva ventana los eventos fluirán como de costumbre (evento 'FocusOut' desde la ventana activa, Evento `FocusIn` a la nueva ventana, `FocusOut` a la nueva ventana y `FocusIn` a una subventana de la nueva ventana). Después de que la subventana de la nueva ventana reciba `FocusIn`, se emitirá una llamada a `XSetInputFocus` para devolver el foco a la ventana activa.
 
-#### A window switch occurs
+#### Se produce un interruptor de ventana
 
-During a window switch events will flow as normal. A window switch is considered done when the sub-window of a window receives the `FocusIn` event. A window switch starts by identifying the file `/tmp/switch_window_started`. In this file, a `switch:` string following a window ID is written (the ID is just for debugging purpose). This will change the active window ID to 0 and the state to "during switch". During a switch (or when there's no active window) no events are discarded.
+Durante una ventana, los eventos de conmutación fluirán como siempre. Un interruptor de ventana se considera hecho cuando la subventana de una ventana recibe el evento `FocusIn`. Un interruptor de ventana comienza identificando el archivo `/tmp/switch_window_started`. En este archivo, se escribe una cadena `switch:` siguiendo un ID de ventana (el ID es sólo para depurar). Esto cambiará el ID de ventana activa a 0 y el estado a "durante el cambio". Durante un interruptor (o cuando no hay una ventana activa) no hay eventos descartados.
 
-#### A window is being closed
+#### Una ventana está siendo cerrada
 
-Very similar to window switching (also identified by reading the file). However, it is indicated that the window is being closed - in case it was closed, no focus stealing will take place. In addition, the `DestroyNotify` event is being identified to find out when the active window is being closed (explicitly by the user or implicitly by some other operation that is not an explicit call to close). In this case, the active window  ID will be set to 0 as well.
+Muy similar al interruptor de ventanas (también identificado leyendo el archivo). Sin embargo, se indica que se está cerrando la ventana; en caso de que se cierre, no se producirá robo de enfoque. Además, el evento `DestroyNotify` está siendo identificado para averiguar cuándo la ventana activa está siendo cerrada (explícitamente por el usuario o implícitamente por alguna otra operación que no sea una llamada explícita para cerrar). En este caso, el ID de ventana activa también se establecerá en 0.
 
-## Important Links
+## Enlaces importantes
 
-- Jordan Sissel's original [XSendEvent hack](http://www.semicomplete.com/blog/geekery/xsendevent-xdotool-and-ld_preload.html)
-- [XLib events](http://tronche.com/gui/x/xlib/events/structures.html) and the [XLib programming manual](http://www.sbin.org/doc/Xlib/)
-- [The X programming manual / specification](http://www.x.org/docs/X11/xlib.pdf)
+- Sisel de Jordan original [XSendEvent hack](http://www.semicomplete.com/blog/geekery/xsendevent-xdotool-and-ld_preload.html)
+- [Eventos XLib](http://tronche.com/gui/x/xlib/events/structures.html) y el [Manual de programación XLib](http://www.sbin.org/doc/Xlib/)
+- [Manual de programación X / especificación](http://www.x.org/docs/X11/xlib.pdf)
