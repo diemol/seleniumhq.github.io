@@ -31,14 +31,14 @@ lower level commands for you. These are all documented in
 Pointer movements and Wheel scrolling allow the user to set a duration for the action, but sometimes you just need
 to wait a beat between actions for things to work correctly.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/actions_api/ActionsTest.java#L21-L28" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="examples/python/tests/actions_api/test_actions.py#L13-L20" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-version version="4.2" >}}
 {{< gh-codeblock path="examples/dotnet/SeleniumDocs/ActionsAPI/ActionsTest.cs#L18-L25" >}}
 {{< /tab >}}
@@ -64,14 +64,14 @@ There is a special method to release all currently depressed keys and pointer bu
 This method is implemented differently in each of the languages because
 it does not get executed with the perform method.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/actions_api/ActionsTest.java#L46" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="examples/python/tests/actions_api/test_actions.py#L37" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< gh-codeblock path="examples/dotnet/SeleniumDocs/ActionsAPI/ActionsTest.cs#L44" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
