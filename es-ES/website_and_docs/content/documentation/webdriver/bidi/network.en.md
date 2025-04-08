@@ -1,21 +1,21 @@
 ---
-title: WebDriver BiDi Network Features
-linkTitle: Network
+title: Características de la red de WebDriver BiDi
+linkTitle: Red
 weight: 1
 description: |
-  These features are related to networking, and are made available via a "network" namespace.
+  Estas características están relacionadas con la red y están disponibles a través de un namespace "network".
 aliases:
-  - /documentation/en/webdriver/bidirectional/bidirectional_w3c/network
+  - /documentation/es/webdriver/bidirectional/bidirectional_w3c/network
   - /documentation/webdriver/bidirectional/webdriver_bidi/network
 ---
 
-The implementation of these features is being tracked here: [#13993](https://github.com/SeleniumHQ/selenium/issues/13993)
+La implementación de estas características está siendo rastreada aquí: [#13993](https://github.com/SeleniumHQ/selenium/issues/13993)
 
-Remember that to use WebDriver BiDi, you must enable it in Options.
-For more details, see [Enabling BiDi]({{< ref "BiDi" >}})
+Recuerde que para usar WebDriver BiDi, debe activarlo en Opciones.
+Para más detalles, visita [Activando BiDi]({{< ref "BiDi" >}})
 
-## Authentication Handlers
+## Manejadores de Autenticación
 
-## Request Handlers
+## Solicitar Manejadores
 
-## Response Handlers
+## Responder a los Manejadores
