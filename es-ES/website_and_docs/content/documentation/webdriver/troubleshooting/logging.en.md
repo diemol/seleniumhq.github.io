@@ -1,31 +1,31 @@
 ---
-title: Logging Selenium commands
-linkTitle: Logging
+title: Registrando comandos de Selenium
+linkTitle: Loggando
 weight: 4
 description: |
-  Getting information about Selenium execution.
+  Obtener información sobre la ejecución de Selenium.
 ---
 
-Turning on logging is a valuable way to get extra information that might help you determine
-why you might be having a problem.
+Activar el registro es una forma valiosa de obtener información adicional que puede ayudarte a determinar
+por qué podría estar teniendo un problema.
 
-## Getting a logger
+## Obteniendo un Logger
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/troubleshooting/LoggingTest.java#L31" >}}
 
 {{< gh-codeblock path="/examples/python/tests/troubleshooting/test_logging.py#L5" >}}
 
-To save logs to a file, you can do this:
+Para guardar los registros en un archivo, puedes hacer esto:
 
 ```py
-log_path = '/path/to/log'
+log_path = '/ruta/a/log'
 handler = logging.FileHandler(log_path)
 logger.addHandler(handler)
 ```
 
-To display logs in the console, you can do this:
+Para mostrar los registros en la consola, puedes hacer esto:
 
 ```py
 handler = logging.StreamHandler()
@@ -34,15 +34,15 @@ logger.addHandler(handler)
 
 {{% /tab %}}
 {{% tab header="CSharp" %}}
-.NET logger is managed with a static class, so all access to logging is managed simply by referencing `Log` from the `OpenQA.Selenium.Internal.Logging` namespace.
+. ET logger se administra con una clase estática, por lo que todo el acceso al registro se gestiona simplemente haciendo referencia a `Log` desde el namespace `OpenQA.Selenium.Internal.Logging`.
 {{% /tab %}}
 {{% tab header="Ruby" %}}
 If you want to see as much debugging as possible in all the classes,
 you can turn on debugging globally in Ruby by setting `$DEBUG = true`.
 
-For more fine-tuned control, Ruby Selenium created its own Logger class to wrap the default `Logger` class.
-This implementation provides some interesting additional features.
-Obtain the logger directly from the `#logger`class method on the `Selenium::WebDriver` module:
+Para un control más ajustado, Ruby Selenium creó su propia clase Logger para envolver la clase predeterminada `Logger`.
+Esta implementación proporciona algunas características adicionales interesantes.
+Obtén el registrador directamente desde el método de clase `#logger`en el módulo `Selenium::WebDriver`:
 
 {{< badge-version version="4.10" >}}
 {{< gh-codeblock path="/examples/ruby/spec/troubleshooting/logging_spec.rb#L11" >}}
@@ -58,29 +58,29 @@ logger = logging.getLogger('webdriver')
   {{< /tab >}}
 {{< /tabpane >}}
 
-## Logger level
+## Nivel de Logger
 
-Logger level helps to filter out logs based on their severity.
+El nivel de Logger ayuda a filtrar los registros basándose en su gravedad.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/troubleshooting/LoggingTest.java#L32-L35" >}}
 
 {{< gh-codeblock path="/examples/python/tests/troubleshooting/test_logging.py#L7" >}}
 
-To always output logs with PyTest you need to run with additional arguments.
-First, `-s` to prevent PyTest from capturing the console.
+Para mostrar siempre registros con PyTest necesitas ejecutar con argumentos adicionales.
+Primero, `-s` para evitar que PyTest capture la consola.
 Second, `-p no:logging`, which allows you to override the default PyTest logging settings so logs can
 be displayed regardless of errors.
 
-So you need to set these flags in your IDE, or run PyTest on command line like:
+Así que necesitas establecer estas banderas en tu IDE, o ejecutar PyTest en línea de comandos como:
 
 ```bash
 pytest -s -p no:logging
 ```
 
-Finally, since you turned off logging in the arguments above, you now need to add configuration to
-turn it back on:
+Finalmente, como desactivaste el registro en los argumentos anteriores, ahora necesitas añadir configuración a
+volver a activar.
 
 ```py
 logging.basicConfig(level=logging.WARN)
@@ -88,17 +88,17 @@ logging.basicConfig(level=logging.WARN)
 
 {{% /tab %}}
 {{% tab header="CSharp" %}}
-.NET has 6 logger levels: `Error`, `Warn`, `Info`, `Debug`, `Trace` and `None`. The default level is `Info`.
+.NET tiene 6 niveles de registro: `Error`, `Warn`, `Info`, `Debug`, `Trace` y `Ning`. El nivel por defecto es `Info`.
 
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/Troubleshooting/LoggingTest.cs#L18" >}}
 
 {{< badge-version version="4.10" >}}
 {{< gh-codeblock path="/examples/ruby/spec/troubleshooting/logging_spec.rb#L13" >}}
 
-To change the level of the logger:
+Para cambiar el nivel del registrador:
 
 ```javascript
-logger.setLevel(logging.Level.INFO)
+logger.setLevel(logging.Level.INF)?
 ```
 
   {{< tab header="Kotlin" >}}
@@ -107,52 +107,52 @@ logger.setLevel(logging.Level.INFO)
   {{< /tab >}}
 {{< /tabpane >}}
 
-### Actionable items
+### Elementos Accionables
 
-Things are logged as warnings if they are something the user needs to take action on. This is often used
-for deprecations. For various reasons, Selenium project does not follow standard Semantic Versioning practices.
-Our policy is to mark things as deprecated for 3 releases and then remove them, so deprecations
-may be logged as warnings.
+Las cosas se registran como advertencias si son algo en lo que el usuario necesita actuar. Esto se utiliza a menudo
+para las desaprobaciones. Por varias razones, el proyecto Selenium no sigue las prácticas de Versionamiento Semántico estándar.
+Nuestra política es marcar las cosas como obsoletas para 3 lanzamientos y luego eliminarlas, así que las desaprobaciones
+pueden ser registradas como advertencias.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 
-Example:
+Ejemplo:
 
 ```text
-May 08, 2023 9:23:38 PM dev.selenium.troubleshooting.LoggingTest logging
-WARNING: this is a warning
+8 de mayo de 2023 9:23:38 dev.selenium.troubleshooting.LoggingTest logging
+ADVERTENCIA: esta es una advertencia
 ```
 
 {{% /tab %}}
 {{% tab header="Python" %}}
-Python logs actionable content at logger level — `WARNING`
-Details about deprecations are logged at this level.
+Python registra contenido accionable a nivel de logger — `WARNING`
+Los detalles sobre las desaprobaciones se registran en este nivel.
 
-Example:
+Ejemplo:
 
 ```text
-WARNING  selenium:test_logging.py:23 this is a warning
+ADVERTENCIA selenium:test_logging.py:23 esta es una advertencia
 ```
 
 {{% /tab %}}
 {{% tab header="CSharp" %}}
-.NET logs actionable content at logger level `Warn`.
+.NET registra contenido accionable en el nivel de logger `Warn`.
 
-Example:
+Ejemplo:
 
 ```text
-11:04:40.986 WARN LoggingTest: this is a warning
+11:04:40.986 WARN LoggingTest: esta es una advertencia
 ```
 
 {{% /tab %}}
 {{% tab header="Ruby" %}}
-Ruby logs actionable content at logger level — `:warn`.
-Details about deprecations are logged at this level.
+Ruby registra contenido accionable a nivel de logger — `:warn`.
+Los detalles sobre las desaprobaciones se registran en este nivel.
 
-For example:
+Por ejemplo:
 
 ```text
-2023-05-08 20:53:13 WARN Selenium [:example_id] this is a warning 
+2023-05-08 20:53:13 ATENCIA Selenium [:example_id] esta es una advertencia 
 ```
 
   {{< tab header="JavaScript" >}}
@@ -164,48 +164,48 @@ For example:
   {{< /tab >}}
 {{< /tabpane >}}
 
-### Useful information
+### Información útil
 
-This is the default level where Selenium logs things that users should be aware of but do not need to take actions on.
-This might reference a new method or direct users to more information about something
+Este es el nivel por defecto en el que Selenium registra cosas que los usuarios deben tener en cuenta, pero no necesitan tomar acciones.
+Esto puede hacer referencia a un nuevo método o dirigir a los usuarios a más información sobre algo
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 
-Example:
+Ejemplo:
 
 ```text
 May 08, 2023 9:23:38 PM dev.selenium.troubleshooting.LoggingTest logging
-INFO: this is useful information
+INFO: esta es información útil
 ```
 
 {{% /tab %}}
 {{% tab header="Python" %}}
-Python logs useful information at logger level — `INFO`
+Python registra información útil a nivel de registrador — `INFO`
 
-Example:
+Ejemplo:
 
 ```text
-INFO     selenium:test_logging.py:22 this is useful information
+INFO selenium:test_logging.py:22 esta es información útil
 ```
 
 {{% /tab %}}
 {{% tab header="CSharp" %}}
-.NET logs useful information at logger level `Info`.
+.NET registra información útil en el nivel de logger `Info`.
 
-Example:
+Ejemplo:
 
 ```text
-11:04:40.986 INFO LoggingTest: this is useful information
+11:04:40.986 INFO LoggingTest: esta es información útil
 ```
 
 {{% /tab %}}
 {{% tab header="Ruby" %}}
-Ruby logs useful information at logger level — `:info`.
+Ruby registra información útil a nivel de logger — `:info`.
 
-Example:
+Ejemplo:
 
 ```text
-2023-05-08 20:53:13 INFO Selenium [:example_id] this is useful information 
+2023-05-08 20:53:13 INFO Selenium [:example_id] esta es información útil 
 ```
 
   {{< tab header="Kotlin" >}}
@@ -214,47 +214,47 @@ Example:
   {{< /tab >}}
 {{< /tabpane >}}
 
-### Debugging Details
+### Detalles de depuración
 
-The debug log level is used for information that may be needed for diagnosing issues and troubleshooting problems.
+El nivel de registro de depuración se utiliza para obtener información que puede ser necesaria para diagnosticar problemas y solucionar problemas.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 
-Example:
+Ejemplo:
 
 ```text
 May 08, 2023 9:23:38 PM dev.selenium.troubleshooting.LoggingTest logging
-FINE: this is detailed debug information
+FINE: esto es información detallada de depuración
 ```
 
 {{% /tab %}}
 {{% tab header="Python" %}}
-Python logs debugging details at logger level — `DEBUG`
+Python registra los detalles de depuración a nivel del registrador — `DEBUG`
 
-Example:
+Ejemplo:
 
 ```text
-DEBUG    selenium:test_logging.py:24 this is detailed debug information
+DEBUG selenium:test_logging.py:24 esta es información detallada de depuración
 ```
 
 {{% /tab %}}
 {{% tab header="CSharp" %}}
-.NET logs most debug content at logger level `Debug`.
+.NET registra la mayor parte del contenido de depuración en el nivel de logger `Debug`.
 
-Example:
+Ejemplo:
 
 ```text
-11:04:40.986 DEBUG LoggingTest: this is detailed debug information
+11:04:40.986 DEBUG LoggingTest: esta es información detallada de depuración
 ```
 
 {{% /tab %}}
 {{% tab header="Ruby" %}}
-Ruby only provides one level for debugging, so all details are at logger level — `:debug`.
+Ruby solo proporciona un nivel para la depuración, así que todos los detalles están en el nivel de logger — `:debug`.
 
-Example:
+Ejemplo:
 
 ```text
-2023-05-08 20:53:13 DEBUG Selenium [:example_id] this is detailed debug information 
+2023-05-08 20:53:13 DEBUG Selenium [:example_id] esto es información detallada de depuración 
 ```
 
   {{< tab header="Kotlin" >}}
@@ -265,9 +265,9 @@ Example:
 
 ## Logger output
 
-Logs can be displayed in the console or stored in a file. Different languages have different defaults.
+Los registros pueden mostrarse en la consola o almacenarse en un archivo. Los diferentes idiomas tienen valores por defecto diferentes.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/troubleshooting/LoggingTest.java#L37-L38" >}}
 {{< gh-codeblock path="/examples/python/tests/troubleshooting/test_logging.py#L9-L10" >}}
@@ -276,7 +276,7 @@ Logs can be displayed in the console or stored in a file. Different languages ha
 {{< badge-version version="4.10" >}}
 {{< gh-codeblock path="/examples/ruby/spec/troubleshooting/logging_spec.rb#L15" >}}
 
-To send logs to console output:
+Para enviar registros a la salida de la consola:
 
 ```javascript
 logging.installConsoleHandler()
@@ -288,9 +288,9 @@ logging.installConsoleHandler()
   {{< /tab >}}
 {{< /tabpane >}}
 
-## Logger filtering
+## Filtrado de Logger
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/troubleshooting/LoggingTest.java#L40-L41" >}}
   {{< tab header="Python" >}}
 {{< gh-codeblock path="/examples/python/tests/troubleshooting/test_logging.py#L12-L13" >}}
