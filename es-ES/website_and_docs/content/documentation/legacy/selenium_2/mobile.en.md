@@ -1,37 +1,37 @@
 ---
-title: WebDriver For Mobile Browsers
-linkTitle: Mobile
+title: WebDrivers para navegadores móviles
+linkTitle: Móvil
 weight: 13
 description: |
-  Describes how Selenium 2 supported Android and iOS before Appium was created
+  Describe cómo Selenium 2 soporta Android e iOS antes de que se creó Appium
 ---
 
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/Untrusted-SSL-Certificates)
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/Untrusted-SSL-Certificates)
 
-## Introduction
+## Introducción
 
-We provide mobile drivers for two major mobile platforms: Android and iOS (iPhone & iPad).
+Proporcionamos controladores móviles para dos plataformas móviles principales: Android e iOS (iPhone e iPad).
 
-They can be run on real devices and in an Android emulator or in the iOS Simulator, as appropriate. They are packaged as an app. The app needs to be installed on the emulator or device. The app embeds a [RemoteWebDriver server](https://github.com/SeleniumHQ/selenium/wiki/RemoteWebDriverServer) and a light-weight HTTP server which receive, and respond to, requests from WebDriver Clients i.e. from your automated tests.
+Pueden ejecutarse en dispositivos reales y en un emulador Android o en el simulador de iOS, según corresponda. Están empaquetados como una aplicación. La aplicación necesita estar instalada en el emulador o dispositivo. La aplicación incrusta un [Servidor RemoteWebDriver](https://github.com/SeleniumHQ/selenium/wiki/RemoteWebDriverServer) y un servidor HTTP ligero que recibe, y responde, las solicitudes de los clientes WebDriver i. . de sus pruebas automatizadas.
 
-The connection between the server on the mobile platform and your tests uses an IP connection. The connection may need to be configured. For Android you can connect establish an IP connection over USB.
+La conexión entre el servidor en la plataforma móvil y sus pruebas utiliza una conexión IP. La conexión puede necesitar ser configurada. Para Android se puede conectar establecer una conexión IP por USB.
 
-In some cases your existing WebDriver tests may run successfully e.g. where a common web site serves mobile and desktop users and where the UI is relatively straight-forward. However in other cases you may end up needing to create specific tests for the mobile site; particularly when the site provides specific capabilities, user interfaces, etc. for mobile browsers.
+En algunos casos las pruebas existentes de WebDriver pueden ejecutarse con éxito p.ej. donde un sitio web común sirve a usuarios móviles y de escritorio y donde la interfaz de usuario es relativamente sencilla. Sin embargo, en otros casos puede que tenga que crear pruebas específicas para el sitio móvil; particularmente cuando el sitio proporciona capacidades específicas, interfaces de usuario, etc. para navegadores móviles.
 
-Even when a common web site serves both desktop and mobile browsers, you may want to consider writing specific tests that incorporate factors such as the screen-size of the mobile devices, and different ways users are likely to interact with your web site or web app.
+Incluso cuando un sitio web común sirve navegadores de escritorio y móviles, puedes considerar la posibilidad de escribir pruebas específicas que incorporen factores como el tamaño de pantalla de los dispositivos móviles, y diferentes maneras de que los usuarios puedan interactuar con su sitio web o aplicación web.
 
-## Getting Started
+## Comenzando
 
 [Android Setup](https://github.com/SeleniumHQ/selenium/wiki/AndroidDriver)
 
-[iPhone & iPad Setup](https://github.com/SeleniumHQ/selenium/wiki/IPhoneDriver)
+[Configuración de iPhone y iPad](https://github.com/SeleniumHQ/selenium/wiki/IPhoneDriver)
 
-## Additional Mobile Platforms
+## Plataformas móviles adicionales
 
-There are several related opensource projects that include support for other Mobile platforms. These include:
+Hay varios proyectos de código abierto relacionados que incluyen soporte para otras plataformas móviles. Estos incluyen:
 
-[Blackberry WebDriver](http://code.google.com/p/webdriver-blackberry/), for BlackBerry 5.0 and onward.
+[Blackberry WebDriver](http://code.google.com/p/webdriver-blackberry/), para BlackBerry 5.0 y posterior.
 
-[Headless WebKit WebDriver](http://code.google.com/p/webkitdriver/). Many mobile browsers are WebKit based. Headless WebKit provides a fast light-weight solution.
+[Headless WebKit WebDriver](http://code.google.com/p/webkitdriver/). Muchos navegadores móviles están basados en WebKit. WebKit sin cabezas proporciona una solución rápida de peso ligero.
 
-These projects don't appear to be active, however they may provide a starting point for future work on these platforms.
+Estos proyectos no parecen estar activos, pero pueden proporcionar un punto de partida para futuros trabajos en estas plataformas.
