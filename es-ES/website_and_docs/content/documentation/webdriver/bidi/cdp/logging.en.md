@@ -1,19 +1,19 @@
 ---
-title: Chrome DevTools Logging Features
-linkTitle: Logging
+title: Características de registro de Chrome DevTools
+linkTitle: Loggando
 weight: 2
 description: |
-  Logging features using CDP.
+  Registrando características usando CDP.
 ---
 
 {{% pageinfo color="warning" %}}
-While Selenium 4 provides direct access to the Chrome DevTools Protocol, these
-methods will eventually be removed when WebDriver BiDi implemented.
+Mientras Selenium 4 proporciona acceso directo al Protocolo de Chrome DevTools, estos métodos
+serán eliminados eventualmente cuando WebDriver BiDi implementado.
 {{% /pageinfo %}}
 
-## Console Logs
+## Registros de consola
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidi/cdp/LoggingTest.java#L31" >}}
 {{< gh-codeblock path="/examples/python/tests/bidi/cdp/test_logs.py#L11-12" >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/BiDi/CDP/LoggingTest.cs#L19-L25" >}}
@@ -22,9 +22,9 @@ methods will eventually be removed when WebDriver BiDi implemented.
 {{< badge-code >}}
 {{< /tabpane >}}
 
-## JavaScript Exceptions
+## Excepciones JavaScript
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< badge-implementation >}}
 {{< gh-codeblock path="/examples/python/tests/bidi/cdp/test_logs.py#L22-L23" >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/BiDi/CDP/LoggingTest.cs#L41-L47" >}}
