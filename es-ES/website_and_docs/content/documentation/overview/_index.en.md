@@ -1,45 +1,45 @@
 ---
-title: Selenium Overview
-linkTitle: Overview
+title: Resumen de Selenium
+linkTitle: Resumen
 weight: 1
 description: |
-  Is Selenium for you? See an overview of the different project components.
+  ¿Es Selenium para usted? Vea una visión general de los diferentes componentes del proyecto.
 aliases:
-  - /documentation/en/introduction/
+  - /documentation/es/introduction/
 ---
 
-Selenium is not just one tool or API;
-it comprises many tools.
+Selenium no es solo una herramienta o API;
+contiene muchas herramientas.
 
 ## WebDriver
 
-If you are beginning with desktop website or mobile website test automation, then you
-are going to be using WebDriver APIs. [WebDriver](/documentation/webdriver)
-uses browser automation APIs provided by browser vendors to control the browser and
-run tests. This is as if a real user is operating the browser. Since
-WebDriver does not require its API to be compiled with application
-code, it is not intrusive. Hence, you are testing the
-same application which you push live.
+Si está comenzando con la automatización de pruebas del sitio web de escritorio o del sitio web móvil, entonces
+va a usar las API de WebDriver . [WebDriver](/documentation/webdriver)
+utiliza API de automatización del navegador proporcionadas por los proveedores del navegador para controlar el navegador y
+ejecutar pruebas. Esto es como si un usuario real estuviera operando el navegador. Dado que
+WebDriver no requiere que su API sea compilada con el código
+de la aplicación, no es intrusiva. Por lo tanto, está probando la
+misma aplicación que empuja en directo.
 
 ## IDE
 
-[IDE](//selenium.dev/selenium-ide) (Integrated Development Environment)
-is the tool you use to develop your Selenium test cases. It’s an easy-to-use Chrome
-and Firefox extension and is generally the most efficient way to develop
-test cases. It records the users' actions in the browser for you, using
+[IDE](//selenium.dev/selenium-ide) (Entorno de desarrollo integrado)
+es la herramienta que utiliza para desarrollar sus casos de prueba de Selenium. Es una extensión de Chrome
+y Firefox fácil de usar y es generalmente la forma más eficiente de desarrollar casos
+de prueba. It records the users' actions in the browser for you, using
 existing Selenium commands, with parameters defined by the context of
-that element. This is not only a time-saver but also an excellent way
-of learning Selenium script syntax.
+that element. Esto no es solo un ahorrador de tiempo, sino también una excelente manera
+de aprender la sintaxis de scripts de Selenium.
 
-## Grid
+## Rejilla
 
-Selenium Grid allows you to run test cases in different
-machines across different platforms. The control of
-triggering the test cases is on the local end, and
-when the test cases are triggered, they are automatically
-executed by the remote end.
+Selenium Grid le permite ejecutar casos de prueba en diferentes máquinas
+entre diferentes plataformas. El control de
+desencadenando los casos de prueba está en el extremo local y
+cuando los casos de prueba se activan, son automáticamente
+ejecutados por el extremo remoto.
 
-After the development of the WebDriver tests, you may face
-the need to run your tests on multiple browsers and
-operating system combinations.
-This is where [Grid](/documentation/grid) comes into the picture.
+Después del desarrollo de las pruebas de WebDriver, usted puede enfrentar
+la necesidad de ejecutar sus pruebas en múltiples navegadores y
+combinaciones del sistema operativo.
+Aquí es donde [Grid](/documentation/grid) entra en la foto.
