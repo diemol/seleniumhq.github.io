@@ -1,22 +1,22 @@
 ---
-title: Buck Build Tool
-linkTitle: Buck
+title: Herramienta de Build Buck
+linkTitle: Pato
 weight: 4
 description: |
-  Buck is a build tool from Facebook that we were working with to replace Crazy fun. We have since replaced it with [Bazel](https://bazel.build/).
+  Buck es una herramienta de construcción de Facebook con la que estábamos trabajando para reemplazar a Crazy fun. Lo hemos sustituido por [Bazel](https://bazel.build/).
 ---
 
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/Buck) \
-You can read the documentation for the legacy [Crazy Fun Build tool]({{< ref "crazy_fun_build.md" >}}).
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/Buck) \
+Puedes leer la documentación de la [Herramienta de Construcción Loco Fun]({{< ref "crazy_fun_build. d" >}}).
 
-## Building Selenium with Buck
+## Construyendo Selenium con Pato
 
-The easiest thing to do is to just run "./go". The build process will download the right version of Buck for you so long as there's no `.nobuckcheck` file in the root of the project. The download ends up in `buck-out/crazy-fun/HASH/buck.pex` where `HASH` is the value of the current buck version (given in the `.buckversion` file in the root of the project.
+Lo más fácil de hacer es ejecutar "./go". El proceso de compilación descargará la versión correcta de Buck para ti siempre y cuando no haya un archivo `.nobuckcheck` en la raíz del proyecto. La descarga termina en `buck-out/crazy-fun/HASH/buck. ex` donde `HASH` es el valor de la versión actual del paquete (dada en el archivo `.buckversion` en la raíz del proyecto.
 
-If you'd like to build and run our fork of Buck, then:
+Si quieres construir y ejecutar nuestro fork de Buck, entonces:
 
 ```
-git clone https://github.com/SeleniumHQ/buck.git
+git clone https://github.com/SeleniumHQ/buck. it
 cd buck && ant
 export PATH=`pwd`/bin:$PATH
 cd ~/src/selenium 
@@ -24,13 +24,13 @@ buck build chrome firefox htmlunit remote leg-rc
 buck test --all
 ```
 
-## Updating the `buck.pex`
+## Actualizando el `buck.pex`
 
-Should you need to update the version of Buck that is downloaded:
+Si necesita actualizar la versión de Buck que se ha descargado:
 
-- Checkout the source to Buck and build the PEX: `buck build --show-output buck`
-- Figure out the git hash of the version you've just built. Normally that'll be the HEAD of master. Put that full hash into the `.buckversion` of the main selenium project.
-- Put the md5 hash of the PEX into the `.buckhash` file in the main selenium project.
-- Create a new release of SeleniumHQ's Buck fork on GitHub. The name is `buck-release-$VERSION`, where $VERSION is whatever's in `.buckversion` in the main selenium project.
-- Upload the PEX to the release, and make the release public.
-- Commit the changes to the main selenium project and push them.
+- Echa un vistazo al código fuente de Buck y construye el PEX: `buck build --show-output buck`
+- Figura el hash git de la versión que acabas de construir. Normalmente eso será el CABO del maestro. Ponga ese hash completo en el `.buckversion` del proyecto principal de selenio.
+- Ponga el hash md5 del PEX en el archivo `.buckhash` en el proyecto principal de selenium.
+- Crear una nueva versión de SeleniumHQ Buck fork en GitHub. El nombre es `buck-release-$VERSION`, donde $VERSION es lo que esté en `.buckversion` en el proyecto principal de selenium.
+- Sube el PEX a la versión, y haz pública la liberación.
+- Comprometer los cambios en el proyecto principal de selenium y empujarlos.
