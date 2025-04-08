@@ -1,18 +1,18 @@
 ---
-title: Network
-linkTitle: Network
+title: Red
+linkTitle: Red
 weight: 1
 aliases:
-  - /documentation/en/webdriver/bidirectional/bidirectional_w3c/network
+  - /documentation/es/webdriver/bidirectional/bidirectional_w3c/network
 ---
 
-## Commands
+## Comandos
 
-This section contains the APIs related to network commands.
+Esta sección contiene las APIs relacionadas con los comandos de red.
 
-### Add network intercept
+### Añadir interceptación de red
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.18" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/NetworkCommandsTest.java#L36-L38" >}}
@@ -29,9 +29,9 @@ This section contains the APIs related to network commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Remove network intercept
+### Eliminar interceptación de red
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.18" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/NetworkCommandsTest.java#L46-L50" >}}
@@ -48,9 +48,9 @@ This section contains the APIs related to network commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Continue request blocked at authRequired phase with credentials
+### Continuar la solicitud bloqueada en la fase requerida con credenciales
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.18" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/NetworkCommandsTest.java#L57-L64" >}}
@@ -67,9 +67,9 @@ This section contains the APIs related to network commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Continue request blocked at authRequired phase without credentials
+### Continuar la solicitud bloqueada en la fase requerida sin credenciales
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.18" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/NetworkCommandsTest.java#L74-L80" >}}
@@ -86,9 +86,9 @@ This section contains the APIs related to network commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Cancel request blocked at authRequired phase
+### Cancelar solicitud bloqueada en fase obligatoria
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.18" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/NetworkCommandsTest.java#L90-L96" >}}
@@ -105,9 +105,9 @@ This section contains the APIs related to network commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Fail request
+### Solicitud de fallo
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.18" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/NetworkCommandsTest.java#L104-L108" >}}
@@ -123,13 +123,13 @@ This section contains the APIs related to network commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Events
+## Eventos
 
-This section contains the APIs related to network events.
+Esta sección contiene las APIs relacionadas con eventos de red.
 
-### Before Request Sent
+### Antes de la solicitud enviada
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/NetworkEventsTest.java#L30-L35" >}}
@@ -146,9 +146,9 @@ This section contains the APIs related to network events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Response Started
+### Respuesta iniciada
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/NetworkEventsTest.java#L45-L51" >}}
@@ -165,9 +165,9 @@ This section contains the APIs related to network events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Response Completed
+### Respuesta completada
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/NetworkEventsTest.java#L62-L68" >}}
@@ -184,9 +184,9 @@ This section contains the APIs related to network events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Auth Required
+### Aut requerido
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.17" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/NetworkEventsTest.java#L101-L106" >}}
