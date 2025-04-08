@@ -117,7 +117,7 @@ Notice that the Selenium bindings use the CLI arguments to specify configuration
 
 The following table summarizes all the supported arguments supported by Selenium Manager and their correspondence key in the configuration file and environment variables.
 
-| CLI argument                                | Configuration file                          | Env variable                               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| CLI argument                                | Configuration file                          | Env variable                               | Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ------------------------------------------- | ------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--browser BROWSER`                         | `browser = "BROWSER"`                       | `SE_BROWSER=BROWSER`                       | Browser name: `chrome`, `firefox`, `edge`, `iexplorer`, `safari`, `safaritp`, or `webview2`                                                                                                                                                                                                                                                                                                                                       |
 | `--driver <DRIVER>`                         | `driver = "DRIVER"`                         | `SE_DRIVER=DRIVER`                         | Driver name: `chromedriver`, `geckodriver`, `msedgedriver`, `IEDriverServer`, or `safaridriver`                                                                                                                                                                                                                                                                                                                                   |
@@ -151,7 +151,7 @@ In addition to the configuration keys specified in the table before, there are s
 
 ### se-config.toml Example
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="se-config.toml" >}}
 {{< gh-codeblock path="examples/python/tests/selenium_manager/example_se-config.toml#L1-L21" >}}
 {{< /tab >}}
@@ -231,14 +231,14 @@ INFO    Browser path: C:\Users\boni\.cache\selenium\chrome\win64\117.0.5938.22\c
 
 ### Implementing Selenium Manager in Your Scripts
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/selenium_manager/SeleniumManagerUsageDemo.java#L10-L15" >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/selenium_manager/SeleniumManagerUsageDemo.java#L18-L22" >}}
 {{< /tab >}}
 {{< gh-codeblock path="examples/python/tests/selenium_manager/usage.py#L5-L8" >}}
 {{< gh-codeblock path="examples/python/tests/selenium_manager/usage.py#L10-L12" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -384,6 +384,6 @@ utilize the following steps:
 6. Put the driver you want in a location on your system PATH
 7. Selenium will now use the built Selenium Manager to locate the manually downloaded driver on PATH
 
-## Roadmap
+## Hoja de ruta
 
 You can trace the work in progress in the [Selenium Manager project dashboard](https://github.com/orgs/SeleniumHQ/projects/5). Moreover, you can check the new features shipped with each Selenium Manager release in its [changelog file](https://github.com/SeleniumHQ/selenium/blob/trunk/rust/CHANGELOG.md).
