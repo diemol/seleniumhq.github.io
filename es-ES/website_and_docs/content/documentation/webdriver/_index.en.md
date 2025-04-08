@@ -3,25 +3,25 @@ title: WebDriver
 linkTitle: WebDriver
 weight: 2
 description: |
-  WebDriver drives a browser natively; learn more about it.
+  WebDriver maneja un navegador de forma nativa; aprende más sobre él.
 aliases:
-  - /documentation/en/webdriver/
+  - /documentation/es/webdriver/
 ---
 
-WebDriver drives a browser natively, as a user would, either locally
-or on a remote machine using the Selenium server.
-It marks a leap forward in terms of browser automation.
+WebDriver maneja un navegador de forma nativa, como lo haría un usuario, ya sea localmente
+o en una máquina remota usando el servidor Selenium.
+Marca un salto hacia adelante en términos de automatización del navegador.
 
-Selenium WebDriver refers to both the language bindings
-and the implementations of the individual browser controlling code.
-This is commonly referred to as just _WebDriver_.
+Selenium WebDriver se refiere tanto a los enlaces de idioma
+como a las implementaciones del código de control individual del navegador.
+Esto es comúnmente conocido como _WebDriver_.
 
-Selenium WebDriver is a [W3C Recommendation](https://www.w3.org/TR/webdriver1/)
+Selenium WebDriver es una [Recomendación W3C](https://www.w3.org/TR/webdriver1/)
 
 - WebDriver is designed as a simple
   and more concise programming interface.
 
-- WebDriver is a compact object-oriented API.
+- WebDriver es una API compacta orientada a objetos.
 
-- It drives the browser effectively.
+- Dirige el navegador de forma eficaz.
 
