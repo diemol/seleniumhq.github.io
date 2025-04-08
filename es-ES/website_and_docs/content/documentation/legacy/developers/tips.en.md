@@ -1,131 +1,131 @@
 ---
-title: Developer Tips
-linkTitle: Tips
+title: Consejos de Desarrollador
+linkTitle: Consejos
 weight: 10
 description: |
-  Details on how to execute Selenium Test Suite with Crazy Fun.
+  Detalles sobre cómo ejecutar Selenium Test Suite con Crazy Fun.
 ---
 
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/Developer-Tips)
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/Developer-Tips)
 
-## Running an Individual Test
+## Ejecutando una prueba individual
 
-When developing WebDriver, it is common to want to run a single test rather than the entire test suite for a particular driver.
+Al desarrollar WebDriver, es común querer ejecutar una sola prueba en lugar de toda la suite de pruebas para un controlador en particular.
 
-You can run all the tests in a given test class this way:
+Puede ejecutar todas las pruebas en una clase de prueba dada de esta manera:
 
 ```
 ./go test_firefox onlyRun=CombinedInputActionsTest
 ```
 
-You can also run a single test directly from the command line by typing:
+También puede ejecutar una sola prueba directamente desde la línea de comandos escribiendo:
 
 ```
-./go test_firefox method=foo
+./go método test_firefox=foo
 ```
 
-## Not Halting On Errors Or Failures
+## No hay alboroto en errores o fallos
 
-The test suite will halt on errors and failures by default.  You can disable this behaviour by setting the `haltonerror` or `haltonfailure` environmental variables to `0`.
+La suite de pruebas se detendrá por defecto en errores y fallos.  Puedes desactivar este comportamiento estableciendo las variables de entorno `haltonerror` o `haltonfailure` a `0`.
 
-## Reviewing the Logs For the Tests
+## Revisando los registros de las pruebas
 
-When you run the tests, the test results don't appear on the screen. They are written to the \`./build/test\_logs' folder. A pair of files are written. Their names are relatively consistent and include the details of the tests which were run. The pair comprise a txt file and an xml file. The xml file contains more information about the runtime environment such as the path, Ant version, etc. These files are overwritten the next time the same test target is executed so you may want to archive results if they're important to you.
+Cuando ejecuta las pruebas, los resultados de las pruebas no aparecen en la pantalla. Están escritos en la carpeta \`./build/test\_logs'. Un par de archivos están escritos. Sus nombres son relativamente consistentes e incluyen los detalles de las pruebas ejecutadas. El par comprende un archivo txt y un archivo xml. El archivo xml contiene más información sobre el entorno de ejecución como la ruta, la versión Ant, etc. Estos archivos se sobrescriben la próxima vez que se ejecute el mismo objetivo de prueba, por lo que puede querer archivar los resultados si son importantes para usted.
 
-## Using Rake
+## Usando Rake
 
-Rake is very similar to using other build tools such as "make" or "ant". You can specify a "target" to run by adding it as a parameter, and you can add more than one target at a time. Note that since WebDriver does not rely on ruby being installed and uses JRuby, rake should **not** be involved directly - use the _go_ script instead. For example, in order to clean the build and then build and run the HtmlUnitDriver tests:
+Rake es muy similar a usar otras herramientas de compilación como "make" o "ant". Puede especificar un "objetivo" a ejecutar añadiéndolo como parámetro, y puede añadir más de un objetivo a la vez. Tenga en cuenta que dado que WebDriver no se basa en la instalación de ruby y utiliza JRuby, rake **no** debe involucrarse directamente - utilice el script _go_ en su lugar. Por ejemplo, para limpiar la compilación y luego construir y ejecutar las pruebas HtmlUnitDriver:
 
 ```
-./go clean test_htmlunit
+./go limpia test_htmlunit
 ```
 
-The default target that's used will compile the code and run all the tests. More interesting targets are:
+El objetivo por defecto que se utiliza compilará el código y ejecutará todas las pruebas. Objetivos más interesantes son:
 
-| **Target**                           | **Description**                                                                                                                                                                                                         |
-| :----------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| clean                                | Delete the contents of the build directory, removing all compiled artifacts                                                                                                                                             |
-| test                                 | Compile the dependencies of and run all the tests for the HtmlUnitDriver, FirefoxDriver, and InternetExplorerDriver as well as the support library's tests                                                              |
-| firefox                              | Compile the FirefoxDriver                                                                                                                                                                                               |
-| htmlunit                             | Compile the HtmlUnitDriver                                                                                                                                                                                              |
-| ie                                   | Compile the InternetExplorerDriver. This won't compile the C++ on a non-Windows system, but will always compile the Java, no matter which OS you happen to be using                                     |
-| support                              | Guess what this does :)                                                                                                                                                                                 |
-| test\_htmlunit | Compile the dependencies and then run the tests for the HtmlUnitDriver. The same "test\_x" pattern can be followed for all the compilation targets in this table. |
+| **Target**                             | **Descripción**                                                                                                                                                                                                                     |
+| :------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| limpiar                                | Eliminar el contenido del directorio de compilación, eliminando todos los artefactos compilados                                                                                                                                     |
+| prueba                                 | Compilar las dependencias y ejecutar todas las pruebas para el HtmlUnitDriver, FirefoxDriver, InternetExplorerDriver así como las pruebas de la biblioteca de soporte                                                               |
+| firefox                                | Compilar FirefoxDriver                                                                                                                                                                                                              |
+| htmlunit                               | Compilar el HtmlUnitDriver                                                                                                                                                                                                          |
+| es                                     | Compila el InternetExplorerDriver. Esto no compilará el C++ en un sistema que no sea Windows, pero siempre compilará el Java, sin importar qué sistema operativo esté usando                                        |
+| soporte                                | Adivina lo que hace esto :)                                                                                                                                                                                         |
+| prueba\_htmlunit | Compila las dependencias y luego ejecute las pruebas para el HtmlUnitDriver. Se puede seguir el mismo patrón "test\_x" para todos los objetivos de compilación en esta tabla. |
 
-### Running a remote Debugger with Java tests
+### Ejecutar un depurador remoto con pruebas Java
 
-You can run the tests in debug mode and wait for a remote java listener (which one would setup in eclipse or intellij).
+Puede ejecutar las pruebas en modo de depuración y esperar a un detector java remoto (que se configuraría en eclipse o intellij).
 
 ```
 ./go debug=true suspend=true test_firefox
 ```
 
-## Debugging the Firefox Driver
+## Depurando el Firefox Driver
 
-### Getting output from the Firefox process itself
+### Obteniendo salida del propio proceso de Firefox
 
-This is usually useful to debug issues with Firefox starting up. The Java system property `webdriver.firefox.logfile` will instruct the FirefoxDriver to redirect the output to a file:
+Esto suele ser útil para depurar problemas al iniciar Firefox. La propiedad del sistema Java `webdriver.firefox.logfile` indicará al FirefoxDriver que redireccione la salida a un archivo:
 
 ```
 java -Dwebdriver.firefox.logfile=/dev/stdout -cp selenium-2.jar <sometest>
 ```
 
-### Outputting to the Error Console
+### Salida a la consola de errores
 
-A common technique used for debugging of the Firefox driver extension is debug statements. The two following methods can be used from almost any Javascript code inside the extension:
+Una técnica común usada para depurar la extensión del controlador Firefox son las sentencias de depuración. Los dos siguientes métodos se pueden utilizar desde casi cualquier código Javascript dentro de la extensión:
 
-- `Logger.dumpn()` - Logs a string into console (and converts arguments to strings). For example: `Logger.dumpn("Found element: " + node)`.
-- `Logger.dump()` - Gets a single argument, an object, and dumps its entire contents: implemented interfaces, data fields, methods, etc.
+- `Logger.dumpn()` - Registra una cadena en consola (y convierte argumentos en cadenas). Por ejemplo: `Logger.dumpn("Found element: " + node)`.
+- `Logger.dump()` - Obtiene un solo argumento, un objeto, y vuelca todo su contenido: interfaces implementadas, campos de datos, métodos, etc.
 
-### Getting output from the error console to a file
+### Obteniendo salida de la consola de error a un archivo
 
-To see output generated using the `Logger` utility, one has to open up Firefox's error console - difficult or simply impossible on remote machines. Fortunately, there's a way to get the contents of the output dumped to a file:
+Para ver la salida generada usando la utilidad `Logger`, se tiene que abrir la consola de error de Firefox, difícil o simplemente imposible en máquinas remotas. Afortunadamente, hay una forma de obtener el contenido de la salida volcada a un archivo:
 
 ```
 FirefoxProfile p = new FirefoxProfile();
 p.setPreference("webdriver.log.file", "/tmp/firefox_console");
-WebDriver driver = new FirefoxDriver(p);
+controlador WebDriver = new FirefoxDriver(p);
 ...
 ```
 
-The `webdriver.log.file` preference will instruct the `Logger` to dump all contents of the console to the specified file.
-webdriver.log.file
+La preferencia `webdriver.log.file` indicará al `Logger` volcar todos los contenidos de la consola al archivo especificado.
+archivo webdriver.log.file
 
-### Getting even more output to the command line
+### Obteniendo aún más salida a la línea de comandos
 
-When suspecting additional logging from Firefox could be beneficial, one can crank debugging level all the way up:
+Al sospechar que el registro adicional desde Firefox podría ser beneficioso, se puede crank el nivel de depuración hasta el momento:
 
 ```
-export NSPR_LOG_MODULES=all:3
+exportar NSPR_LOG_MODULES=all:3
 ```
 
-Setting this environment variable will cause Firefox to log additional messages to the console. Use this environment variable together with `webdriver.firefox.logfile` to get a hold of Firefox's output to the console.
+Configurar esta variable de entorno hará que Firefox registre mensajes adicionales en la consola. Utilice esta variable de entorno junto con `webdriver.firefox.logfile` para mantener la salida de Firefox en la consola.
 
-## Debugging the Internet Explorer Driver
+## Depurar el controlador de Internet Explorer
 
-In order to get detailed information from IEDriverServer.exe you can run tests with the option devMode=true, this option will set logging level to DEBUG and redirect log output to the file iedriver.log
+Para obtener información detallada de IEDriverServer. xe puede ejecutar pruebas con la opción devMode=true, esta opción establecerá el nivel de registro a DEBUG y redirigirá la salida de registro al archivo iedriver.log
 
 ```
 ./go test_ie devMode=true
 ```
 
-## Adding a test
+## Agregando una prueba
 
-Most of WebDriver's test cases live under java/client/test/org/openqa/selenium. For example, to demonstrate an issue with clicking on elements, a test case should be added to  ClickTest. The test cases already have a driver instance - no need to create one.
-The test use pages that are served by an in-process server, served from common/src/web. Their URLs are provided by the Pages class, so when adding a page and add it to the Pages class as well.
+La mayoría de los casos de prueba de WebDriver viven bajo java/client/test/org/openqa/selenium. Por ejemplo, para demostrar un problema haciendo clic en los elementos, se debe añadir un caso de prueba a ClickTest. Los casos de prueba ya tienen una instancia del controlador - no es necesario crear uno.
+La prueba utiliza páginas que son servidas por un servidor en proceso, servidas desde common/src/web. Sus URLs son proporcionadas por la clase Pages, así que al añadir una página y añadirla a la clase Pages también.
 
-## Manually interacting with `RemoteWebDriverServer`
+## Interactuando manualmente con `RemoteWebDriverServer`
 
-We can use a web browser or tools such as telnet to interact with a RemoteWebDriverServer e.g. to debug the JSON protocol. Here's a simple example of checking the status of a server installed on the local machine
+Podemos utilizar un navegador web o herramientas como telnet para interactuar con un RemoteWebDriverServer, por ejemplo, para depurar el protocolo JSON. Aquí hay un simple ejemplo de comprobación del estado de un servidor instalado en la máquina local
 
-In a web browser
+En un navegador web
 
 ```
 http://localhost:8080/wd/hub/status/
 
 ```
 
-In telnet
+En telnet
 
 ```
 telnet localhost 8080
@@ -134,19 +134,19 @@ GET /wd/hub/status/ HTTP/1.0
 
 ```
 
-On Macs and Unix in general try `curl`
+En Macs y Unix en general intente `curl`
 
 ```
 curl  http://localhost:8080/wd/hub/status
 ```
 
-And on linux `wget`
+Y en linux `wget`
 
 ```
 wget http://localhost:8080/wd/hub/status
 ```
 
-In all these cases the RemoteWebDriverServer should respond with
+En todos estos casos, el RemoteWebDriverServer debe responder con
 
 ```
 
