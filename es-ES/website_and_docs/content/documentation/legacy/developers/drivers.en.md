@@ -1,66 +1,66 @@
 ---
-title: Adding new drivers to Selenium 2 code
-linkTitle: Drivers
+title: Añadiendo nuevos conductores al código de Selenium 2
+linkTitle: Conductores
 weight: 4
 description: |
-  Instructions for how to create tests for new drivers for Selenium 2.
+  Instrucciones para cómo crear pruebas para nuevos controladores para Selenium 2.
 ---
 
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/Writing-New-Drivers) \
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/Writing-New-Drivers) \
 
-## Introduction
+## Introducción
 
-WebDriver has a comprehensive suite of tests that describe the expected behavior of a new implementation. We'll assume that you're implementing the driver in Java for the sake of simplicity, but you can take a look at any of the existing implementations for how we handle more complex builds or other languages once you've read this.
+WebDriver tiene un conjunto completo de pruebas que describen el comportamiento esperado de una nueva implementación. Supondremos que está implementando el controlador en Java en aras de la simplicidad, pero puede echar un vistazo a cualquiera de las implementaciones existentes para ver cómo manejamos compilaciones más complejas u otros lenguajes una vez que haya leído esto.
 
-## Writing a New WebDriver Implementation
+## Escribir una nueva implementación de WebDriver
 
-### Create New Top-Level Directories
+### Crear nuevos directorios de nivel
 
-Create a new top-level folder, parallel to "common" and "firefox", named after your browser. In this, create a "src/java" and a "test/java" directory. It should be obvious what goes where.
+Crea una nueva carpeta de nivel superior, paralela a "común" y "firefox", con el nombre de tu navegador. En esto, crea un directorio "src/java" y un directorio "test/java". Debería ser obvio lo que va a dónde.
 
-### Set Up a Test Suite
+### Configurar una Suite de Prueba
 
-Copy one of the existing test suites to your test tree, and modify it for your new browser. This will probably cause you to modify the "Ignore.java" class, which is to be expected, and to add a holding class for your implementation in the source tree. You **must** include the "common" directory in order to pick up all the tests. For now, as long as nothing causes a fatal crash, leave the tests as they are.
+Copie una de las suites de prueba existentes a su árbol de pruebas, y modifíquela para su nuevo navegador. Esto probablemente hará que modifiques la "Ignora". ava", que es de esperar, y añadir una clase holding para su implementación en el árbol fuente. **debes** incluir el directorio "común" para poder recoger todas las pruebas. Por ahora, mientras nada cause un colapso fatal, deje las pruebas tal como están.
 
-Once you've added the test suite, add a "build.desc" CrazyFunBuild file in the top level of your project. Model it after the one in the "htmlunit" directory. You should then be able to run your tests from the command line using the "go" script.
+Una vez que hayas añadido la suite de pruebas, añade un archivo CrazyFunBuild "build.desc" en el nivel superior de tu proyecto. Modelo después del que está en el directorio "htmlunit". Deberías poder ejecutar tus pruebas desde la línea de comandos usando el script "go".
 
-At this point, we expect total and catastrophic failure when tests are being run.
+En este punto, esperamos un fracaso total y tópico cuando se lleven a cabo las pruebas.
 
-### Start Implementing
+### Empezar a implementar
 
-If your browser runs out of process, it is _strongly encouraged_ to make use of the JsonWireProtocol. This will make the client-side (the APIs that users use) relatively cheap to implement, and means that you get Java, C#, Ruby and Python support for significantly less effort since you can extend the remote client.
+Si tu navegador se queda sin proceso, se recomienda encarecidamente_ hacer uso del JsonWireProtocol. Esto hará que el lado del cliente (las APIs que los usuarios usan) sean relativamente baratas para implementar, y significa que usted obtiene Java, C#, Ruby y Python soportan un esfuerzo significativamente menor ya que puedes extender el cliente remoto.
 
-## Implementation Tips
+## Consejos de implementación
 
-### Where to Start
+### Donde empezar
 
-As mentioned, has a suite of tests. The suggested order to make these pass is roughly:
+Como se ha mencionado, tiene un conjunto de pruebas. El orden sugerido para hacer este pase es ásperamente:
 
-1. ElementFindingTest --- needed because element location is key
-2. PageLoadingTest
-3. ChildrenFindingTest --- more finding elements
+1. ElementFindingTest --- necesario porque la ubicación del elemento es clave
+2. Páginas de carga
+3. ChildrenFindingTest --- más elementos de búsqueda
 4. FormHandlingTest
 5. FrameSwitchingTest
-6. ExecutingJavascriptTest
-7. JavascriptEnabledDriverTest
+6. Ejecutando prueba de Javascript
+7. JavascriptActivedDriverTest
 
-At this point, you'll have a reasonably complete working driver. After that, it's probably best to get the user interactions correct:
+Llegados a este punto, tendrá un conductor de trabajo razonablemente completo. Después de eso, probablemente sea mejor obtener las interacciones del usuario correctamente:
 
-1. CorrectEventFiringTest
+1. Prueba Correcta
 2. TypingTest
 
-Before spelunking into the cutting-edge stuff:
+Antes de girar en el borde del corte:
 
 1. AlertsTest
 
-It's not necessary to get every test working in a class before moving on. I tend to go as far down a class as I can, and then switch to the next class on the list when the going gets tough. This allows you to maintain reasonable velocity and still cover the basics.
+No es necesario hacer que cada prueba funcione en una clase antes de continuar. Suelo ir lo más abajo posible de una clase y luego cambie a la siguiente clase de la lista cuando la marcha se haga más dura. Esto le permite mantener una velocidad razonable y aún así cubrir lo básico.
 
-### Running a Single Test
+### Ejecutar una sola prueba
 
-It's far from ideal, but the method we use is to modify the SingleTestSuite class in the common project, and then modify the module it's run from via the IDE's UI (that is, just go into the launch configuration (in IDEA) and modify the module used: don't move the file!) This class should be self-explanatory.
+Está lejos de ser ideal, pero el método que utilizamos es modificar la clase SingleTestSuite en el proyecto común, y luego modificar el módulo desde el que se ejecuta a través de la interfaz de usuario de IDE (es decir, simplemente vaya a la configuración de inicio (en IDEA) y modifique el módulo utilizado: ¡no muevas el archivo!) Esta clase debe ser autoexplicativa.
 
-### Ignoring Tests
+### Ignorando Pruebas
 
-At some point you'll want to stop running tests on an ad-hoc basis and make use of a continuous build product to ensure that you're not introducing regressions. At this point, the process is to run the tests from the command line. This will generate a list of failing tests. Go through each of these tests and add or modify the "@Ignore" associated with the test. Re-run the tests. It may take a few iterations, but your build will eventually go green. Nice.
+En algún momento querrá dejar de ejecutar pruebas de forma ad hoc y hacer uso de un producto de construcción continua para asegurarse de que no está introduciendo regresiones. En este punto, el proceso es ejecutar las pruebas desde la línea de comandos. Esto generará una lista de pruebas fallidas. Vaya a través de cada una de estas pruebas y añada o modifique el "@Ignore" asociado con la prueba. Vuelva a ejecutar las pruebas. Puede tomar algunas iteraciones, pero tu construcción terminará siendo verde. Niza.
 
-The build makes use of ant behind the scenes and stores logs in "build/build\_log.xml" and the test logs in "build/test\_logs"
+La construcción hace uso de ant detrás de las escenas y almacena los registros en "build/build\_log.xml" y los registros de pruebas en "build/test\_logs"
