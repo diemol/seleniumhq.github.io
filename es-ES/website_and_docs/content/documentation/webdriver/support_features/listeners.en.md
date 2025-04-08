@@ -1,19 +1,19 @@
 ---
-title: Command Listeners
-linkTitle: Listeners
+title: Escuchadores de comandos
+linkTitle: Escuchadores
 weight: 2
 aliases:
-  - /documentation/webdriver/drivers/listeners
+  - /documentation/webdriver/drivers/drivers
 ---
 
-These allow you to execute custom actions in every time specific Selenium commands are sent
+Esto te permite ejecutar acciones personalizadas cada vez que se envían comandos específicos de Selenium
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< badge-code >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
