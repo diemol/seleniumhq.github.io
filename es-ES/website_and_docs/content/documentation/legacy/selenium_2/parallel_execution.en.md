@@ -1,60 +1,60 @@
 ---
-title: Limitations of scaling up tests in Selenium 2
-linkTitle: Parallel Execution
+title: Limitaciones de pruebas de escalado en Selenium 2
+linkTitle: Ejecución paralela
 weight: 11
 description: |
-  Summary of additional constraints that arise when running Selenium2 in parallel.
+  Resumen de restricciones adicionales que surgen al ejecutar Selenium2 en paralelo.
 ---
 
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/Scaling-WebDriver)
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/Scaling-WebDriver)
 
-## Running parallel Selenium2
+## Ejecutando paralelo Selenium2
 
-This page tries to summarize additional constraints that arise when running Selenium2 in parallel.
+Esta página trata de resumir restricciones adicionales que surgen cuando se ejecuta Selenium2 en paralelo.
 
-### WebDriver instantiation
+### Instanciación WebDriver
 
-While an individual WebDriver instance cannot be shared among threads, it is easy to create multiple WebDriver instances.
+Mientras que una instancia individual de WebDriver no se puede compartir entre los hilos, es fácil crear múltiples instancias de WebDriver.
 
-### Ephemeral sockets
+### Sockets efeméricos
 
-There is a general problem of TCP/IP v4, where the TCP/IP stack uses ephemeral ports when making a connection between two sockets. The typical symptom of this is that connection failures start appearing after a short time of running, often a minute or two. The message will vary somewhat but it always appears after some time, and if you reduce the number of browsers it will eventually work fine.
+Hay un problema general de TCP/IP v4, donde la pila TCP/IP utiliza puertos efeméricos cuando se hace una conexión entre dos sockets. El síntoma típico de esto es que las fallas de conexión comienzan a aparecer después de un corto tiempo de funcionamiento, a menudo de un minuto o dos. El mensaje variará un poco pero siempre aparece después de algún tiempo, y si reduce el número de navegadores eventualmente funcionará bien.
 
-[Wikipedia on Ephemeral ports](http://en.wikipedia.org/wiki/Ephemeral_port) or a quick google of "ephemeral sockets <your os name>" will tell you what your current OS delivers and how to set it.
+[Wikipedia on Ephemeral ports](http://en.wikipedia.org/wiki/Ephemeral_port) o un Google rápido de "efemeral sockets <your os name>" te dirá qué entrega tu sistema operativo actual y cómo configurarlo.
 
-Currently (2.13.0) it seems like a firefox running at full blast consumes something in the range of 2000 ephemeral ports per firefox; your mileage will vary here. This means you can
-run out of ephemeral port on Windows XP with as litttle as 2 browsers, maybe even 1 if you for instance iterate extermly quickly .
+Actualmente (2.13. ) parece que un firefox que corre a plena explosión consume algo en el rango de 2000 puertos efeméricos por bombero; su kilometraje variará aquí. Esto significa que puede
+quedarse sin puerto efemeral en Windows XP con tan poco como 2 navegadores, tal vez incluso 1 si por ejemplo iteran extermly rápido .
 
-#### Will it be fixed ?
+#### ¿Se arreglará?
 
-The solution to the ephemeral socket problem is HTTP1.1 keep alive on the connections. Firefox does not support keep-alive as of version 2.13.0.
+La solución al problema del socket efemeral es HTTP1.1 mantener vivo las conexiones. Firefox no soporta keep-alive desde la versión 2.13.0.
 
-#### Things that are fixed
+#### Cosas que están arregladas
 
-- The java client.
-- Selenium server ("rc").
+- El cliente Java.
+- Servidor Selenium ("rc").
 - Selenium grid hub & nodes
-- The ruby bindings (see notes in [RubyBindings](RubyBindings.md)).
-- The IE driver.
-- ChromeDriver
+- Los enlaces de rubí (ver notas en [RubyBindings](RubyBindings.md)).
+- El controlador IE.
+- Controlador de cromo
 
-The means you can use the java client to scale out to remote boxes running selenium server and never have any problems on the central build server. You may need to solve socket problems on the remote boxes though.
+Esto significa que puede usar el cliente java para escalar a cajas remotas ejecutando selenium server y nunca tener problemas en el servidor central de compilación. Sin embargo, es posible que tenga que resolver problemas de socket en las cajas remotas.
 
 #### Microsoft Windows
 
-If you are using the old versions of Windows (<=2003, inc XP) you should not be
-waiting for port usage to get low enough to fit in this space. That may simply never happen, although some combinations probably will. See http://support.microsoft.com/kb/196271 on how to adjust it.
+Si está utilizando las versiones antiguas de Windows (<=2003, inc XP) no debería estar
+esperando que el uso del puerto sea lo suficientemente bajo como para caber en este espacio. Puede que eso simplemente nunca suceda, aunque algunas combinaciones probablemente lo harán. Consulte http://support.microsoft.com/kb/196271 sobre cómo ajustarlo.
 
-If you for technical reasons cannot adjust the port range on your Windows machine you will not be able to run more than 2-3 firefox browsers.
+Si por razones técnicas no puede ajustar el rango de puertos de su máquina Windows no podrá ejecutar más de 2-3 navegadores firefox.
 
-### Avoiding the socket lock
+### Evitar bloqueo de socket
 
-Starting new browsers between each test class/test method is slow, and the socket lock also uses Ephemeral sockets, worsening the problem described above.
+Iniciar nuevos navegadores entre cada clase de prueba/método de prueba es lento, y el bloqueo de socket también utiliza sockets Ephemeral, empeorando el problema descrito anteriormente.
 
-If you're using a suite-less test setup (like many JUnit4 users), you often start/stop the browsers in @BeforeClass/@AfterClass methods. Another option is to start the browsers in @BeforeClass and use something like JUnit/TestNG run listeners to shut down all the browsers at the end of the test run.  Maven surefire supports run listeners for both JUnit and TestNG.
+Si está utilizando una configuración de prueba sin soporte (como muchos usuarios JUnit4), a menudo inicia/detiene los navegadores en los métodos @BeforeClass/@AfterClass. Otra opción es iniciar los navegadores en @BeforeClass y usar algo como JUnit/TestNG run listeners para apagar todos los navegadores al final de la ejecución de pruebas.  Maven surefire soporta escuchadores tanto para JUnit como para TestNG.
 
-(TODO: Strategies to disable the socket lock and manage the ports yourself)
+(TODO: Estrategias para desactivar el bloqueo de socket y administrar los puertos usted mismo)
 
-### Native events
+### Eventos nativos
 
-Due to a shared file in the native events logic, the firefox driver should probably not be using native events when running concurrently. (Watch [this issue](http://code.google.com/p/selenium/issues/detail?id=1326)).
+Debido a un archivo compartido en la lógica de eventos nativos, el controlador firefox probablemente no debería estar usando eventos nativos cuando se ejecuta simultáneamente. (Ver [este problema](http://code.google.com/p/selenium/issues/detail?id=1326)).
