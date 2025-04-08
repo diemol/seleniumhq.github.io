@@ -1,23 +1,23 @@
 ---
-title: Chrome DevTools Network Features
-linkTitle: Network
+title: Características de la red de Chrome DevTools
+linkTitle: Red
 weight: 4
 description: |
-  Network features using CDP.
+  Características de red usando CDP.
 ---
 
 {{% pageinfo color="warning" %}}
-While Selenium 4 provides direct access to the Chrome DevTools Protocol, these
-methods will eventually be removed when WebDriver BiDi implemented.
+Mientras Selenium 4 proporciona acceso directo al Protocolo de Chrome DevTools, estos métodos
+serán eliminados eventualmente cuando WebDriver BiDi implementado.
 {{% /pageinfo %}}
 
-## Basic authentication
+## Autenticación básica
 
-Some applications make use of browser authentication to secure pages.
-It used to be common to handle them in the URL, but browsers stopped supporting this.
-With this code you can insert the credentials into the header when necessary
+Algunas aplicaciones hacen uso de la autenticación del navegador para asegurar las páginas.
+Solía ser común manejarlos en la URL, pero los navegadores dejaron de soportar esto.
+Con este código puede insertar las credenciales en el encabezado cuando sea necesario
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidi/cdp/NetworkTest.java#L41-L43" >}}
 {{< gh-codeblock path="/examples/python/tests/bidi/cdp/test_network.py#L13-15" >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/BiDi/CDP/NetworkTest.cs#L25-L32" >}}
@@ -26,13 +26,13 @@ With this code you can insert the credentials into the header when necessary
 {{< badge-implementation >}}
 {{< /tabpane >}}
 
-## Network Interception
+## Intercepción de red
 
-Both requests and responses can be recorded or transformed.
+Ambas solicitudes y respuestas pueden registrarse o transformarse.
 
-#### Response information
+#### Información de respuesta
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidi/cdp/NetworkTest.java#L56-L65" >}}
 {{< badge-implementation >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/BiDi/CDP/NetworkTest.cs#L46-L51" >}}
@@ -41,9 +41,9 @@ Both requests and responses can be recorded or transformed.
 {{< badge-code >}}
 {{< /tabpane >}}
 
-#### Response transformation
+#### Responder transformación
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidi/cdp/NetworkTest.java#L75-L85" >}}
 {{< badge-implementation >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/BiDi/CDP/NetworkTest.cs#L62-L73" >}}
@@ -52,9 +52,9 @@ Both requests and responses can be recorded or transformed.
 {{< badge-code >}}
 {{< /tabpane >}}
 
-#### Request interception
+#### Solicitud de intercepción
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidi/cdp/NetworkTest.java#L97-L110" >}}
 {{< badge-implementation >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/BiDi/CDP/NetworkTest.cs#L85-L97" >}}
@@ -63,9 +63,9 @@ Both requests and responses can be recorded or transformed.
 {{< badge-code >}}
 {{< /tabpane >}}
 
-## Performance Metrics
+## Métricas de rendimiento
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidi/cdp/NetworkTest.java#L125-L126" >}}
 {{< gh-codeblock path="/examples/python/tests/bidi/cdp/test_network.py#L26-L28" >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/BiDi/CDP/NetworkTest.cs#L114-L118" >}}
@@ -74,9 +74,9 @@ Both requests and responses can be recorded or transformed.
 {{< badge-code >}}
 {{< /tabpane >}}
 
-## Setting Cookies
+## Configurando Cookies
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidi/cdp/NetworkTest.java#L142-L157" >}}
 {{< gh-codeblock path="/examples/python/tests/bidi/cdp/test_network.py#L37-L44" >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/BiDi/CDP/NetworkTest.cs#L136-L143" >}}
@@ -85,9 +85,9 @@ Both requests and responses can be recorded or transformed.
 {{< badge-code >}}
 {{< /tabpane >}}
 
-## Waiting for Downloads
+## Esperando por descargas
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidi/cdp/NetworkTest.java#L171-L176" >}}
 {{< badge-implementation >}}
 {{< badge-implementation >}}
