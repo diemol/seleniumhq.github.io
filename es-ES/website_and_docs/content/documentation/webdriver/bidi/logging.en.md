@@ -1,31 +1,31 @@
 ---
-title: WebDriver BiDi Logging Features
-linkTitle: Logging
+title: Características de registro BiDi WebDriver
+linkTitle: Loggando
 weight: 1
 description: |
-  These features are related to logging. Because "logging" can refer to so many different things, these methods are made available via a "script" namespace.
+  Estas características están relacionadas con el registro. Debido a que "logging" puede referirse a tantas cosas diferentes, estos métodos están disponibles a través de un namespace "script".
 aliases:
-  - /documentation/en/webdriver/bidirectional/bidirectional_w3c/log
+  - /documentation/es/webdriver/bidirectional/bidirectional_w3c/log
   - /documentation/webdriver/bidirectional/webdriver_bidi/log
 ---
 
-Remember that to use WebDriver BiDi, you must enable it in Options.
-For more details, see [Enabling BiDi]({{< ref "BiDi" >}})
+Recuerde que para usar WebDriver BiDi, debe activarlo en Opciones.
+Para más detalles, visita [Activando BiDi]({{< ref "BiDi" >}})
 
-## Console Message Handlers
+## Manejadores de mensajes de consola
 
-Record or take actions on `console.log` events.
+Grabar o tomar acciones en eventos `console.log`.
 
-### Add Handler
+### Añadir Manejador
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-implementation >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="/examples/python/tests/bidi/test_bidi_logging.py#L11" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-implementation >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -39,18 +39,18 @@ Record or take actions on `console.log` events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Remove Handler
+### Remover Manejador
 
-You need to store the ID returned when adding the handler to delete it.
+Necesita almacenar el ID devuelto al agregar el manejador para eliminarlo.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-implementation >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="/examples/python/tests/bidi/test_bidi_logging.py#L23-24" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-implementation >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -64,20 +64,20 @@ You need to store the ID returned when adding the handler to delete it.
 {{< /tab >}}
 {{< /tabpane >}}
 
-## JavaScript Exception Handlers
+## Manejadores de Excepciones JavaScript
 
-Record or take actions on JavaScript exception events.
+Grabar o tomar acciones en eventos de excepción JavaScript.
 
-### Add Handler
+### Añadir Manejador
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-implementation >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="/examples/python/tests/bidi/test_bidi_logging.py#L35" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-implementation >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -91,18 +91,18 @@ Record or take actions on JavaScript exception events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Remove Handler
+### Remover Manejador
 
-You need to store the ID returned when adding the handler to delete it.
+Necesita almacenar el ID devuelto al agregar el manejador para eliminarlo.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-implementation >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="/examples/python/tests/bidi/test_bidi_logging.py#L47-48" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-implementation >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
