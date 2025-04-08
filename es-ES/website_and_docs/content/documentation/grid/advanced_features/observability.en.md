@@ -1,143 +1,143 @@
 ---
-title: Observability in Selenium Grid
-linkTitle: Observability
+title: Observabilidad en Selenium Grid
+linkTitle: Observabilidad
 weight: 1
 aliases:
-  - /documentation/en/grid/grid_4/advanced_features/observability/
+  - /documentation/es/grid/grid_4/avanzado_características/observabilidad/
 ---
 
-## Table of Contents
+## Tabla de contenidos
 
 - [Selenium Grid](#selenium-grid)
 - [Observability](#observability)
- - [Distributed tracing](#distributed-tracing)
- - [Event logging](#event-logging)
-- [Grid Observability](#grid-observability)
- - [Visualizing Traces](#visualizing-traces)
- - [Leveraging event logs](#leveraging-event-logs)
+ - [Rastreo distribuido](#distributed-tracing)
+ - [Registro de eventos](#event-logging)
+- [Observabilidad de cuadrícula](#grid-observability)
+ - [Rastros de visualización](#visualizing-traces)
+ - [Registros de eventos de apalancamiento](#leveraging-event-logs)
 - [References](#references)
 
 ## Selenium Grid
 
-Grid aids in scaling and distributing tests by executing tests on various browser and operating system combinations.
+Grid ayuda a escalar y distribuir pruebas mediante la ejecución de pruebas en varias combinaciones de navegadores y sistemas operativos.
 
-## Observability
+## Observabilidad
 
-Observability has three pillars: traces, metrics and logs. Since Selenium Grid 4 is designed to be fully distributed, observability will make it easier to understand and debug the internals.
+La observabilidad tiene tres pilares: trazas, métricas y troncos. Dado que Selenium Grid 4 está diseñado para ser completamente distribuido, la observabilidad hará que sea más fácil entender y depurar los internos.
 
-## Distributed tracing
+## Rastreo distribuido
 
-A single request or transaction spans multiple services and components.  Tracing tracks the request lifecycle as each service executes the request. It is useful in debugging in an error scenario.
-Some key terms used in tracing context are:
+Una sola solicitud o transacción abarca múltiples servicios y componentes.  Rastrear el ciclo de vida de la petición a medida que cada servicio ejecuta la solicitud. Es útil para depurar en un escenario de error.
+Algunos términos clave usados en el contexto de rastreo son:
 
-**Trace**
-Tracing allows one to trace a request through multiple services, starting from its origin to its final destination. This request's journey helps in debugging, monitoring the end-to-end flow, and identifying failures. A trace depicts the end-to-end request flow. Each trace has a unique id as its identifier.
+**Trámite**
+El seguimiento permite rastrear una solicitud a través de múltiples servicios, comenzando desde su origen hasta su destino final. El viaje de esta solicitud ayuda a depurar, controlar el flujo de extremo a extremo e identificar fallos. Una traza representa el flujo de petición de extremo a extremo. Cada trace tiene un identificador único como su identificador.
 
-**Span**
-Each trace is made up of timed operations called spans. A span has a start and end time and it represents operations done by a service. The granularity of span depends on how it is instrumented. Each span has a unique identifier.  All spans within a trace have the same trace id.
+**España**
+Cada rastro se compone de operaciones temporizadas llamadas espacios. Un span tiene una hora de inicio y fin y representa las operaciones realizadas por un servicio. La granularidad de la superficie depende de cómo se instrumente. Cada span tiene un identificador único.  Todos los spans dentro de un trace tienen el mismo trace id.
 
-**Span Attributes**
-Span attributes are key-value pairs which provide additional information about each span.
+\*\*Atributos de Span **Atributos**
+Los atributos de Span son pares clave-valor que proporcionan información adicional sobre cada espacio.
 
-**Events**
-Events are timed-stamped logs within a span. They provide additional context to the existing spans. Events also contain key-value pairs as event attributes.
+**Eventos**
+Los eventos son registros con sello de tiempo dentro de un lapso de tiempo. Proporcionan un contexto adicional a las franjas existentes. Los eventos también contienen pares clave-valor como atributos de eventos.
 
-## Event logging
+## Registro de eventos
 
-Logging is essential to debug an application. Logging is often done in a human-readable format. But for machines to search and analyze the logs, it has to have a well-defined format. Structured logging is a common practice of recording logs consistently in a fixed format. It commonly contains fields like:
+El registro es esencial para depurar una aplicación. El registro a menudo se realiza en un formato legible por humanos. Pero para que las máquinas busquen y analicen los registros, tiene que tener un formato bien definido. El registro estructurado es una práctica común de grabar registros consistentemente en un formato fijo. Contiene comúnmente campos como:
 
 - Timestamp
-- Logging level
-- Logger class
-- Log message (This is further broken down into fields relevant to the operation where the log was recorded)
+- Nivel de registro
+- Clase Logger
+- Mensaje de registro (esto se divide en campos relevantes para la operación donde se registró el registro)
 
-Logs and events are closely related. Events encapsulate all the possible information available to do a single unit of work. Logs are essentially subsets of an event. At the crux, both aid in debugging.
-Refer following resources for detailed understanding:
+Los registros y eventos están estrechamente relacionados. Los eventos encapsulan toda la información posible disponible para realizar una sola unidad de trabajo. Los registros son esencialmente subconjuntos de un evento. En el fondo, ambas ayudas para la depuración.
+Consulte los siguientes recursos para una comprensión detallada:
 
 1. [https://www.honeycomb.io/blog/how-are-structured-logs-different-from-events/](https://www.honeycomb.io/blog/how-are-structured-logs-different-from-events/)
 2. [https://charity.wtf/2019/02/05/logs-vs-structured-events/](https://charity.wtf/2019/02/05/logs-vs-structured-events/)
 
-## Grid Observability
+## Observabilidad de cuadrícula
 
-Selenium server is instrumented with tracing using OpenTelemetry. Every request to the server is traced from start to end. Each trace consists of a series of spans as a request is executed within the server.
-Most spans in the Selenium server consist of two events:
+Selenium server está instrumentado con seguimiento usando OpenTelemetry. Cada petición al servidor se rastrea de principio a fin. Cada trace consiste en una serie de spans ya que una petición se ejecuta dentro del servidor.
+La mayoría de las partidas en el servidor de Selenium consisten en dos eventos:
 
-1. Normal event - records all information about a unit of work and marks successful completion of the work.
-2. Error event - records all information till the error occurs and then records the error information. Marks an exception event.
+1. Evento normal - Graba toda la información sobre una unidad de trabajo y marca la finalización exitosa de la obra.
+2. Evento de error - registra toda la información hasta que ocurre el error y luego registra la información del error. Marca un evento de excepción.
 
-Running Selenium server
+Ejecutando servidor de Selenium
 
 1. [Standalone](https://github.com/SeleniumHQ/selenium/wiki/Selenium-Grid-4#standalone-mode)
-2. [Hub and Node](https://github.com/SeleniumHQ/selenium/wiki/Selenium-Grid-4#hub-and-node)
-3. [Fully Distributed](https://github.com/SeleniumHQ/selenium/wiki/Selenium-Grid-4#fully-distributed)
+2. [Hub y Nodo](https://github.com/SeleniumHQ/selenium/wiki/Selenium-Grid-4#hub-and-node)
+3. [Distribuido completamente](https://github.com/SeleniumHQ/selenium/wiki/Selenium-Grid-4#fully-distributed)
 4. [Docker](https://github.com/SeleniumHQ/selenium/wiki/Selenium-Grid-4#using-docker)
 
-## Visualizing Traces
+## Visualizando huellas
 
-All spans, events and their respective attributes are part of a trace. Tracing works while running the server in all of the above-mentioned modes.
+Todos los espacios, eventos y sus respectivos atributos forman parte de un trazado. Seguimiento funciona mientras se ejecuta el servidor en todos los modos mencionados anteriormente.
 
-By default, tracing is enabled in the Selenium server. Selenium server exports the traces via two exporters:
+De forma predeterminada, el seguimiento está activado en el servidor Selenium. El servidor Selenium exporta las huellas a través de dos exportadores:
 
-1. Console - Logs all traces and their included spans at FINE level. By default, Selenium server prints logs at INFO level and above.
- The **log-level** flag can be used to pass a logging level of choice while running the Selenium Grid jar/s.
+1. Consola - Registra todos los rastros y sus spans incluidos a nivel FINE. De forma predeterminada, Selenium imprime registros a nivel INFO o superior.
+ La bandera **nivel de registro** se puede usar para pasar un nivel de registro de elección mientras se ejecuta el jarro o jarras Selenium Grid.
 
 ```shell
 java -jar selenium-server-4.0.0-<selenium-version>.jar standalone --log-level FINE
 ```
 
-2. Jaeger UI - OpenTelemetry provides the APIs and SDKs to instrument traces in the code. Whereas Jaeger is a tracing backend, that aids in collecting the tracing telemetry data and providing querying, filtering and visualizing features for the data.
+2. Jaeger UI - OpenTelemetry proporciona las APIs y SDKs a trazas de instrumentos en el código. Whereas Jaeger es un sistema de rastreo, que ayuda a recolectar los datos de la telemetría y a proporcionar consultas, filtrado y visualización de características para los datos.
 
-Detailed instructions of visualizing traces using Jaeger UI can be obtained by running the command :
+Instrucciones detalladas para visualizar trazos usando la interfaz de usuario de Jaeger se pueden obtener ejecutando el comando:
 
 ```shell
-java -jar selenium-server-4.0.0-<selenium-version>.jar info tracing
+java -jar selenium-server-4.0.0-<selenium-version>seguimiento de información .jar
 ```
 
-[A very good example and scripts to run the server and send traces to Jaeger](https://github.com/manoj9788/tracing-selenium-grid)
+[Un muy buen ejemplo y scripts para ejecutar el servidor y enviar traces a Jaeger](https://github.com/manoj9788/tracing-selenium-grid)
 
-## Leveraging event logs
+## Apalancamiento de registros de eventos
 
-Tracing has to be enabled for event logging as well, even if one does not wish to export traces to visualize them.\
-**By default, tracing is enabled. No additional parameters need to be passed to see logs on the console.**
-All events within a span are logged at FINE level. Error events are logged at WARN level.
+El seguimiento también debe estar habilitado para el registro de eventos, incluso si uno no desea exportar trazas para visualizarlas.\
+**Por defecto, el seguimiento está habilitado. No es necesario pasar ningún parámetro adicional para ver los registros en la consola.**
+Todos los eventos dentro de un lapso se registran en el nivel FINE. Los eventos de error se registran a nivel de Guerra.
 
-All event logs have the following fields :
+Todos los registros de eventos tienen los siguientes campos:
 
-| Field            | Field value     | Description                                                                                                                                                                                                            |
-| ---------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Event time       | eventId         | Timestamp of the event record in epoch nanoseconds.                                                                                                                                                    |
-| Trace Id         | tracedId        | Each trace is uniquely identified by a trace id.                                                                                                                                                       |
-| Span Id          | spanId          | Each span within a trace is uniquely identified by a span id.                                                                                                                                          |
-| Span Kind        | spanKind        | Span kind is a property of span indicating the type of span. It helps in understanding the nature of the unit of work done by the Span.                                                |
-| Event name       | eventName       | This maps to the log message.                                                                                                                                                                          |
-| Event attributes | eventAttributes | This forms the crux of the event logs, based on the operation executed, it has JSON formatted key-value pairs. This also includes a handler class attribute, to show the logger class. |
+| Campo                | Valor del campo     | Descripción                                                                                                                                                                                                                                     |
+| -------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hora del evento      | eventId             | Marca de tiempo del registro de eventos en nanosegundos de epoch.                                                                                                                                                               |
+| Traza Id             | Id tracado          | Cada trace es identificado de forma única por un trace id.                                                                                                                                                                      |
+| Id de Span           | spanId              | Cada tramo dentro de un rastro se identifica de forma única por un span id.                                                                                                                                                     |
+| Span Kind            | spanKind            | El tipo Span es una propiedad que indica el tipo de span. Ayuda a comprender la naturaleza de la unidad de trabajo realizada por el español.                                                                    |
+| Nombre del evento    | eventName           | Este mapea al mensaje de registro.                                                                                                                                                                                              |
+| Atributos del evento | atributos de evento | Esto forma el quid de los registros de eventos, basado en la operación ejecutada, tiene pares de clave-valor con formato JSON. Esto también incluye un atributo de clase handler, para mostrar la clase logger. |
 
-Sample log
+Registro de ejemplo
 
     FINE [LoggingOptions$1.lambda$export$1] - {
       "traceId": "fc8aef1d44b3cc8bc09eb8e581c4a8eb",
       "spanId": "b7d3b9865d3ddd45",
       "spanKind": "INTERNAL",
       "eventTime": 1597819675128886121,
-      "eventName": "Session request execution complete",
-      "attributes": {
-        "http.status_code": 200,
+      "eventName": "Ejecución de la solicitud de sesión completada",
+      "atributos": {
+        "http. tatus_code": 200,
         "http.handler_class": "org.openqa.selenium.grid.router.HandleSession",
-        "http.url": "\u002fsession\u002fdd35257f104bb43fdfb06242953f4c85",
-        "http.method": "DELETE",
+        "http. rl": "\u002fsesión\u002fdd35257f104bb43fdfb06242953f4c85",
+        "http. ethod": "DELETE",
         "session.id": "dd35257f104bb43fdfb06242953f4c85"
       }
     }
 
-In addition to the above fields, based on [OpenTelemetry specification](https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/semantic_conventions/exceptions.md) error logs consist of :
+Además de los campos de arriba, basado en [especificación OpenTelemetry](https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/semantic_conventions/exceptions.md) registros de error consisten en:
 
-| Field                | Field value                          | Description                                                                                                                                                   |
-| -------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Exception type       | exception.type       | The class name of the exception.                                                                                                              |
-| Exception message    | exception.message    | Reason for the exception.                                                                                                                     |
-| Exception stacktrace | exception.stacktrace | Prints the call stack at the point of time when the exception was thrown. Helps in understanding the origin of the exception. |
+| Campo                | Valor del campo                      | Descripción                                                                                                                                           |
+| -------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tipo de excepción    | exception.type       | El nombre de la clase de la excepción.                                                                                                |
+| Mensaje de excepción | exception.message    | Motivo de la excepción.                                                                                                               |
+| Excepción stacktrace | exception.stacktrace | Muestra la pila de llamadas en el momento en que se lanzó la excepción. Ayuda a comprender el origen de la excepción. |
 
-Sample error log
+Registro de errores de ejemplo
 
     WARN [LoggingOptions$1.lambda$export$1] - {
       "traceId": "7efa5ea57e02f89cdf8de586fe09f564",
@@ -146,23 +146,23 @@ Sample error log
       "eventTime": 1597820253450580272,
       "eventName": "exception",
       "attributes": {
-        "exception.type": "org.openqa.selenium.ScriptTimeoutException",
-        "exception.message": "Unable to execute request: java.sql.SQLSyntaxErrorException: Table 'mysql.sessions_mappa' doesn't exist ..." (full message will be printed),
-        "exception.stacktrace": "org.openqa.selenium.ScriptTimeoutException: java.sql.SQLSyntaxErrorException: Table 'mysql.sessions_mappa' doesn't exist\nBuild info: version: '4.0.0-alpha-7', revision: 'Unknown'\nSystem info: host: 'XYZ-MacBook-Pro.local', ip: 'fe80:0:0:0:10d5:b63a:bdc6:1aff%en0', os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '10.13.6', java.version: '11.0.7'\nDriver info: driver.version: unknown ...." (full stack will be printed),
-        "http.handler_class": "org.openqa.selenium.grid.distributor.remote.RemoteDistributor",
-        "http.url": "\u002fsession",
+        "exception. ype": "org.openqa.selenium.ScriptTimeoutException",
+        "exception.message": "Unable to execute request: java.sql.SQLSyntaxErrorException: Table '(0)[video] ql. essions_mappa' no existe ..." (el mensaje completo será impreso),
+        "exception.stacktrace": "org.openqa.selenium.ScriptTimeoutException: java. ql.SQLSyntaxErrorException: Tabla '/etcql.sessions_mappa' no existe\nBuild info: version: '4.0.0-alpha-7', revision: 'Desconocido'\nInformación del sistema: host: 'XYZ-MacBook-Pro. ocal', ip: 'fe80:0:0:0:10d5:b63a:bdc6:1%en0', os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '10.13.6', java. ersion: '11.0.7'\nDriver info: driver.version: unknown ...." (stack completo será impreso),
+        "http.handler_class": "org.openqa.selenium. rid.distributor.remote.RemoteDistributor",
+        "http.url": " Sesión\u002f",
         "http.method": "POST"
       }
     }
 
-Note: Logs are pretty printed above for readability. Pretty printing for logs is turned off in Selenium server.
+Nota: Los registros son bastante impresos arriba para legibilidad. La impresión pretty para los registros está desactivada en el servidor Selenium.
 
-The steps above should set you up for seeing traces and logs.
+Los pasos anteriores deberían configurarte para ver trazas y registros.
 
-## References
+## Referencias
 
-1. [Understanding Tracing](https://lightstep.com/blog/opentelemetry-101-what-is-tracing/)
-2. [OpenTelemetry Tracing API Specification](https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/api.md#status)
+1. [Rastreo Entendido](https://lightstep.com/blog/opentelemetry-101-what-is-tracing/)
+2. [Especificación de la API de seguimiento de OpenTelemetry ] (https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/api.md#status)
 3. [Selenium Wiki](https://github.com/SeleniumHQ/selenium/wiki)
-4. [Structured logs vs events](https://www.honeycomb.io/blog/how-are-structured-logs-different-from-events/)
+4. [Registros estructurados vs eventos](https://www.honeycomb.io/blog/how-are-structured-logs-different-from-events/)
 5. [Jaeger framework](https://github.com/jaegertracing/jaeger)
