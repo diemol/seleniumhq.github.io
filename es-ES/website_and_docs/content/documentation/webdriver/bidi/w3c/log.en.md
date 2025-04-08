@@ -1,18 +1,18 @@
 ---
-title: Log
-linkTitle: Log
+title: Logo
+linkTitle: Logo
 weight: 1
 aliases:
-  - /documentation/en/webdriver/bidirectional/bidirectional_w3c/log
+  - /documentation/es/webdriver/bidirectional/bidirectional_w3c/log
 ---
 
-This section contains the APIs related to logging.
+Esta sección contiene las APIs relacionadas con el registro.
 
-## Console logs
+## Registros de consola
 
-Listen to the `console.log` events and register callbacks to process the event.
+Escucha los eventos de `console.log` y registra los callbacks para procesar el evento.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/LogTest.java#L33-L39" >}}
@@ -28,12 +28,12 @@ Listen to the `console.log` events and register callbacks to process the event.
 {{< /tab >}}
 {{< /tabpane >}}
 
-## JavaScript exceptions
+## Excepciones JavaScript
 
-Listen to the JS Exceptions
-and register callbacks to process the exception details.
+Escucha las Excepciones JS
+y registra las devoluciones de llamada para procesar los detalles de la excepción.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/LogTest.java#L73-L78" >}}
 {{< /tab >}}
@@ -48,11 +48,11 @@ and register callbacks to process the exception details.
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Listen to JS Logs
+## Escuchar registros JS
 
-Listen to all JS logs at all levels and register callbacks to process the log.
+Escuche todos los registros JS en todos los niveles y registre las llamadas para procesar el registro.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/LogTest.java#L55-L60" >}}
