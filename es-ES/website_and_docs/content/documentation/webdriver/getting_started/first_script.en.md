@@ -1,260 +1,260 @@
 ---
-title: Write your first Selenium script
-linkTitle: First Script
+title: Escribe tu primer script de Selenium
+linkTitle: Primer script
 weight: 8
 description: |
-  Step-by-step instructions for constructing a Selenium script
+  Instrucciones paso a paso para construir un script de Selenium
 ---
 
-Once you have [Selenium installed]({{< ref "install_library.md" >}}),
-you're ready to write Selenium code.
+Una vez que tengas [Selenium instalado]({{< ref "install_library.md" >}}),
+estás listo para escribir el código de Selenium.
 
-## Eight Basic Components
+## Ocho componentes básicos
 
-Everything Selenium does is send the browser commands to do something or send requests for information.
-Most of what you'll do with Selenium is a combination of these basic commands
+Todo lo que Selenium hace es enviar los comandos del navegador para hacer algo o enviar solicitudes de información.
+La mayoría de lo que harás con Selenium es una combinación de estos comandos básicos
 
-Click on the link to "View full example on GitHub" to see the code in context.
+Haga clic en el enlace "Ver ejemplo completo en GitHub" para ver el código en contexto.
 
-### 1. Start the session
+### 1. Iniciar la sesión
 
-For more details on starting a session read our documentation on [driver sessions]({{< ref "../drivers/" >}})
+Para más detalles sobre cómo iniciar una sesión, lea nuestra documentación sobre [sesiones de controladores]({{< ref "../drivers/" >}})
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L12" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L12" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/tests/getting_started/first_script.py#L4" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/first_script.py#L4" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L11" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L11" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="examples/ruby/spec/getting_started/first_script.rb#L3" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/getting_started/first_script.rb#L3" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
-{{< gh-codeblock path="examples/javascript/test/getting_started/firstScript.spec.js#L8" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/firstScript.spec.js#L8" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
-{{< gh-codeblock path="examples/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L16" >}}
+{{< gh-codeblock path="ejemplos/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L16" >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-### 2. Take action on browser
+### 2. Hacer acción en el navegador
 
-In this example we are [navigating]({{< ref "/documentation/webdriver/interactions/navigation.md" >}}) to a web page.
+En este ejemplo estamos [navigating]({{< ref "/documentation/webdriver/interactions/navigation.md" >}}) a una página web.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L14" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L14" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/tests/getting_started/first_script.py#L6" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/first_script.py#L6" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L13" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L13" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="examples/ruby/spec/getting_started/first_script.rb#L5" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/getting_started/first_script.rb#L5" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
-{{< gh-codeblock path="examples/javascript/test/getting_started/firstScript.spec.js#L9" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/firstScript.spec.js#L9" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
-{{< gh-codeblock path="examples/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L18" >}}
+{{< gh-codeblock path="ejemplos/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L18" >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-### 3. Request browser information
+### 3. Solicitar información del navegador
 
-There are a bunch of types of [information about the browser]({{< ref "/documentation/webdriver/interactions" >}}) you
-can request, including window handles, browser size / position, cookies, alerts, etc.
+Hay un montón de tipos de [información sobre el navegador]({{< ref "/documentation/webdriver/interactions" >}}) que puedes solicitar
+. incluyendo los manejadores de ventanas, tamaño / posición del navegador, cookies, alertas, etc.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/FirstScript.java#16" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/getting_started/FirstScript.java#16" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/tests/getting_started/first_script.py#L8" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/first_script.py#L8" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L15" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L15" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="examples/ruby/spec/getting_started/first_script.rb#L7" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/getting_started/first_script.rb#L7" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
-{{< gh-codeblock path="examples/javascript/test/getting_started/firstScript.spec.js#L11" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/firstScript.spec.js#L11" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
-{{< gh-codeblock path="examples/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L20" >}}
+{{< gh-codeblock path="ejemplos/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L20" >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-### 4. Establish Waiting Strategy
+### 4. Establecir estrategia de espera
 
-Synchronizing the code with the current state of the browser is one of the biggest challenges
-with Selenium, and doing it well is an advanced topic.
+Sincronizar el código con el estado actual del navegador es uno de los desafíos más grandes
+con Selenium, y hacerlo bien es un tema avanzado.
 
-Essentially you want to make sure that the element is on the page before you attempt to locate it
-and the element is in an interactable state before you attempt to interact with it.
+Esencialmente quieres asegurarte de que el elemento está en la página antes de intentar ubicarlo
+y que el elemento está en un estado interactable antes de intentar interactuar con él.
 
 An implicit wait is rarely the best solution, but it's the easiest to demonstrate here, so
 we'll use it as a placeholder.
 
-Read more about [Waiting strategies]({{< ref "/documentation/webdriver/waits.md" >}}).
+Lee más sobre [Esperando estrategias]({{< ref "/documentation/webdriver/waits.md" >}}).
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L18" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L18" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/tests/getting_started/first_script.py#L10" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/first_script.py#L10" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L17" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L17" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="examples/ruby/spec/getting_started/first_script.rb#L9" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/getting_started/first_script.rb#L9" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
-{{< gh-codeblock path="examples/javascript/test/getting_started/firstScript.spec.js#L14" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/firstScript.spec.js#L14" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
-{{< gh-codeblock path="examples/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L23" >}}
+{{< gh-codeblock path="ejemplos/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L23" >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-### 5. Find an element
+### 5. Buscar un elemento
 
-The majority of commands in most Selenium sessions are element related, and you can't interact
-with one without first [finding an element]({{< ref "/documentation/webdriver/elements" >}})
+La mayoría de los comandos en la mayoría de las sesiones de Selenium están relacionados con el elemento, y no puedes interactuar
+con uno sin primero [encontrar un elemento]({{< ref "/documentation/webdriver/elements" >}})
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L20-L21" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L20-L21" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/tests/getting_started/first_script.py#L12-L13" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/first_script.py#L12-L13" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L19-L20" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L19-L20" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="examples/ruby/spec/getting_started/first_script.rb#L11-L12" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/getting_started/first_script.rb#L11-L12" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
-{{< gh-codeblock path="examples/javascript/test/getting_started/firstScript.spec.js#L16-L17" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/firstScript.spec.js#L16-L17" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
-{{< gh-codeblock path="examples/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L25-L26" >}}
+{{< gh-codeblock path="ejemplos/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L25-L26" >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-### 6. Take action on element
+### 6. Hacer acción en el elemento
 
-There are only a handful of [actions to take on an element]({{< ref "/documentation/webdriver/elements/interactions.md" >}}),
-but you will use them frequently.
+Solo hay un puñado de [acciones para llevar a cabo un elemento]({{< ref "/documentation/webdriver/elements/interactions.md" >}}),
+pero las usarás con frecuencia.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L23-L24" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L23-L24" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/tests/getting_started/first_script.py#L15-L16" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/first_script.py#L15-L16" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L22-L23" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L22-L23" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="examples/ruby/spec/getting_started/first_script.rb#L14-L15" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/getting_started/first_script.rb#L14-L15" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
-{{< gh-codeblock path="examples/javascript/test/getting_started/firstScript.spec.js#L19-L20" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/firstScript.spec.js#L19-L20" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
-{{< gh-codeblock path="examples/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L28-L29" >}}
+{{< gh-codeblock path="ejemplos/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L28-L29" >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-### 7. Request element information
+### 7. Solicitar información del elemento
 
-Elements store a lot of [information that can be requested]({{< ref "/documentation/webdriver/elements/information" >}}).
+Los elementos almacenan mucha [información que puede ser solicitada]({{< ref "/documentation/webdriver/elements/information" >}}).
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L26-27" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L26-27" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/tests/getting_started/first_script.py#L18-19" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/first_script.py#L18-19" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L25-26" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L25-26" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="examples/ruby/spec/getting_started/first_script.rb#L17-18" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/getting_started/first_script.rb#L17-18" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
-{{< gh-codeblock path="examples/javascript/test/getting_started/firstScript.spec.js#L22-23" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/firstScript.spec.js#L22-23" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
-{{< gh-codeblock path="examples/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L31-32" >}}
+{{< gh-codeblock path="ejemplos/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L31-32" >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-### 8. End the session
+### 8. Terminar la sesión
 
-This ends the driver process, which by default closes the browser as well.
-No more commands can be sent to this driver instance.
-See [Quitting Sessions]({{< ref "../drivers/#quitting-sessions" >}}).
+Esto termina el proceso del controlador, que por defecto también cierra el navegador.
+No se pueden enviar más comandos a esta instancia del controlador.
+Ver [Sesiones de Salida]({{< ref "../drivers/#quitting-sessions" >}}).
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L29" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/getting_started/FirstScript.java#L29" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/tests/getting_started/first_script.py#L21" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/first_script.py#L21" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L28" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/GettingStarted/FirstScript.cs#L28" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="examples/ruby/spec/getting_started/first_script.rb#L20" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/getting_started/first_script.rb#L20" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
-{{< gh-codeblock path="examples/javascript/test/getting_started/firstScript.spec.js#L28" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/firstScript.spec.js#L28" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
-{{< gh-codeblock path="examples/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L35" >}}
+{{< gh-codeblock path="ejemplos/kotlin/src/test/kotlin/dev/selenium/getting_started/FirstScriptTest.kt#L35" >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Running Selenium File
+## Ejecutando archivo de Selenium
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/README.md#L60" >}}
+{{< gh-codeblock path="ejemplos/java/README.md#L60" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/README.md#L35" >}}
+{{< gh-codeblock path="ejemplos/python/README.md#L35" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="examples/ruby/README.md#L36" >}}
+{{< gh-codeblock path="ejemplos/ruby/README.md#L36" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
-{{< gh-codeblock path="examples/javascript/README.md#L36" >}}
+{{< gh-codeblock path="ejemplos/javascript/README.md#L36" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Next Steps
+## Siguiente paso
 
-Most Selenium users execute many sessions and need to organize them to minimize duplication and keep the code
-more maintainable. Read on to learn about how to put this code into context for your use case with
-[Using Selenium]({{< ref "using_selenium.md" >}}).
+La mayoría de los usuarios de Selenium ejecutan muchas sesiones y necesitan organizarlas para minimizar la duplicación y mantener el código
+más mantenible. Lee para aprender cómo poner este código en contexto para tu caso de uso con
+[Usando Selenium]({{< ref "using_selenium.md" >}}).
