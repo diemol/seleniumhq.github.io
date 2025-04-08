@@ -1,27 +1,27 @@
 ---
-title: Test Practices
-linkTitle: Test Practices
+title: Prácticas de prueba
+linkTitle: Prácticas de prueba
 weight: 12
 description: |
-  Some guidelines and recommendations on testing from the Selenium project.
+  Algunas directrices y recomendaciones sobre las pruebas del proyecto Selenium.
 ---
 
-A note on "Best Practices": We've intentionally avoided the phrase "Best
-Practices" in this documentation. No one approach works for all situations.
-We prefer the idea of "Guidelines and Recommendations." We encourage
+Una nota sobre "Mejores prácticas": Hemos evitado intencionalmente la frase "Mejor
+prácticas" en esta documentación. Ningún enfoque funciona para todas las situaciones.
+Preferimos la idea de "Directrices y recomendaciones". We encourage
 you to read through these and thoughtfully decide what approaches
 will work for you in your particular environment.
 
-Functional testing is challenging to get right for many reasons.
-As if application state, complexity, and dependencies do not make testing difficult enough,
-dealing with browsers (especially with cross-browser incompatibilities)
-makes writing good tests a challenge.
+Las pruebas funcionales son desafiantes para ser correctas por muchas razones.
+Como si el estado de la aplicación, la complejidad y las dependencias no dificultaran suficientemente las pruebas.
+tratar con navegadores (especialmente con incompatibilidades entre navegadores)
+hace que escribir buenas pruebas sea un reto.
 
-Selenium provides tools to make functional user interaction easier,
-but does not help you write well-architected test suites.
-In this chapter, we offer advice, guidelines, and recommendations
-on how to approach functional web page automation.
+Selenium proporciona herramientas para facilitar la interacción funcional con el usuario,
+pero no le ayuda a escribir salas de pruebas bien diseñadas.
+En este capítulo, ofrecemos consejos, directrices y recomendaciones
+sobre cómo abordar la automatización funcional de páginas web.
 
-This chapter records software design patterns popular
-amongst many of the users of Selenium
-that have proven successful over the years.
+Este capítulo registra patrones de diseño de software populares
+entre muchos de los usuarios de Selenium
+que han demostrado ser exitosos a lo largo de los años.
