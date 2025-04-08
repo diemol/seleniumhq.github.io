@@ -1,65 +1,65 @@
 ---
-title: Snapshot of Roadmaps for Selenium Releases
-linkTitle: Roadmap
+title: Instantánea de mapas de carreteras de Selenium Releases
+linkTitle: Hoja de ruta
 weight: 15
 description: |
-  The list of plans and things to accomplish before a release
+  La lista de planes y cosas a conseguir antes de un lanzamiento
 ---
 
-## Preparation for Selenium 2
+## Preparación para Selenium 2
 
-Date unknown
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/RoadMap/eef12bca5fdc865449ad2d1735ee08e40ba0bd2b)
+Fecha desconocida
+Esta documentación previamente encontrada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/RoadMap/eef12bca5fdc865449ad2d1735ee08e40ba0bd2b)
 
-The following issues need to be resolved before the final release:
+Los siguientes problemas deben resolverse antes de la versión final:
 
-| **Issue**                                                    | **Summary**                                             | **HtmlUnitDriver Progress** | **FirefoxDriver Progress** | **InternetExplorerDriver Progress** | **ChromeDriver Progress** |
-| :----------------------------------------------------------- | :------------------------------------------------------ | :-------------------------- | :------------------------- | :---------------------------------- | :------------------------ |
-| [27](http://code.google.com/p/webdriver/issues/detail?id=27) | Handle alerts in Javascript-enabled browsers            | n/a                         | Started                    | Started                             | Not Started               |
-| [32](http://code.google.com/p/webdriver/issues/detail?id=32) | User guide                                              | Started                     |                            |                                     |                           |
-| [34](http://code.google.com/p/webdriver/issues/detail?id=34) | Support HTTP Basic and Digest Authentication            | Not Started                 |                            |                                     |                           |
-| [35](http://code.google.com/p/webdriver/issues/detail?id=35) | [Selenium](http://www.openqa.org/selenium-rc) emulation | Done for Java and C#        |                            |                                     |                           |
-| [36](http://code.google.com/p/webdriver/issues/detail?id=36) | Support for drag and drop behaviour                     | n/a                         | Done                       | Done                                | Started                   |
-| none                                                         | Example tests                                           | Not Started                 |                            |                                     |                           |
+| **Problema**                                                 | **Summary**                                             | \*\*Progreso de HtmlUnitDriver \*\* | **FirefoxDriver Progreso** | **Progreso de InternetExplorerDriver** | \*\*Progreso de ChromeDriver \*\* |
+| :----------------------------------------------------------- | :------------------------------------------------------ | :---------------------------------- | :------------------------- | :------------------------------------- | :-------------------------------- |
+| [27](http://code.google.com/p/webdriver/issues/detail?id=27) | Manejar alertas en navegadores con Javascript           | n/a                                 | Iniciado                   | Iniciado                               | No iniciado                       |
+| [32](http://code.google.com/p/webdriver/issues/detail?id=32) | Guía de usuario                                         | Iniciado                            |                            |                                        |                                   |
+| [34](http://code.google.com/p/webdriver/issues/detail?id=34) | Soporte HTTP básico y Digest Authentication             | No iniciado                         |                            |                                        |                                   |
+| [35](http://code.google.com/p/webdriver/issues/detail?id=35) | [Selenium](http://www.openqa.org/selenium-rc) emulación | Hecho para Java y C#                |                            |                                        |                                   |
+| [36](http://code.google.com/p/webdriver/issues/detail?id=36) | Soporte para el comportamiento de arrastrar y soltar    | n/a                                 | Hecho                      | Hecho                                  | Iniciado                          |
+| ninguno                                                      | Ejemplos de pruebas                                     | No iniciado                         |                            |                                        |                                   |
 
-A final release will be made once these are implemented in Firefox, IE and at least one webkit-based browser.
+Se hará una versión final una vez que se hayan implementado en Firefox, IE y al menos un navegador basado en un paquete web.
 
-### The Future
+### El futuro
 
-The following are also planned:
+También se han planificado las siguientes opciones:
 
-- **JsonWireProtocol** --- The formalisation of the current RemoteWebDriver wire protocol in [JSON](http://www.json.org/).
+- **JsonWireProtocol** --- La formalización del protocolo de cable de RemoteWebDriver actual en [JSON](http://www.json.org/).
 
-## Preparation for Selenium 3
+## Preparación para Selenium 3
 
-As of Mar 16, 2015
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/Shipping-Selenium-3)
+A partir del 16 de marzo de 2015
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/Shipping-Selenium-3)
 
-### User Visible Changes
+### Cambios visibles del usuario
 
-- Migrate all drivers to use the status strings rather than status codes in responses
-- Update client bindings to also cope with that
-- Write a new runner for the html-suite tests
-- Segment the build to remove RC
+- Migrar todos los controladores para usar las cadenas de estado en lugar de códigos de estado en las respuestas
+- Actualizar enlaces del cliente para hacer frente a eso
+- Escribe un nuevo runner para las pruebas html-suite
+- Seguye la construcción para eliminar RC
 
-### Clean up
+### Limpieza
 
-- Using WebDriver after quit() should be an IllegalStateException
-- Actions to have a single end point
-- Capabilities to be the same as the spec
-- Multiple calls to WebDriver.quit() should still be safe.
-- Clean up WebDriver constructors, pulling heavy initialization logic into a Builder class
-- Migrate to Netty or webbit server
-- Delete unnecessary cruft
-- Land a cleaner end point for the rc emulation
+- Usar WebDriver después de quit() debería ser un IllegalStateException
+- Acciones para tener un único punto final
+- Capacidades para ser las mismas que la especificación
+- Múltiples llamadas a WebDriver.quit() deberían ser seguras.
+- Limpia a los constructores de WebDriver, empujando una pesada lógica de inicialización a una clase Builder
+- Migrar a Netty o servidor webbit
+- Eliminar crudo innecesario
+- Landa un punto final más limpio para la emulación de rc
 
-## Preparation for Selenium 4
+## Preparación para Selenium 4
 
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/RoadMap)
-As of April 12, 2017
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/RoadMap)
+A partir del 12 de abril de 2017
 
-- Finish the [W3C WebDriver Spec](https://w3c.github.io/webdriver/webdriver-spec.html)
-- Implement the local end requirements for the spec in selenium
-- Implement protocol conversion in the standalone server
-- Ship 4.0
+- Terminar el [W3C WebDriver Spec](https://w3c.github.io/webdriver/webdriver-spec.html)
+- Implementar los requerimientos finales locales de la especificación en selenium
+- Implementar la conversión de protocolo en el servidor independiente
+- Nave 4.0
 -
