@@ -1,30 +1,30 @@
 ---
-title: Waiting with Expected Conditions
-linkTitle: Expected Conditions
+title: Esperando con las condiciones esperadas
+linkTitle: Condiciones Esperadas
 weight: 1
 description: |
-  These are classes used to describe what needs to be waited for.
+  Estas son clases usadas para describir lo que hay que esperar.
 ---
 
-Expected Conditions are used with [Explicit Waits]({{< ref "../waits#explicit-waits" >}}).
-Instead of defining the block of code to be executed with a _lambda_, an expected
-conditions method can be created to represent common things that get waited on. Some
-methods take locators as arguments, others take elements as arguments.
+Las condiciones esperadas se utilizan con [Esperas Explicitas]({{< ref "../waits#explícit-waits" >}}).
+En lugar de definir el bloque de código a ser ejecutado con un _lambda_, se puede crear un método
+condiciones esperado para representar cosas comunes que se esperan. Algunos métodosformat@@0
+toman los localizadores como argumentos, otros toman elementos como argumentos.
 
-These methods can include conditions such as:
+Estos métodos pueden incluir condiciones como:
 
-- element exists
-- element is stale
-- element is visible
-- text is visible
-- title contains specified value
+- el elemento existe
+- elemento es obsoleto
+- elemento es visible
+- el texto es visible
+- el título contiene el valor especificado
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< badge-code >}}
 {{< tab header="Python" >}}
 {{< badge-code >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
 {{< /tab >}}
