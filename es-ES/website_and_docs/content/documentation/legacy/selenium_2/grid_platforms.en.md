@@ -1,71 +1,71 @@
 ---
-title: History of Grid Platforms
-linkTitle: Grid Platforms
+title: Historial de Plataformas cuadriculadas
+linkTitle: Plataformas cuadrícula
 weight: 10
 description: |
-  Information for working with platform names in Grid 2.
+  Información para trabajar con nombres de plataforma en la cuadrícula 2.
 ---
 
-This documentation previously located [on the wiki](https://github.com/SeleniumHQ/selenium/wiki/Grid-Platforms) \
-You can read more about [Grid 2]({{< ref "grid_2.md" >}})
+Esta documentación previamente ubicada [en la wiki](https://github.com/SeleniumHQ/selenium/wiki/Grid-Platforms) \
+Puedes leer más acerca de [Grid 2]({{< ref "grid_2.md" >}})
 
-## Selenium Grid Platforms
+## Plataformas cuadrícula de Selenium
 
-This section describes the PLATFORM option used in configuring Selenium Grid Nodes and [[DesiredCapabilities](DesiredCapabilities)] object.
+Esta sección describe la opción PLATFORM utilizada para configurar los nodos cuadrícula de Selenium y el objeto [[DesiredCapabilities](DesiredCapabilities)].
 
-### History of Platforms
+### Historial de plataformas
 
-When requesting a new WebDriver session from the Grid, user can specify the [[DesiredCapabilities](DesiredCapabilities)] of the remote browser. Things such as the browser name, version, and platform are among the list of options that can be specified by the test. Specifying desired.
+Al solicitar una nueva sesión WebDriver desde la Grid, el usuario puede especificar el [[DesiredCapabilities](DesiredCapabilities)] del navegador remoto. Cosas como el nombre del navegador, la versión y la plataforma están entre la lista de opciones que pueden ser especificadas por la prueba. Especificando deseado.
 
-The following code demonstrates the DesiredCapability of Internet Explorer, version 9, on Windows XP platform:
+El siguiente código demuestra la DesiredCapability de Internet Explorer, versión 9, en la plataforma Windows XP:
 
 ```
 	[[DesiredCapabilities]] capability = DesiredCapabilities.internetExplorer();
 	capability.setVersion("8");
 	capability.setPlatform(Platform.XP);
-	WebDriver driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capability);
+	controlador WebDriver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capacidad); capacidad);
 ```
 
-The request for a new session with specified DesiredCapability is sent to the Grid Hub, which will look through all of the registered nodes to see if any of them match the specification given by the test. If no node matches the specification, a CapabilityNotPresentOnTheGridException will be returned.
+La solicitud de una nueva sesión con la DesiredCapability especificada es enviada al Grid Hub, que buscará a través de todos los nodos registrados para ver si alguno de ellos coincide con la especificación dada por la prueba. Si ningún nodo coincide con la especificación, se devolverá una CapabilidadNotPresentOnTheGridException.
 
-It is a common misconception that the PLATFORM determines the ability to choose the Operating System on which the new session will be created. In this situation, platform and operating system are not the same, thus specifying the platform to "Windows 2003 Server" will not allow you to choose between a Windows XP, Vista, and 2003 server. This misconception can be born from platforms such as Mac OSX and Linux, where the name of the platform matches the name of the Operating System.
+Es una idea errónea común que el PLATFORM determina la capacidad de elegir el Sistema Operativo en el que se creará la nueva sesión. En esta situación, la plataforma y el sistema operativo no son los mismos, por lo tanto, especificar la plataforma a "Windows 2003 Server" no le permitirá elegir entre un servidor Windows XP, Vista, y 2003. Este concepto erróneo puede nacer de plataformas como Mac OSX y Linux, donde el nombre de la plataforma coincide con el nombre del sistema operativo.
 
-In case of Selenium Grid, platform refers to the underlying interactions between the Driver Atoms and the web browser. Mac OSX and Linux based Operating Systems (Centos, Ubuntu, Debian, etc..) have a relatively stable communication with the web browsers such as Firefox and Chrome. Thus the platform names are simple to understand, as seen in the example bellow:
-
-```
-   capability.setPlatform(Platform.MAC);   //Set platform to OSX
-   capability.setPlatform(Platform.LINUX); // Set platform to Linux based systems
-```
-
-The prior to release of Vista, Windows based Operating Systems only had one platform, shown here:
+En el caso de Selenium Grid, la plataforma se refiere a las interacciones subyacentes entre los Atoms Driver y el navegador web. Sistemas operativos basados en Mac OSX y Linux (Centos, Ubuntu, Debian, etc.) tienen una comunicación relativamente estable con los navegadores web como Firefox y Chrome. Así, los nombres de la plataforma son fáciles de entender, como se ve en el ejemplo siguiente:
 
 ```
-	capability.setPlatform(Platform.WINDOWS); //Set platform to Windows
+   capability.setPlatform(Platform.MAC); //Set platform to OSX
+   capability.setPlatform(Platform.LINUX); // Establecer plataforma a sistemas basados en Linux
 ```
 
-However, with the introduction of UAC in Windows Vista, there were major changes done to the underlying interactions between WebDriver and Internet Explorer. To work around the UAC constrains a new platform was added to nodes with Windows based Operating systems:
+El anterior al lanzamiento de Vista, Windows based Operating Systems sólo tenía una plataforma, mostrada aquí:
 
 ```
-	capability.setPlatform(Platform.VISTA); //Set platform to VISTA
+	capaciability.setPlatform(Platform.WINDOWS); //Set platform to Windows
 ```
 
-With the release of Windows 8, another major overhaul happened in how the WebDriver communicates with Internet Explorer, thus a new platform was added for Windows 8 based nodes:
+Sin embargo, con la introducción de UAC en Windows Vista, se hicieron cambios importantes en las interacciones subyacentes entre WebDriver y Internet Explorer. Para solucionar las restricciones UAC se añadió una nueva plataforma a los nodos con sistemas operativos basados en Windows:
 
 ```
-	capability.setPlatform(Platform.WIN8); //Set platform to Windows 8
+	capaciability.setPlatform(Platform.VISTA); //Establecer plataforma a VISTA
 ```
 
-Similar story happened with introduction of Windows 8.1, in this example the platform is set to Windows 8.1:
+Con el lanzamiento de Windows 8, otra revisión importante ocurrió en cómo el WebDriver se comunica con Internet Explorer, por lo tanto se añadió una nueva plataforma para los nodos basados en Windows 8:
 
 ```
-	capability.setPlatform(Platform.WIN8_1); //Set platform to Windows 8.1
+	capaciability.setPlatform(Platform.WIN8); //Establecer plataforma a Windows 8
 ```
 
-### Operating System Platforms
+La historia similar ocurrió con la introducción de Windows 8.1, en este ejemplo la plataforma se establece en Windows 8.1:
 
-The following list demonstrates some of the Operating Systems, and what Platform they are part of:
+```
+	capaciability.setPlatform(Platform.WIN8_1); //Establecer plataforma a Windows 8.1
+```
 
-**MAC\*\*\*\*All OSX Operating Systems** LINUX
+### Plataformas de sistema operativas
+
+La siguiente lista muestra algunos de los sistemas operativos, y de qué plataforma forman parte:
+
+**MAC\*\*\*\*Todos los sistemas operativos OSX** LINUX
 Centos
 Ubuntu
 **UNIX****Solaris****BSD** XP
@@ -77,22 +77,22 @@ Windows 2012 Server
 Windows 8
 **WIN8\_1\*\*\*\*Windows 8.1**
 
-### Families
+### Familias
 
-Different platforms are grouped into "Families" of platform. For example, Win8 and XP platforms are a part of the WINDOWS family. Similarly ANDROID and LINUX are part of the UNIX family.
+Diferentes plataformas se agrupan en "Familias" de plataforma. Por ejemplo, las plataformas Win8 y XP forman parte de la familia WINDOWS. Del mismo modo, ANDROID y LINUX forman parte de la familia UNIX.
 
-### Choosing Platform and Platform Family
+### Elegir la plataforma y la familia de las plataformas
 
-When setting a platform on the [[DesiredCapabilities](DesiredCapabilities)] object, we can set an individual platform or family of platforms. For example:
+Al configurar una plataforma en el objeto [[DesiredCapabilities](DesiredCapabilities)], podemos establecer una plataforma individual o una familia de plataformas. Por ejemplo:
 
 ```
-  	capability.setPlatform(Platform.VISTA); //Will return a node with Windows Vista or 2008 Server or Windows 7 Operating System.
-  	capability.setPlatform(Platform.XP);   //Will return a node with Windows XP or 2003 Server or Windows 2000 Professional Operating System.   
-  	capability.setPlatform(Platform.WINDOWS); //Will return a node with ANY Windows Operating System
+  	capaciability.setPlatform(Platform.VISTA); //Will devuelve un nodo con Windows Vista o 2008 Server o Windows 7 Operating System.
+  	capaciability.setPlatform(Plataforma. P); //Will return a node with Windows XP or 2003 Server or Windows 2000 Professional Operating System.   
+  	capaciability.setPlatform(Platform.WINDOWS); //Devolverá un nodo con CUALQUIER sistema operativo de Windows
 ```
 
-### More Information
+### Más información
 
-For more information on the latest platforms, please view this file:
+Para más información sobre las últimas plataformas, por favor vea este archivo:
 
 org.openqa.selenium.Platform.java
