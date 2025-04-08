@@ -1,28 +1,28 @@
 ---
-title: Edge specific functionality
-linkTitle: Edge
+title: Funcionalidad específica del borde
+linkTitle: Borde
 weight: 5
-description: These are capabilities and features specific to Microsoft Edge browsers.
+description: Estas son funciones y características específicas de los navegadores Microsoft Edge.
 ---
 
-Microsoft Edge is implemented with Chromium, with the earliest supported version of v79. Similar to Chrome,
-the major version number of edgedriver must match the major version of the Edge browser.
+Microsoft Edge se implementa con Chromium, con la primera versión compatible de v79. Similar a Chrome,
+el número de versión principal de edgedriver debe coincidir con la versión principal del navegador Edge.
 
-## Options
+## Opciones
 
-Capabilities common to all browsers are described on the [Options page]({{< ref "../drivers/options.md" >}}).
+Las capacidades comunes a todos los navegadores se describen en la [página de opciones]({{< ref "../drivers/options.md" >}}).
 
-Capabilities unique to Chromium are documented at Google's page for
-[Capabilities & ChromeOptions](https://chromedriver.chromium.org/capabilities)
+Las capacidades únicas de Chromium están documentadas en la página de Google para
+[Capacidades y opciones de cromo](https://chromedriver.chromium.org/capabilities)
 
-Starting an Edge session with basic defined options looks like this:
+Iniciar una sesión Edge con opciones básicas definidas se ve así:
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L38-L39" >}}
 {{< /tab >}}
 {{< gh-codeblock path="/examples/python/tests/browsers/test_edge.py#L9-L10" >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/Browsers/EdgeTest.cs#L30-L31" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -36,25 +36,25 @@ Starting an Edge session with basic defined options looks like this:
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Arguments
+### Argumentos
 
-The `args` parameter is for a list of command line switches to be used when starting the browser.
-There are two excellent resources for investigating these arguments:
+El parámetro `args` es para una lista de interruptores de línea de comandos que se usarán al iniciar el navegador.
+Hay dos recursos excelentes para investigar estos argumentos:
 
-- [Chrome Flags for Tooling](https://github.com/GoogleChrome/chrome-launcher/blob/main/docs/chrome-flags-for-tools.md)
-- [List of Chromium Command Line Switches](https://peter.sh/experiments/chromium-command-line-switches/)
+- [Banderas Chrome para Herramientas](https://github.com/GoogleChrome/chrome-launcher/blob/main/docs/chrome-flags-for-tools.md)
+- [Lista de Cambios de Línea de Comando de Chromium](https://peter.sh/experiments/chromium-command-line-switches/)
 
-Commonly used args include `--start-maximized`, `--headless=new` and `--user-data-dir=...`
+Comúnmente usados los argumentos incluyen `--start-maximized`, `--headless=new` y `--user-data-dir=...`
 
-Add an argument to options:
+Añadir un argumento a las opciones:
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L46" >}}
 {{< /tab >}}
 {{< gh-codeblock path="/examples/python/tests/browsers/test_edge.py#L18" >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="/examples/dotnet/SeleniumDocs/Browsers/EdgeTest.cs#L39" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="/examples/dotnet/SeleniumDocs/Navegadores/EdgeTest.cs#L39" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
 {{< gh-codeblock path="/examples/ruby/spec/browsers/edge_spec.rb#L17" >}}
@@ -67,19 +67,19 @@ Add an argument to options:
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Start browser in a specified location
+### Iniciar navegador en una ubicación especificada
 
-The `binary` parameter takes the path of an alternate location of browser to use. With this parameter you can
+El parámetro `binary` toma la ruta de una ubicación alternativa del navegador a utilizar. With this parameter you can
 use chromedriver to drive various Chromium based browsers.
 
-Add a browser location to options:
+Añadir una ubicación del navegador a las opciones:
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L55" >}}
 {{< /tab >}}
 {{< gh-codeblock path="/examples/python/tests/browsers/test_edge.py#L29" >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/Browsers/EdgeTest.cs#L49" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -93,20 +93,20 @@ Add a browser location to options:
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Add extensions
+### Añadir extensiones
 
-The `extensions` parameter accepts crx files. As for unpacked directories,
-please use the `load-extension` argument instead, as mentioned in
-[this post](https://chromedriver.chromium.org/extensions).
+El parámetro `extensions` acepta archivos crx. En cuanto a los directorios desempaquetados,
+utilice el argumento `load-extension`, como se menciona en
+[esta publicación](https://chromedriver.chromium.org/extensions).
 
-Add an extension to options:
+Añadir una extensión a las opciones:
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L66" >}}
 {{< /tab >}}
 {{< gh-codeblock path="/examples/python/tests/browsers/test_edge.py#L40" >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/Browsers/EdgeTest.cs#L61" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -120,12 +120,12 @@ Add an extension to options:
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Keeping browser open
+### Mantener el navegador abierto
 
-Setting the `detach` parameter to true will keep the browser open after the process has ended,
-so long as the quit command is not sent to the driver.
+Establecer el parámetro 'detach' a verdadero mantendrá el navegador abierto una vez que el proceso haya terminado,
+siempre y cuando el comando de salir no sea enviado al controlador.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< gh-codeblock path="/examples/python/tests/browsers/test_edge.py#L51" >}}
 {{< tab header="Ruby" >}}
 {{< gh-codeblock path="/examples/ruby/spec/browsers/edge_spec.rb#L45" >}}
@@ -138,22 +138,22 @@ so long as the quit command is not sent to the driver.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Excluding arguments
+### Excluyendo argumentos
 
-MSEdgedriver has several default arguments it uses to start the browser.
-If you do not want those arguments added, pass them into `excludeSwitches`.
-A common example is to turn the popup blocker back on. A full list of default arguments
-can be parsed from the
+MSEdgedriver tiene varios argumentos por defecto que usa para iniciar el navegador.
+Si no quieres que se añadan estos argumentos, pasarlos a `excludeSwitches`.
+Un ejemplo común es volver a activar el bloqueador de ventanas emergentes. Una lista completa de los argumentos predeterminados
+puede ser analizada desde el
 [Chromium Source Code](https://source.chromium.org/chromium/chromium/src/+/main:chrome/test/chromedriver/chrome_launcher.cc)
 
-Set excluded arguments on options:
+Establecer argumentos excluidos en las opciones:
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L79" >}}
 {{< /tab >}}
 {{< gh-codeblock path="/examples/python/tests/browsers/test_edge.py#L62" >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< gh-codeblock path="/examples/dotnet/SeleniumDocs/Browsers/EdgeTest.cs#L76" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -167,32 +167,32 @@ Set excluded arguments on options:
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Service
+## Servicio
 
-Examples for creating a default Service object, and for setting driver location and port
-can be found on the [Driver Service]({{< ref "../drivers/service.md" >}}) page.
+Ejemplos para crear un objeto de servicio predeterminado, y para configurar la ubicación del controlador y el puerto
+se pueden encontrar en el [Servicio de Motivador]({{< ref ". /drivers/service.md" >}}) página.
 
-### Log output
+### Log de salida
 
-Getting driver logs can be helpful for debugging issues. The Service class lets you
-direct where the logs will go. Logging output is ignored unless the user directs it somewhere.
+Obtener registros de controladores puede ser útil para depurar problemas. La clase de servicio le permite
+directo hacia dónde irán los registros. La salida de registro se ignora a menos que el usuario la dirija a alguna parte.
 
-#### File output
+#### Salida de archivo
 
-To change the logging output to save to a specific file:
+Para cambiar la salida de registro para guardar en un archivo específico:
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< badge-version version="4.10" >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L101" >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/tests/browsers/test_edge.py#L71" >}}
+{{< gh-codeblock path="ejemplos/python/tests/browsers/test_edge.py#L71" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/Browsers/EdgeTest.cs#L86" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/Browsers/EdgeTest.cs#L86" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
 {{< badge-version version="4.10" >}}
-{{< gh-codeblock path="examples/ruby/spec/browsers/edge_spec.rb#L67" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/browsers/edge_spec.rb#L67" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
 {{< badge-code >}}
@@ -202,22 +202,22 @@ To change the logging output to save to a specific file:
 {{< /tab >}}
 {{< /tabpane >}}
 
-#### Console output
+#### Salida de consola
 
-To change the logging output to display in the console as STDOUT:
+Para cambiar la salida de registro a mostrar en la consola como STDOUT:
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< badge-version version="4.10" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L114" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L114" >}}
 {{< tab header="Python" >}}
 {{< badge-version version="4.11" >}}
-{{< gh-codeblock path="examples/python/tests/browsers/test_edge.py#L82" >}}
+{{< gh-codeblock path="ejemplos/python/tests/browsers/test_edge.py#L82" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-implementation >}}
 {{< /tab >}}
 {{< badge-version version="4.10" >}}
-{{< gh-codeblock path="examples/ruby/spec/browsers/edge_spec.rb#L76" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/browsers/edge_spec.rb#L76" >}}
 {{< tab header="JavaScript" >}}
 {{< badge-code >}}
 {{< /tab >}}
@@ -226,24 +226,24 @@ To change the logging output to display in the console as STDOUT:
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Log level
+### Nivel de log
 
-There are 6 available log levels: `ALL`, `DEBUG`, `INFO`, `WARNING`, `SEVERE`, and `OFF`.
-Note that `--verbose` is equivalent to `--log-level=ALL` and `--silent` is equivalent to `--log-level=OFF`,
-so this example is just setting the log level generically:
+Hay 6 niveles de registro disponibles: `ALL`, `DEBUG`, `INFO`, `WARNING`, `SEVERE`, y `OFF`.
+Ten en cuenta que `--verbose` es equivalente a `--log-level=ALL` y `--silent` es equivalente a `--log-level=OFF`,
+así que este ejemplo solo establece el nivel de registro generalmente:
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L127-L128" >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/tests/browsers/test_edge.py#L93" >}}
+{{< gh-codeblock path="ejemplos/python/tests/browsers/test_edge.py#L93" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-implementation >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
 {{< badge-version version="4.10" >}}
-{{< gh-codeblock path="examples/ruby/spec/browsers/edge_spec.rb#L87" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/browsers/edge_spec.rb#L87" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
 {{< badge-code >}}
@@ -253,23 +253,23 @@ so this example is just setting the log level generically:
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Log file features
+### Características del archivo de registro
 
-There are 2 features that are only available when logging to a file:
+Hay 2 características que sólo están disponibles cuando se registra en un archivo:
 
-- append log
-- readable timestamps
+- añadir registro
+- marcas de tiempo legibles
 
-To use them, you need to also explicitly specify the log path and log level.
-The log output will be managed by the driver, not the process, so minor differences may be seen.
+Para usarlos, también necesita especificar explícitamente la ruta de registro y el nivel de registro.
+La salida del registro será administrada por el controlador, no por el proceso, por lo que se pueden ver pequeñas diferencias.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L143-L144" >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="examples/python/tests/browsers/test_edge.py#L104" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-implementation >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -290,13 +290,13 @@ Edge browser and msedgedriver versions should match, and if they don't the drive
 If you disable the build check, you can force the driver to be used with any version of Edge.
 Note that this is an unsupported feature, and bugs will not be investigated.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L161-L162" >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="examples/python/tests/browsers/test_edge.py#L115" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< gh-codeblock path="examples/dotnet/SeleniumDocs/Browsers/EdgeTest.cs#L155" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -325,14 +325,14 @@ Some browsers have implemented additional features that are unique to them.
 
 You can drive Chrome Cast devices with Edge, including sharing tabs
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L225-L230" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="/examples/python/tests/browsers/test_edge.py#L170-L174" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -350,14 +350,14 @@ You can drive Chrome Cast devices with Edge, including sharing tabs
 
 You can simulate various network conditions.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L198-L204" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="/examples/python/tests/browsers/test_edge.py#L129-L135" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -373,14 +373,14 @@ You can simulate various network conditions.
 
 ### Logs
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L242" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="/examples/python/tests/browsers/test_edge.py#L186" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -394,16 +394,16 @@ You can simulate various network conditions.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Permissions
+### Permisos
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/browsers/EdgeTest.java#L184" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< gh-codeblock path="/examples/python/tests/browsers/test_edge.py#L149" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
@@ -419,4 +419,4 @@ You can simulate various network conditions.
 
 ### DevTools
 
-See the [Chrome DevTools]({{< ref "../bidi/cdp/" >}}) section for more information about using DevTools in Edge
+Vea la sección [Chrome DevTools]({{< ref "../bidi/cdp/" >}}) para más información sobre cómo usar DevTools en Borde
