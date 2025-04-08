@@ -1,27 +1,27 @@
 ---
-title: Driver Service Class
-linkTitle: Service
+title: Clase de Servicio de Conductor
+linkTitle: Servicio
 weight: 3
 ---
 
-The Service classes are for managing the starting and stopping of local drivers.
-They cannot be used with a Remote WebDriver session.
+Las clases de servicio son para gestionar el inicio y la parada de los conductores locales.
+No se pueden utilizar con una sesión de WebDriver remota.
 
-Service classes allow you to specify information about the driver,
-like location and which port to use.
-They also let you specify what arguments get passed
-to the command line. Most of the useful arguments are related to logging.
+Las clases de servicio le permiten especificar información sobre el controlador,
+como ubicación y qué puerto utilizar.
+También te permiten especificar qué argumentos pasan
+a la línea de comandos. La mayoría de los argumentos útiles están relacionados con el registro.
 
-## Default Service instance
+## Instancia de servicio predeterminada
 
-To start a driver with a default service instance:
+Para iniciar un controlador con una instancia de servicio predeterminada:
 
-{{< tabpane text=true >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/drivers/ServiceTest.java#L15-L16" >}}
+{{< tabpane text=verdad >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/drivers/ServiceTest.java#L15-L16" >}}
 {{< badge-version version="4.11" >}}
-{{< gh-codeblock path="examples/python/tests/drivers/test_service.py#L5-L6" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/Drivers/ServiceTest.cs#L14-L15" >}}
-{{< gh-codeblock path="examples/ruby/spec/drivers/service_spec.rb#L14-L15" >}}
+{{< gh-codeblock path="ejemplos/python/tests/drivers/test_service.py#L5-L6" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/Drivers/ServiceTest.cs#L14-L15" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/drivers/service_spec.rb#L14-L15" >}}
 {{< tab header="JavaScript" >}}
 {{< badge-code >}}
 {{< /tab >}}
@@ -30,26 +30,26 @@ To start a driver with a default service instance:
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Driver location
+## Ubicación del conductor
 
-**Note:** If you are using Selenium 4.6 or greater, you shouldn't need to set a driver location.
-If you cannot update Selenium or have an advanced use case, here is how to specify the driver location:
+**Nota:** Si estás usando Selenium 4.6 o superior, no deberías tener que establecer una ubicación del controlador.
+Si no puede actualizar Selenium o tiene un caso de uso avanzado, aquí está cómo especificar la ubicación del controlador:
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/drivers/ServiceTest.java#L25-L26" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/drivers/ServiceTest.java#L25-L26" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< badge-version version="4.11" >}}
-{{< gh-codeblock path="examples/python/tests/drivers/test_service.py#L15" >}}
+{{< gh-codeblock path="ejemplos/python/tests/drivers/test_service.py#L15" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-version version="4.9" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/Drivers/ServiceTest.cs#L23" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/Drivers/ServiceTest.cs#L23" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
 {{< badge-version version="4.8" >}}
-{{< gh-codeblock path="examples/ruby/spec/drivers/service_spec.rb#L22" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/drivers/service_spec.rb#L22" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
 {{< badge-code >}}
@@ -59,24 +59,24 @@ If you cannot update Selenium or have an advanced use case, here is how to speci
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Driver port
+## Puerto conductor
 
-If you want the driver to run on a specific port, you may specify it as follows:
+Si desea que el controlador se ejecute en un puerto específico, puede especificarlo de la siguiente manera:
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/drivers/ServiceTest.java#L33" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/drivers/ServiceTest.java#L33" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
 {{< badge-version version="4.11" >}}
-{{< gh-codeblock path="examples/python/tests/drivers/test_service.py#L23" >}}
+{{< gh-codeblock path="ejemplos/python/tests/drivers/test_service.py#L23" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/Drivers/ServiceTest.cs#L32" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/Drivers/ServiceTest.cs#L32" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
 {{< badge-version version="4.8" >}}
-{{< gh-codeblock path="examples/ruby/spec/drivers/service_spec.rb#L29" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/drivers/service_spec.rb#L29" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
 {{< badge-code >}}
@@ -88,10 +88,10 @@ If you want the driver to run on a specific port, you may specify it as follows:
 
 <span id="setting-log-output"></span>
 
-## Logging
+## Loggando
 
-Logging functionality varies between browsers. Most browsers allow you to
-specify location and level of logs. Take a look at the respective browser page:
+La funcionalidad de registro varía entre los navegadores. La mayoría de los navegadores le permiten especificar
+ubicación y nivel de registros. Eche un vistazo a la página respectiva del navegador:
 
 - [Chrome]({{< ref "../browsers/chrome#service" >}})
 - [Edge]({{< ref "../browsers/edge#service" >}})
