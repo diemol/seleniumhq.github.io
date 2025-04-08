@@ -1,46 +1,46 @@
 ---
-title: Internet Explorer Driver Internals
-linkTitle: Internals
+title: Internacionales de Internet Explorer Driver
+linkTitle: Internacionales
 weight: 2
 description: |
-  More detailed information on the IE Driver.
+  Información más detallada sobre el conductor IE.
 ---
 
-## Client Code Into the Driver
+## Código del cliente en el controlador
 
-We use the W3C WebDriver protocol to communicate with a local instance of an HTTP server. This greatly simplifies the implementation of the language-specific code, and minimzes the number of entry points into the C++ DLL that must be called using a native-code interop technology such as [JNA](https://jna.dev.java.net/), [ctypes](http://docs.python.org/library/ctypes.html), [pinvoke](http://msdn.microsoft.com/en-us/library/aa446536.aspx) or [DL](http://www.ruby-doc.org/stdlib/libdoc/dl/rdoc/index.html).
+Utilizamos el protocolo W3C WebDriver para comunicarnos con una instancia local de un servidor HTTP. Esto simplifica en gran medida la aplicación del código específico del idioma, y minimiza el número de puntos de entrada en la DLL de C++ que debe llamarse usando una tecnología de interoperación de código nativo como [JNA](https://jna.dev.java.net/), [ctypes](http://docs.python.org/library/ctypes.html), [pinvoke](http://msdn.microsoft.com/en-us/library/aa446536.aspx) o [DL](http://www.ruby-doc.org/stdlib/libdoc/dl/rdoc/index.html).
 
-### Memory Management
+### Gestión de memoria
 
-The IE driver utilizes the Active Template Library (ATL) to take advantage of its implementation of smart pointers to COM objects. This makes reference counting and cleanup of COM objects much easier.
+El controlador IE utiliza la Biblioteca de Plantillas Activas (ATL) para aprovechar su implementación de punteros inteligentes a objetos COM. Esto facilita mucho el recuento de referencias y la limpieza de objetos COM.
 
-## Why Do We Require Protected Mode Settings Changes?
+## ¿Por qué necesitamos cambiar los ajustes del modo protegido?
 
-IE 7 on Windows Vista introduced the concept of Protected Mode, which allows for some measure of protection to the underlying Windows OS when browsing. The problem is that when you manipulate an instance of IE via COM, and you navigate to a page that would cause a transition into or out of Protected Mode, IE requires that another browser session be created. This will orphan the COM object of the previous session, not allowing you to control it any longer.
+IE 7 en Windows Vista introdujo el concepto de Modo Protegido, que permite cierta protección al sistema operativo de Windows subyacente durante la navegación. El problema es que cuando se manipula una instancia de IE a través de COM, y navega a una página que causaría una transición hacia o fuera del modo protegido, IE requiere que se cree otra sesión del navegador. Esto dejará huérfano el objeto COM de la sesión anterior, sin permitirle controlarlo por más tiempo.
 
-In IE 7, this will usually manifest itself as a new top-level browser window; in IE 8, a new IExplore.exe process will be created, but it will usually (not always!) seamlessly attach it to the existing IE top-level frame window. Any browser automation framework that drives IE externally (as opposed to using a WebBrowser control) will run into these problems.
+En IE 7, esto se manifestará normalmente como una nueva ventana del navegador de nivel superior; en IE 8, un nuevo IExplore. el proceso xe será creado, pero normalmente no siempre) Adjuntarlo perfectamente a la ventana de fotogramas de nivel superior de IE existente. Cualquier framework de automatización del navegador que maneje IE externamente (a diferencia de usar un control WebBrowser) se topará con estos problemas.
 
-In order to work around that problem, we dictate that to work with IE, all zones must have the same Protected Mode setting. As long as it's on for all zones, or off for all zones, we can prevent the transistions to different Protected Mode zones that would invalidate our browser object. It also allows users to continue to run with UAC turned on, and to run securely in the browser if they set Protected Mode "on" for all zones.
+Para solucionar este problema, decimos que para trabajar con IE, todas las zonas deben tener el mismo modo protegido. Mientras esté encendido para todas las zonas, o apagado para todas las zonas, podemos prevenir las transisciones a diferentes zonas de Modo Protegido que invalidarían nuestro objeto de navegador. También permite a los usuarios continuar ejecutándose con UAC encendido, y para ejecutarse de forma segura en el navegador si ponen "encendido" el modo de protección para todas las zonas.
 
-In earlier releases of the IE driver, if the user's Protected Mode settings were not correctly set, we would launch IE, and the process would simply hang until the HTTP request timed out. This was suboptimal, as it gave no indication what needed to be set. Erring on the side of caution, we do not modify the user's Protected Mode settings. Current versions, however check that the Protected Mode settings are properly set, and will return an error response if they are not.
+En versiones anteriores del controlador IE, si la configuración del modo protegido del usuario no se ha establecido correctamente lanzaríamos IE, y el proceso simplemente se cerraría hasta que se agotara el tiempo de espera de la solicitud HTTP. Esto era subóptimo, ya que no indicaba lo que había que establecer. Erring en el lado de la precaución, no modificamos la configuración del modo protegido del usuario. Versiones actuales, sin embargo compruebe que los ajustes del Modo Protegido están configurados correctamente, y devolverá una respuesta de error si no lo están.
 
-## Keyboard and Mouse Input
+## Entrada de teclado y ratón
 
-Key files: [interactions.cpp](https://github.com/SeleniumHQ/selenium/blob/master/cpp/webdriver-interactions/interactions.cpp)
+Archivos de llave: [interactions.cpp](https://github.com/SeleniumHQ/selenium/blob/master/cpp/webdriver-interactions/interactions.cpp)
 
-There are two ways that we could simulate keyboard and mouse input. The first way, which is used in parts of webdriver, is to synthesize events on the DOM. This has a number of drawbacks, since each browser (and version of a browser) has its own unique quirks; to model each of these is a demanding task, and impossible to get completely right (for example, it's hard to tell what `window.selection` should be and this is a read-only property on some browsers) The alternative approach is to synthesize keyboard and mouse input at the OS level, ideally without stealing focus from the user (who tends to be doing other things on their computer as long-running webdriver tests run)
+Hay dos maneras de simular la entrada del teclado y del ratón. La primera manera, que se utiliza en partes del webdriver, es sintetizar eventos en el DOM. Esto tiene un número de dibujos, ya que cada navegador (y la versión de un navegador) tiene sus propias peculiaridades únicas; modelar cada una de estas es una tarea exigente, e imposible de obtener por completo correctamente (por ejemplo, es difícil decir que `window. election` debe ser y esta es una propiedad de sólo lectura en algunos navegadores) El enfoque alternativo es sintetizar el teclado y la entrada del ratón en el nivel del SO idealmente sin robar el foco del usuario (quien tiende a estar haciendo otras cosas en su computadora mientras se ejecutan las pruebas de controlador web de larga duración)
 
-The code for doing this is in [interactions.cpp](https://github.com/SeleniumHQ/selenium/blob/master/cpp/webdriver-interactions/interactions.cpp) The key thing to note here is that we use PostMessages to push window events on to the message queue of the IE instance. Typing, in particular, is interesting: we only send the "keydown" and "keyup" messages. The "keypress" event is created if necessary by IE's internal event processing. Because the key press event is not always generated (for example, not every character is printable, and if the default event bubbling is cancelled, listeners don't see the key press event) we send a "probe" event in after the key down. Once we see that this has been processed, we know that the key press event is on the stack of events to be processed, and that it is safe to send the key up event. If this was not done, it is possible for events to fire in the wrong order, which is definitely sub-optimal.
+El código para hacer esto está en [interactions.cpp](https://github.com/SeleniumHQ/selenium/blob/master/cpp/webdriver-interactions/interactions.cpp) La clave a tener en cuenta aquí es que usamos PostMessages para subir los eventos de la ventana a la cola de mensajes de la instancia de IE. Escribir, en particular, es interesante: sólo enviamos los mensajes "keydown" y "keyup". El evento "keypress" es creado si es necesario por el procesamiento interno de eventos de IE. Debido a que el evento de pulsación de tecla no siempre se genera (por ejemplo, no todos los caracteres son imprimibles, y si la burbuja de eventos por defecto es cancelada, los oyentes no ven el evento de la prensa de tecla) enviamos un evento de "sonda" después de la tecla. Una vez que vemos que esto ha sido procesado, sabemos que el evento de la prensa clave está en la lista de eventos a procesar, y que es seguro enviar el evento de llave. Si esto no se hace, es posible que los acontecimientos se disparen en el orden equivocado, lo que sin duda es poco óptimo.
 
-# Working On the InternetExplorerDriver
+# Trabajando en InternetExplorerDriver
 
-Currently, there are tests that will run for the InternetExplorerDriver in all languages (Java, C#, Python, and Ruby), so you should be able to test your changes to the native code no matter what language you're comfortable working in from the client side. For working on the C++ code, you'll need Visual Studio 2010 Professional or higher. Unfortunately, the C++ code of the driver uses ATL to ease the pain of working with COM objects, and ATL is not supplied with Visual C++ 2010 Express Edition.  If you're using Eclipse, the process for making and testing modifications is:
+Actualmente hay pruebas que se ejecutarán para InternetExplorerDriver en todos los idiomas (Java, C#, Python y Ruby), para que pueda probar sus cambios en el código nativo, sin importar en qué idioma esté cómodo trabajando desde el lado del cliente. Para trabajar en el código C++, necesitarás Visual Studio 2010 Professional o superior. Desafortunadamente, el código C++ del conductor utiliza ATL para aliviar el dolor de trabajar con objetos COM, y ATL no se suministra con Visual C++ 2010 Express Edition.  Si está usando Eclipse, el proceso para realizar y probar modificaciones es:
 
-1. Edit the C++ code in VS.
-2. Build the code to ensure that it compiles
-3. Do a complete rebuild when you are ready to run a test. This will cause the created DLL to be copied to the right place to allow its use in Eclipse
-4. Load Eclipse (or some other IDE, such as Idea)
-5. Edit the `SingleTestSuite` so that it is `usingDriver(IE)`
-6. Create a JUnit run configuration that uses the "webdriver-internet-explorer" project. If you don't do this, the test won't work at all, and there will be a somewhat cryptic error message on the console.
+1. Editar el código C++ en VS.
+2. Construye el código para asegurar que compila
+3. Haz una reconstrucción completa cuando estés listo para ejecutar una prueba. Esto causará que la DLL creada sea copiada al lugar correcto para permitir su uso en Eclipse
+4. Cargar Eclipse (o algún otro IDE, como Idea)
+5. Edita el `SingleTestSuite` para que sea `usingDriver(IE)`
+6. Crear una configuración de ejecución JUnit que utilice el proyecto "webdriver-internet-explorer". Si no hace esto, la prueba no funcionará en absoluto, y habrá un mensaje de error algo críptico en la consola.
 
-Once the basic setup is done, you can start working on the code pretty quickly. You can attach to the process you execute your code from using Visual Studio (from the Debug menu, select Attach to Process...).
+Una vez finalizada la configuración básica, puede empezar a trabajar en el código bastante rápido. Puede adjuntar al proceso que ejecuta su código usando Visual Studio (desde el menú Depurar, seleccione Adjuntar a Procesos...).
