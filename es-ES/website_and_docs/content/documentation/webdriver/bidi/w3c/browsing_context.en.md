@@ -1,20 +1,20 @@
 ---
-title: Browsing Context
-linkTitle: Browsing Context
+title: Navegando Contexto
+linkTitle: Navegando Contexto
 weight: 1
 aliases:
-  - /documentation/en/webdriver/bidirectional/bidirectional_w3c/browsing_context
+  - /documentation/es/webdriver/bidirectional/bidirectional_w3c/browsing_context
 ---
 
-## Commands
+## Comandos
 
-This section contains the APIs related to browsing context commands.
+Esta sección contiene las APIs relacionadas con comandos contextuales de navegación.
 
-### Open a new window
+### Abrir una nueva ventana
 
-Creates a new browsing context in a new window.
+Crea un nuevo contexto de navegación en una nueva ventana.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L44-L47" >}}
@@ -31,11 +31,11 @@ Creates a new browsing context in a new window.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Open a new tab
+### Abrir una nueva pestaña
 
-Creates a new browsing context in a new tab.
+Crea un nuevo contexto de navegación en una nueva pestaña.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L58-L61" >}}
@@ -52,11 +52,11 @@ Creates a new browsing context in a new tab.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Use existing window handle
+### Usar el identificador de ventana existente
 
-Creates a browsing context for the existing tab/window to run commands.
+Crea un contexto de navegación para que la pestaña/ventana existente ejecute comandos.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L37-L41" >}}
@@ -73,12 +73,12 @@ Creates a browsing context for the existing tab/window to run commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Open a window with a reference browsing context
+### Abrir una ventana con un contexto de navegación de referencia
 
-A reference browsing context is a [top-level browsing context](https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context).
-The API allows to pass the reference browsing context, which is used to create a new window. The implementation is operating system specific.
+Un contexto de navegación de referencia es un [contexto de navegación de nivel superior](https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context).
+La API permite pasar el contexto de navegación de referencias, que se utiliza para crear una nueva ventana. La implementación es específica del sistema operativo.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L50-L55" >}}
@@ -95,12 +95,12 @@ The API allows to pass the reference browsing context, which is used to create a
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Open a tab with a reference browsing context
+### Abrir una pestaña con un contexto de navegación de referencia
 
-A reference browsing context is a [top-level browsing context](https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context).
-The API allows to pass the reference browsing context, which is used to create a new tab. The implementation is operating system specific.
+Un contexto de navegación de referencia es un [contexto de navegación de nivel superior](https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context).
+La API permite pasar el contexto de navegación de referencias, que se utiliza para crear una nueva pestaña. La implementación es específica del sistema operativo.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L64-L69" >}}
@@ -117,9 +117,9 @@ The API allows to pass the reference browsing context, which is used to create a
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Navigate to a URL
+### Navegar a una URL
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L72-L80" >}}
@@ -136,9 +136,9 @@ The API allows to pass the reference browsing context, which is used to create a
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Navigate to a URL with readiness state
+### Navegar a una URL con estado de preparación
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L83-L92" >}}
@@ -155,11 +155,11 @@ The API allows to pass the reference browsing context, which is used to create a
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Get browsing context tree
+### Obtener árbol de contexto de navegación
 
-Provides a tree of all browsing contexts descending from the parent browsing context, including the parent browsing context.
+Proporciona un árbol de todos los contextos de navegación que descienden del contexto de navegación padre, incluyendo el contexto de navegación padre.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L95-L108" >}}
@@ -176,11 +176,11 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Get browsing context tree with depth
+### Obtener el árbol de contexto de navegación con profundidad
 
-Provides a tree of all browsing contexts descending from the parent browsing context, including the parent browsing context upto the depth value passed.
+Proporciona un árbol de todos los contextos de navegación que descienden del contexto de navegación padre, incluyendo el contexto de navegación padre hasta el valor de profundidad pasado.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L111-L123" >}}
@@ -197,9 +197,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Get All Top level browsing contexts
+### Obtener todos los contextos de navegación de nivel superior
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L126-L133" >}}
@@ -216,9 +216,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Close a tab/window
+### Cerrar una pestaña/ventana
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.8" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L136-L153" >}}
@@ -235,9 +235,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Activate a browsing context
+### Activar un contexto de navegación
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.14.1" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L157-L161" >}}
@@ -255,9 +255,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Reload a browsing context
+### Recargar un contexto de navegación
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.13.0" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L169-L173" >}}
@@ -274,9 +274,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Handle user prompt
+### Preguntar usuario
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.13.0" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L220-L228" >}}
@@ -293,9 +293,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Capture Screenshot
+### Captura de pantalla
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.13.0" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L248-L252" >}}
@@ -312,9 +312,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Capture Viewport Screenshot
+### Captura de pantalla de visualización
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.14.0" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L259-L268" >}}
@@ -331,9 +331,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Capture Element Screenshot
+### Captura de pantalla de Elemento
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.14.0" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L275-L280" >}}
@@ -350,9 +350,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Set Viewport
+### Configurar vista
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.14.1" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L304-L307" >}}
@@ -371,7 +371,7 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 
 ### Print page
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.14.1" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L317-L322" >}}
@@ -388,9 +388,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Navigate back
+### Navegar atrás
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.16.0" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L330-L336" >}}
@@ -407,9 +407,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Navigate forward
+### Avanzar hacia adelante
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.16.0" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L342-L352" >}}
@@ -426,9 +426,9 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Traverse history
+### Historial de recorrido
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.16.0" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextTest.java#L359-L365" >}}
@@ -445,13 +445,13 @@ Provides a tree of all browsing contexts descending from the parent browsing con
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Events
+## Eventos
 
-This section contains the APIs related to browsing context events.
+Esta sección contiene las APIs relacionadas con la navegación de eventos de contexto.
 
-### Browsing Context Created Event
+### Evento creado por el contexto de navegación
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.10" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextInspectorTest.java#L34-L41" >}}
@@ -468,9 +468,9 @@ This section contains the APIs related to browsing context events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Dom Content loaded Event
+### Evento cargado de contenido de Dom
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.10" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextInspectorTest.java#L54-L63" >}}
@@ -487,9 +487,9 @@ This section contains the APIs related to browsing context events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Browsing Context Loaded Event
+### Evento Cargado Contexto de Navegación
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.10" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextInspectorTest.java#L81-88" >}}
@@ -506,9 +506,9 @@ This section contains the APIs related to browsing context events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Navigated Started Event
+### Evento Navegado Iniciado
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextInspectorTest.java#L97-104" >}}
@@ -524,9 +524,9 @@ This section contains the APIs related to browsing context events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Fragment Navigated Event
+### Evento Navegado por Fragmento
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextInspectorTest.java#L113-123" >}}
@@ -543,9 +543,9 @@ This section contains the APIs related to browsing context events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### User Prompt Opened Event
+### Evento Abierto del Usuario
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextInspectorTest.java#L113-123" >}}
@@ -561,9 +561,9 @@ This section contains the APIs related to browsing context events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### User Prompt Closed Event
+### Evento cerrado de comprobación de usuario
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextInspectorTest.java#L150-163" >}}
@@ -579,9 +579,9 @@ This section contains the APIs related to browsing context events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Browsing Context Destroyed Event
+### Evento de exploración del contexto destruido
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.18" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/BrowsingContextInspectorTest.java#L170-L181" >}}
