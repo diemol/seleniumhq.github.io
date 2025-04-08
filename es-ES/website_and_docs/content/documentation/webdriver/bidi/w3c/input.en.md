@@ -3,14 +3,14 @@ title: Input
 linkTitle: Input
 weight: 1
 aliases:
-  - /documentation/en/webdriver/bidirectional/bidirectional_w3c/input
+  - /documentation/es/webdriver/bidirectional/bidirectional_w3c/input
 ---
 
-This section contains the APIs related to input commands.
+Esta sección contiene las APIs relacionadas con los comandos de entrada.
 
-## Perform Actions
+## Realizar acciones
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.17" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ActionsTest.java#L41-L44" >}}
@@ -27,9 +27,9 @@ This section contains the APIs related to input commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Release Actions
+## Acciones de lanzamiento
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.17" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ActionsTest.java#L59-L65" >}}
