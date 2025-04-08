@@ -1,9 +1,9 @@
 ---
-title: Legacy
-linkTitle: Legacy
+title: Legado
+linkTitle: Legado
 weight: 14
 description: |
-  Documentation related to the legacy components of Selenium. Meant to be kept purely for historical reasons  and not as a incentive to use deprecated components.
+  Documentación relacionada con los componentes heredados de Selenium. Significa mantenerse únicamente por razones históricas y no como un incentivo para el uso de componentes obsoletos.
 aliases:
-  - /documentation/en/legacy_docs/
+  - /documentation/es/legacy_docs/
 ---
