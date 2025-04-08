@@ -1,0 +1,3 @@
+files:
+  - source: /website_and_docs/content/documentation/**/*en.md
+    translation: '%original_path%/%original_file_name%'
