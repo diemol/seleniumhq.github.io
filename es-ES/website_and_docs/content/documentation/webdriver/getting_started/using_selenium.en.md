@@ -1,45 +1,45 @@
 ---
-title: Organizing and Executing Selenium Code
-linkTitle: Using Selenium
+title: Organizar y ejecutar código de Selenium
+linkTitle: Usando Selenium
 weight: 10
 description: |
-  Scaling Selenium execution with an IDE and a Test Runner library
+  Escalando la ejecución de Selenium con un IDE y una biblioteca de ejecutores de pruebas
 ---
 
 {{< alert-content >}}
 {{< /alert-content >}}
 
-If you want to run more than a handful of one-off scripts, you need to
-be able to organize and work with your code. This page should give you
-ideas for how to actually do productive things with your Selenium code.
+Si quieres ejecutar más de un puñado de scripts únicos, necesitas
+ser capaz de organizar y trabajar con tu código. Esta página debería darte
+ideas sobre cómo hacer realmente cosas productivas con tu código de Selenium.
 
-## Common Uses
+## Usos comunes
 
-Most people use Selenium to execute automated tests for web applications,
-but Selenium supports any use case of browser automation.
+La mayoría de la gente usa Selenium para ejecutar pruebas automatizadas para aplicaciones web,
+pero Selenium soporta cualquier caso de uso de automatización del navegador.
 
-### Repetitive Tasks
+### Tareas repetitivas
 
-Perhaps you need to log into a website and download something, or submit a form.
-You can create a Selenium script to run with a service at preset times.
+Tal vez necesite iniciar sesión en un sitio web y descargar algo, o enviar un formulario.
+Puede crear un script de Selenium para ejecutarse con un servicio en tiempos predefinidos.
 
-### Web Scraping
+### Raspado web
 
-Are you looking to collect data from a site that doesn't have an API? Selenium
-will let you do this, but please make sure you are familiar with the website's
-terms of service as some websites do not permit it and others will even block Selenium.
+¿Está buscando recopilar datos de un sitio que no tiene una API? Selenium
+te permitirá hacer esto, pero asegúrese de que está familiarizado con los términos
+del sitio web ya que algunos sitios web no lo permiten y otros incluso bloquearán Selenium.
 
-### Testing
+### Pruebas
 
-Running Selenium for testing requires making assertions on actions taken by Selenium.
-So a good assertion library is required. Additional features to provide structure for tests
-require use of [Test Runner](#test-runner).
+Ejecutar Selenium para realizar pruebas requiere hacer afirmaciones sobre las acciones tomadas por Selenium.
+Por lo tanto, se requiere una buena biblioteca de afirmaciones. Funciones adicionales para proporcionar estructura para las pruebas
+requieren el uso de [Ejecutador de prueba](#test-runner).
 
 ## IDEs
 
-Regardless of how you use Selenium code,
-you won't be very effective writing or executing it without a good
-Integrated Developer Environment. Here are some common options...
+Independientemente de cómo utilices el código de Selenium,
+no serás muy eficaz escribirlo o ejecutarlo sin un buen Entorno de Desarrollador Integrado
+. Aquí hay algunas opciones comunes...
 
 - [Eclipse](https://www.eclipse.org/)
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/)
@@ -47,67 +47,67 @@ Integrated Developer Environment. Here are some common options...
 - [RubyMine](https://www.jetbrains.com/ruby/)
 - [Rider](https://www.jetbrains.com/rider/)
 - [WebStorm](https://www.jetbrains.com/webstorm/)
-- [VS Code](https://code.visualstudio.com/)
+- [Código VS](https://code.visualstudio.com/)
 
-## Test Runner
+## Ejecutar prueba
 
-Even if you aren't using Selenium for testing, if you have advanced use cases, it might make
-sense to use a test runner to better organize your code. Being able to use before/after hooks
-and run things in groups or in parallel can be very useful.
+Incluso si no estás usando Selenium para pruebas, si tienes casos de uso avanzados, podría tener sentido
+usar un corredor de pruebas para organizar mejor su código. Ser capaz de usar antes/después de los ganchos
+y ejecutar cosas en grupos o en paralelo puede ser muy útil.
 
-### Choosing
+### Eligiendo
 
-There are many different test runners available.
+Hay muchos corredores de prueba diferentes disponibles.
 
-All the code examples in this documentation can be found in (or is being moved to) our
-example directories that use test runners and get executed every release to ensure all the code is correct and updated.
-Here is a list of test runners with links. The first item is the one that is used by this repository and the one
-that will be used for all examples on this page.
+Todos los ejemplos de código de esta documentación se pueden encontrar (o se está moviendo a) nuestros directoriosformat@@0 de ejemplo
+que utilizan corredores de prueba y se ejecutan cada versión para asegurarse de que todo el código es correcto y actualizado.
+Aquí hay una lista de corredores de prueba con enlaces. El primer elemento es el que utiliza este repositorio y el
+que se utilizará para todos los ejemplos de esta página.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 
-- [JUnit](https://junit.org/junit5/) - A widely-used testing framework for Java-based Selenium tests.
-- [TestNG](https://testng.org/) - Offers extra features like parallel test execution and parameterized tests.
+- [JUnit](https://junit.org/junit5/) - Un marco de pruebas ampliamente utilizado para las pruebas Selenium basadas en Java.
+- [TestNG](https://testng.org/) - Ofrece características extra como ejecución de pruebas paralelas y pruebas parameterizadas.
   {{% /tab %}}
 
 {{% tab header="Python" %}}
 
-- [pytest](https://pytest.org/) - A preferred choice for many, thanks to its simplicity and powerful plugins.
-- [unittest](https://docs.python.org/3/library/unittest.html) - Python's standard library testing framework.
+- [pytest](https://pytest.org/) - Una elección preferida para muchos, gracias a su simplicidad y poderosos plugins.
+- [unittest](https://docs.python.org/3/library/unittest.html) - framework de prueba de librerías estándar de Python.
   {{% /tab %}}
 
 {{% tab header="CSharp" %}}
 
-- [NUnit](https://nunit.org/) - A popular unit-testing framework for .NET.
-- [MS Test](https://docs.microsoft.com/en-us/visualstudio/test/getting-started-with-unit-testing?view=vs-2019) - Microsoft's own unit testing framework.
+- [NUnit](https://nunit.org/) - Un marco de prueba de unidad popular para .NET.
+- [MS Test](https://docs.microsoft.com/en-us/visualstudio/test/getting-started-with-unit-testing?view=vs-2019) - Marco de pruebas unitarias propio de Microsoft.
   {{% /tab %}}
 
 {{% tab header="Ruby" %}}
 
-- [RSpec](https://rspec.info/) - The most widely used testing library for running Selenium tests in Ruby.
-- [Minitest](https://github.com/seattlerb/minitest) - A lightweight testing framework that comes with Ruby standard library.
+- [RSpec](https://rspec.info/) - La biblioteca de pruebas más utilizada para ejecutar las pruebas de Selenium en Ruby.
+- [Minitest](https://github.com/seattlerb/minitest) - Un marco de prueba ligero que viene con la biblioteca estándar de Ruby.
   {{% /tab %}}
 
 {{% tab header="JavaScript" %}}
 
-- [Jest](https://jestjs.io/) - Primarily known as a testing framework for React, it can also be used for Selenium tests.
-- [Mocha](https://mochajs.org/) - The most common JS library for running Selenium tests.
+- [Jest](https://jestjs.io/) - Principalmente conocido como un marco de pruebas para React, también puede ser utilizado para pruebas de Selenium.
+- [Mocha](https://mochajs.org/) - La biblioteca JS más común para ejecutar las pruebas de Selenium.
   {{% /tab %}}
 
 {{% tab header="Kotlin" %}}
 
-- [Kotest](https://kotest.io/) - A flexible and comprehensive testing framework specifically designed for Kotlin.
-- [JUnit5](https://junit.org/junit5/) - The standard Java testing framework, fully compatible with Kotlin.
+- [Kotest](https://kotest.io/) - Un marco de pruebas flexible y completo diseñado específicamente para Kotlin.
+- [JUnit5](https://junit.org/junit5/) - El framework de pruebas estándar de Java, totalmente compatible con Kotlin.
   {{% /tab %}}
 
 {{< /tabpane >}}
 
-### Installing
+### Instalando
 
-This is very similar to what was required in [Install a Selenium Library]({{< ref "install_library.md" >}}).
-This code is only showing examples for what is being used in our Documentation Examples project.
+Esto es muy similar a lo que se necesitaba en [Instalar una biblioteca Selenium]({{< ref "install_library.md" >}}).
+Este código sólo muestra ejemplos de lo que está siendo utilizado en nuestro proyecto de Ejemplos de Documentación.
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 
 **Maven**
 
@@ -116,117 +116,117 @@ This code is only showing examples for what is being used in our Documentation E
 {{% /tab %}}
 {{% tab header="Python" %}}
 
-To use it in a project, add it to the `requirements.txt` file:
+Para usarlo en un proyecto, añádelo al archivo `requirements.txt`:
 
 {{% /tab %}}
 {{% tab header="CSharp" %}}
-in the project's `csproj` file, specify the dependency as a `PackageReference` in `ItemGroup`:
+en el archivo `csproj` del proyecto, especifica la dependencia como `PackageReference` en `ItemGroup`:
 
 {{% /tab %}}
 {{% tab header="Ruby" %}}
 
-Add to project's gemfile
+Añadir a gemfile del proyecto
 
 {{% /tab %}}
 {{% tab header="JavaScript" %}}
-In your project's `package.json`, add requirement to `dependencies`:
+En el `package.json` de tu proyecto, añade el requisito a `dependencies`:
 
 {{< tab header="Kotlin" >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Asserting
+### Validando
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/UsingSeleniumTest.java#L30-L31" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/getting_started/UsingSeleniumTest.java#L30-L31" >}}
 {{< /tab >}}
-{{< gh-codeblock path="examples/python/tests/getting_started/using_selenium_tests.py#L8-L9" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/using_selenium_tests.py#L8-L9" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/GettingStarted/UsingSeleniumTest.cs#L19-L20" >}}
+{{< tab header="Carrete" >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/GettingStarted/UsingSeleniumTest.cs#L19-L20" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="examples/ruby/spec/getting_started/using_selenium_spec.rb#L14-L15" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/getting_started/using_selenium_spec.rb#L14-L15" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
-{{< gh-codeblock path="examples/javascript/test/getting_started/runningTests.spec.js#L14-L15" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/runningTests.spec.js#L14-L15" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Setting Up and Tearing Down
+### Configuración de arriba y Tearing Down
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 
-### Set Up
+### Configurar
 
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/UsingSeleniumTest.java#L19-L22" >}}
 
-### Tear Down
+### Tear abajo
 
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/UsingSeleniumTest.java#L45-L48" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/getting_started/UsingSeleniumTest.java#L45-L48" >}}
 
 {{% /tab %}}
 {{% tab header="Python" %}}
 
-### Set Up
+### Configurar
 
-{{< gh-codeblock path="examples/python/tests/getting_started/using_selenium_tests.py#L25-L28" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/using_selenium_tests.py#L25-L28" >}}
 
-### Tear Down
+### Tear abajo
 
-{{< gh-codeblock path="examples/python/tests/getting_started/using_selenium_tests.py#L30-31" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/using_selenium_tests.py#L30-31" >}}
 
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< badge-code >}}
 {{< /tab >}}
 
-### Set Up
+### Configurar
 
-{{< gh-codeblock path="examples/ruby/spec/getting_started/using_selenium_spec.rb#L7-L9" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/getting_started/using_selenium_spec.rb#L7-L9" >}}
 
-### Tear Down
+### Tear abajo
 
-{{< gh-codeblock path="examples/ruby/spec/spec_helper.rb#L30" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/spec_helper.rb#L30" >}}
 {{< tab header="JavaScript" >}}
 
-### Set Up
+### Configurar
 
-{{< gh-codeblock path="examples/javascript/test/getting_started/runningTests.spec.js#L7-L9" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/runningTests.spec.js#L7-L9" >}}
 
-### Tear Down
+### Tear abajo
 
-{{< gh-codeblock path="examples/javascript/test/getting_started/runningTests.spec.js#L30" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/runningTests.spec.js#L30" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Executing
+### Ejecutando
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 
 ### Maven
 
 ```shell
-mvn clean test
+prueba de limpieza mvn
 ```
 
 ### Gradle
 
 ```shell
-gradle clean test
+prueba de limpieza de grados
 ```
 
-{{< gh-codeblock path="examples/python/README.md#L35" >}}
-{{< tab header="CSharp" >}}
+{{< gh-codeblock path="ejemplos/python/README.md#L35" >}}
+{{< tab header="Carrete" >}}
 {{< badge-code >}}
 {{< /tab >}}
-{{< gh-codeblock path="examples/ruby/README.md#L26" >}}
+{{< gh-codeblock path="ejemplos/ruby/README.md#L26" >}}
 
 ### Mocha
 
@@ -237,7 +237,7 @@ mocha runningTests.spec.js
 ### npx
 
 ```shell
-npx mocha runningTests.spec.js
+mocha npx runningTests.spec.js
 ```
 
 {{< tab header="Kotlin" >}}
@@ -245,35 +245,35 @@ npx mocha runningTests.spec.js
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Examples
+### Ejemplos
 
-In [First script]({{< ref "first_script.md" >}}), we saw each of the components of a Selenium script.
-Here's an example of that code using a test runner:
+En [Primer script]({{< ref "first_script.md" >}}), vimos cada uno de los componentes de un script de Selenium.
+Aquí hay un ejemplo de ese código usando un corredor de pruebas:
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/getting_started/UsingSeleniumTest.java" >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/getting_started/UsingSeleniumTest.java" >}}
 {{< /tab >}}
 {{< tab header="Python" >}}
-{{< gh-codeblock path="examples/python/tests/getting_started/using_selenium_tests.py" >}}
+{{< gh-codeblock path="ejemplos/python/tests/getting_started/using_selenium_tests.py" >}}
 {{< /tab >}}
-{{< tab header="CSharp" >}}
+{{< tab header="Carrete" >}}
 {{< gh-codeblock path="examples/dotnet/SeleniumDocs/GettingStarted/UsingSeleniumTest.cs" >}}
 {{< /tab >}}
 {{< tab header="Ruby" >}}
-{{< gh-codeblock path="examples/ruby/spec/getting_started/using_selenium_spec.rb" >}}
+{{< gh-codeblock path="ejemplos/ruby/spec/getting_started/using_selenium_spec.rb" >}}
 {{< /tab >}}
 {{< tab header="JavaScript" >}}
-{{< gh-codeblock path="examples/javascript/test/getting_started/runningTests.spec.js" >}}
+{{< gh-codeblock path="ejemplos/javascript/test/getting_started/runningTests.spec.js" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
 {{< badge-code >}}
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Next Steps
+## Siguiente paso
 
-Take what you've learned and build out your Selenium code!
+¡Toma lo que has aprendido y construye tu código de Selenium!
 
 As you find more functionality that you need, read up on the rest of our
 [WebDriver documentation]({{< ref "/documentation/webdriver/" >}}).
