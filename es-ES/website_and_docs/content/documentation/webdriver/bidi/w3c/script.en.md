@@ -1,18 +1,18 @@
 ---
-title: Script
-linkTitle: Script
+title: Escribir
+linkTitle: Escribir
 weight: 1
 aliases:
-  - /documentation/en/webdriver/bidirectional/bidirectional_w3c/script
+  - /documentation/es/webdriver/bidirectional/bidirectional_w3c/script
 ---
 
-## Commands
+## Comandos
 
-This section contains the APIs related to script commands.
+Esta sección contiene las APIs relacionadas con los comandos de script.
 
-### Call function in a browsing context
+### Función de llamada en un contexto de navegación
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L52-L75" >}}
@@ -29,9 +29,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Call function in a sandbox
+### Función de llamada en un sandbox
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L201-L210" >}}
@@ -48,9 +48,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Call function in a realm
+### Función de llamada en un reino
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L219-L229" >}}
@@ -67,9 +67,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Evaluate script in a browsing context
+### Evaluar script en un contexto de navegación
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L239-L242" >}}
@@ -86,9 +86,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Evaluate script in a sandbox
+### Evaluar script en un sandbox
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L280-L283" >}}
@@ -105,9 +105,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Evaluate script in a realm
+### Evaluar script en un reino
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L293-L299" >}}
@@ -124,9 +124,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Disown handles in a browsing context
+### Descartar los handles en un contexto de navegación
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L322-L322" >}}
@@ -143,9 +143,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Disown handles in a realm
+### Despejar asas en un reino
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L375-L375" >}}
@@ -162,9 +162,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Get all realms
+### Consigue todos los reinos
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L391-L392" >}}
@@ -181,9 +181,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Get realm by type
+### Obtén realm por tipo
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L401-402" >}}
@@ -200,9 +200,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Get browsing context realms
+### Obtén reinos contextuales de navegación
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L411-412" >}}
@@ -219,9 +219,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Get browsing context realms by type
+### Obtén reinos contextuales de navegación por tipo
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L422-423" >}}
@@ -238,9 +238,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Preload a script
+### Precargar un script
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L463-463" >}}
@@ -257,9 +257,9 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Remove a preloaded script
+### Eliminar un script precargado
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.15" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptTest.java#L486-486" >}}
@@ -276,13 +276,13 @@ This section contains the APIs related to script commands.
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Events
+## Eventos
 
-This section contains the APIs related to script events.
+Esta sección contiene las APIs relacionadas con eventos de script.
 
-### Message
+### Mensaje
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.16" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptEventsTest.java#L37-L51" >}}
@@ -299,9 +299,9 @@ This section contains the APIs related to script events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Realm Created
+### Realm creado
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.16" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptEventsTest.java#L58-L68" >}}
@@ -318,9 +318,9 @@ This section contains the APIs related to script events.
 {{< /tab >}}
 {{< /tabpane >}}
 
-### Realm Destroyed
+### Realm destruido
 
-{{< tabpane text=true >}}
+{{< tabpane text=verdad >}}
 {{< tab header="Java" >}}
 {{< badge-version version="4.16" >}}
 {{< gh-codeblock path="/examples/java/src/test/java/dev/selenium/bidirectional/webdriver_bidi/ScriptEventsTest.java#L75-L85" >}}
