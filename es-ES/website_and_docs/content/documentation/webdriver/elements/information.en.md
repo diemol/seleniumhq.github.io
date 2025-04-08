@@ -1,74 +1,74 @@
 ---
-title: Information about web elements
-linkTitle: Information
+title: Información sobre elementos web
+linkTitle: Información
 weight: 4
 description: |
-  What you can learn about an element.
+  Lo que puedes aprender sobre un elemento.
 ---
 
-There are a number of details you can query about a specific element.
+Hay una serie de detalles que puede consultar sobre un elemento específico.
 
-## Is Displayed
+## Se muestra
 
-This method is used to check if the connected Element is
-displayed on a webpage. Returns a `Boolean` value,
-True if the connected element is displayed in the current
-browsing context else returns false.
+Este método se utiliza para comprobar si el elemento conectado es
+mostrado en una página web. Devuelve un valor `Boolean`,
+True si el elemento conectado se muestra en el contexto actual
+de navegación devuelve falso.
 
-This functionality is [mentioned in](https://w3c.github.io/webdriver/#element-displayedness), but not defined by
-the w3c specification due to the
-[impossibility of covering all potential conditions](https://www.youtube.com/watch?v=LAD_XPGP_kk).
-As such, Selenium cannot expect drivers to implement
-this functionality directly, and now relies on
-executing a large JavaScript function directly.
-This function makes many approximations about an element's
-nature and relationship in the tree to return a value.
+Esta funcionalidad está [mencionada en](https://w3c.github.io/webdriver/#element-displayedness), pero no definido por
+la especificación w3c debido a la
+[imposibilidad de cubrir todas las condiciones potenciales](https://www.youtube.com/watch?v=LAD_XPGP_kk).
+Como tal, Selenium no puede esperar que los controladores implementen
+esta funcionalidad directamente, y ahora depende de
+ejecutando directamente una función JavaScript grande.
+Esta función hace muchas aproximaciones sobre la naturaleza y relación
+de un elemento en el árbol para devolver un valor.
 
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="Java" text=true >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/elements/InformationTest.java#L20-L24" >}}
+{{< tabpane langEqualsHeader=verdad >}}
+{{< tab header="Java" text=verdad >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/elements/InformationTest.java#L20-L24" >}}
 {{< /tab >}}
-{{< tab header="Python" text=true >}}
-{{< gh-codeblock path="examples/python/tests/elements/test_information.py#L12-L15" >}}
+{{< tab header="Python" text=verdad >}}
+{{< gh-codeblock path="ejemplos/python/tests/elements/test_information.py#L12-L15" >}}
 {{< /tab >}}
-{{< tab header="CSharp" text=true >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/Elements/InformationTest.cs#L18-L22" >}}
+{{< tab header="Carrete" text=verdad >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/Elements/InformationTest.cs#L18-L22" >}}
 {{< /tab >}}
-{{< tab header="Ruby" text=true >}}
+{{< tab header="Ruby" text=verdad >}}
 {{< gh-codeblock path="/examples/ruby/spec/elements/information_spec.rb#L12" >}}
 {{< /tab >}}
-{{< tab header="JavaScript" text=true >}}
+{{< tab header="JavaScript" text=verdad >}}
 {{< gh-codeblock path="/examples/javascript/test/elements/information.spec.js#L16-L17" >}}
 {{< /tab >}}
 {{< tab header="Kotlin" >}}
 
-//returns true if element is displayed else returns false
+//devuelve true si el elemento se muestra devuelve falso
 val flag = driver.findElement(By.name("email_input")).isDisplayed()
 
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Is Enabled
+## Está habilitado
 
-This method is used to check if the connected Element
-is enabled or disabled on a webpage.
-Returns a boolean value, **True** if the connected element is
-**enabled** in the current browsing context else returns **false**.
+Este método se utiliza para comprobar si el elemento conectado
+está habilitado o deshabilitado en una página web.
+Devuelve un valor booleano, **True** si el elemento conectado es
+**habilitado** en el contexto de navegación actual de lo contrario devuelve **false**.
 
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="Java" text=true >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/elements/InformationTest.java#L27-L29" >}}
+{{< tabpane langEqualsHeader=verdad >}}
+{{< tab header="Java" text=verdad >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/elements/InformationTest.java#L27-L29" >}}
 {{< /tab >}}
-  {{< tab header="Python" text=true >}}
-{{< gh-codeblock path="examples/python/tests/elements/test_information.py#L19" >}}
+  {{< tab header="Python" text=verdad >}}
+{{< gh-codeblock path="ejemplos/python/tests/elements/test_information.py#L19" >}}
   {{< /tab >}}
- {{< tab header="CSharp" text=true >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/Elements/InformationTest.cs#L25-L27" >}}
+ {{< tab header="Carrete" text=verdad >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/Elements/InformationTest.cs#L25-L27" >}}
 {{< /tab >}}
-{{< tab header="Ruby" text=true >}}
+{{< tab header="Ruby" text=verdad >}}
 {{< gh-codeblock path="/examples/ruby/spec/elements/information_spec.rb#L17" >}}
 {{< /tab >}}
-{{< tab header="JavaScript" text=true >}}
+{{< tab header="JavaScript" text=verdad >}}
 {{< gh-codeblock path="/examples/javascript/test/elements/information.spec.js#L23-L24" >}}
 {{< /tab >}}
   {{< tab header="Kotlin" >}}
@@ -76,29 +76,29 @@ Returns a boolean value, **True** if the connected element is
   {{< /tab >}}
 {{< /tabpane >}}
 
-## Is Selected
+## Está seleccionado
 
-This method determines if the referenced Element
-is _Selected_ or not. This method is widely used on
-Check boxes, radio buttons, input elements, and option elements.
+Este método determina si el elemento referenciado
+es _Seleccionado_ o no. Este método se utiliza ampliamente en
+Cajas de verificación, botones de radio, elementos de entrada y elementos de opción.
 
-Returns a boolean value, **True** if referenced element is
-**selected** in the current browsing context else returns **false**.
+Devuelve un valor booleano, **True** si el elemento referenciado es
+**seleccionado** en el contexto de navegación actual, de lo contrario devuelve **false**.
 
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="Java" text=true >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/elements/InformationTest.java#L32-L34" >}}
+{{< tabpane langEqualsHeader=verdad >}}
+{{< tab header="Java" text=verdad >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/elements/InformationTest.java#L32-L34" >}}
 {{< /tab >}}
-  {{< tab header="Python" text=true >}}
-  {{< gh-codeblock path="examples/python/tests/elements/test_information.py#L23" >}}
+  {{< tab header="Python" text=verdad >}}
+  {{< gh-codeblock path="ejemplos/python/tests/elements/test_information.py#L23" >}}
   {{< /tab >}}
- {{< tab header="CSharp" text=true >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/Elements/InformationTest.cs#L30-L32" >}}
+ {{< tab header="Carrete" text=verdad >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/Elements/InformationTest.cs#L30-L32" >}}
 {{< /tab >}}
-{{< tab header="Ruby" text=true >}}
+{{< tab header="Ruby" text=verdad >}}
 {{< gh-codeblock path="/examples/ruby/spec/elements/information_spec.rb#L22" >}}
 {{< /tab >}}
-{{< tab header="JavaScript" text=true >}}
+{{< tab header="JavaScript" text=verdad >}}
 {{< gh-codeblock path="/examples/javascript/test/elements/information.spec.js#L30-L31" >}}
 {{< /tab >}}
   {{< tab header="Kotlin" >}}
@@ -111,20 +111,20 @@ Returns a boolean value, **True** if referenced element is
 It is used to fetch the [TagName](https://www.w3.org/TR/webdriver/#dfn-get-element-tag-name)
 of the referenced Element which has the focus in the current browsing context.
 
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="Java" text=true >}}
+{{< tabpane langEqualsHeader=verdad >}}
+{{< tab header="Java" text=verdad >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/elements/InformationTest.java#L37-L39" >}}
 {{< /tab >}}
-  {{< tab header="Python" text=true >}}
+  {{< tab header="Python" text=verdad >}}
 {{< gh-codeblock path="examples/python/tests/elements/test_information.py#L27" >}}
   {{< /tab >}}
-     {{< tab header="CSharp" text=true >}}
+     {{< tab header="Carrete" text=verdad >}}
 {{< gh-codeblock path="examples/dotnet/SeleniumDocs/Elements/InformationTest.cs#L35-L37" >}}
 {{< /tab >}}
-{{< tab header="Ruby" text=true >}}
+{{< tab header="Ruby" text=verdad >}}
 {{< gh-codeblock path="/examples/ruby/spec/elements/information_spec.rb#L27" >}}
 {{< /tab >}}
-{{< tab header="JavaScript" text=true >}}
+{{< tab header="JavaScript" text=verdad >}}
 {{< gh-codeblock path="/examples/javascript/test/elements/information.spec.js#L37-L38" >}}
 {{< /tab >}}
   {{< tab header="Kotlin" >}}
@@ -144,20 +144,20 @@ The fetched data body contain the following details:
 - Height of the element
 - Width of the element
 
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="Java" text=true >}}
+{{< tabpane langEqualsHeader=verdad >}}
+{{< tab header="Java" text=verdad >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/elements/InformationTest.java#L42-L44" >}}
 {{< /tab >}}
-  {{< tab header="Python" text=true >}}
+  {{< tab header="Python" text=verdad >}}
 {{< gh-codeblock path="examples/python/tests/elements/test_information.py#L31" >}}
   {{< /tab >}}
-{{< tab header="CSharp" text=true >}}
+{{< tab header="Carrete" text=verdad >}}
 {{< gh-codeblock path="examples/dotnet/SeleniumDocs/Elements/InformationTest.cs#L40-L43" >}}
 {{< /tab >}}
-{{< tab header="Ruby" text=true >}}
+{{< tab header="Ruby" text=verdad >}}
 {{< gh-codeblock path="/examples/ruby/spec/elements/information_spec.rb#L32" >}}
 {{< /tab >}}
-{{< tab header="JavaScript" text=true >}}
+{{< tab header="JavaScript" text=verdad >}}
 {{< gh-codeblock path="/examples/javascript/test/elements/information.spec.js#L45" >}}
 {{< /tab >}}
   {{< tab header="Kotlin" >}}
@@ -173,20 +173,20 @@ val res = driver.findElement(By.name("range_input")).rect
 Retrieves the value of specified computed style property
 of an element in the current browsing context.
 
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="Java" text=true >}}
+{{< tabpane langEqualsHeader=verdad >}}
+{{< tab header="Java" text=verdad >}}
 {{< gh-codeblock path="examples/java/src/test/java/dev/selenium/elements/InformationTest.java#L49-L50" >}}
 {{< /tab >}}
-  {{< tab header="Python" text=true >}}
+  {{< tab header="Python" text=verdad >}}
 {{< gh-codeblock path="examples/python/tests/elements/test_information.py#L35-L37" >}}
 {{< /tab >}}
-{{< tab header="CSharp" text=true >}}
+{{< tab header="Carrete" text=verdad >}}
 {{< gh-codeblock path="examples/dotnet/SeleniumDocs/Elements/InformationTest.cs#L49-L50" >}}
 {{< /tab >}}
-  {{< tab header="Ruby" text=true >}}
+  {{< tab header="Ruby" text=verdad >}}
   {{< gh-codeblock path="/examples/ruby/spec/elements/information_spec.rb#L38" >}}
   {{< /tab >}}
-  {{< tab header="JavaScript" text=true >}}
+  {{< tab header="JavaScript" text=verdad >}}
   {{< gh-codeblock path="/examples/javascript/test/elements/information.spec.js#L76-L78" >}}
   {{< /tab >}}
   {{< tab header="Kotlin" >}}
@@ -202,22 +202,22 @@ val cssValue = driver.findElement(By.id("namedColor")).getCssValue("background-c
 
 ## Text Content
 
-Retrieves the rendered text of the specified element.
+Devuelve el texto renderizado del elemento especificado.
 
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="Java" text=true >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/elements/InformationTest.java#L54-L56" >}}
+{{< tabpane langEqualsHeader=verdad >}}
+{{< tab header="Java" text=verdad >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/elements/InformationTest.java#L54-L56" >}}
 {{< /tab >}}
-  {{< tab header="Python" text=true >}}
-{{< gh-codeblock path="examples/python/tests/elements/test_information.py#L41" >}}
+  {{< tab header="Python" text=verdad >}}
+{{< gh-codeblock path="ejemplos/python/tests/elements/test_information.py#L41" >}}
   {{< /tab >}}
-{{< tab header="CSharp" text=true >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/Elements/InformationTest.cs#L53-L55" >}}
+{{< tab header="Carrete" text=verdad >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/Elements/InformationTest.cs#L53-L55" >}}
 {{< /tab >}}
-{{< tab header="Ruby" text=true >}}
+{{< tab header="Ruby" text=verdad >}}
 {{< gh-codeblock path="/examples/ruby/spec/elements/information_spec.rb#L43" >}}
 {{< /tab >}}
-{{< tab header="JavaScript" text=true >}}
+{{< tab header="JavaScript" text=verdad >}}
 {{< gh-codeblock path="/examples/javascript/test/elements/information.spec.js#L84-L86" >}}
 {{< /tab >}}
   {{< tab header="Kotlin" >}}
@@ -225,26 +225,26 @@ Retrieves the rendered text of the specified element.
   {{< /tab >}}
 {{< /tabpane >}}
 
-## Fetching Attributes or Properties
+## Obteniendo atributos o propiedades
 
-Fetches the run time value associated with a
-DOM attribute. It returns the data associated
-with the DOM attribute or property of the element.
+Obtiene el valor de tiempo de ejecución asociado con un atributo
+DOM. Devuelve los datos asociados
+con el atributo DOM o la propiedad del elemento.
 
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="Java" text=true >}}
-{{< gh-codeblock path="examples/java/src/test/java/dev/selenium/elements/InformationTest.java#L60-L64" >}}
+{{< tabpane langEqualsHeader=verdad >}}
+{{< tab header="Java" text=verdad >}}
+{{< gh-codeblock path="ejemplos/java/src/test/java/dev/selenium/elements/InformationTest.java#L60-L64" >}}
 {{< /tab >}}
-  {{< tab header="Python" text=true >}}
-{{< gh-codeblock path="examples/python/tests/elements/test_information.py#L44-L46" >}}
+  {{< tab header="Python" text=verdad >}}
+{{< gh-codeblock path="ejemplos/python/tests/elements/test_information.py#L44-L46" >}}
   {{< /tab >}}
-{{< tab header="CSharp" text=true >}}
-{{< gh-codeblock path="examples/dotnet/SeleniumDocs/Elements/InformationTest.cs#L58-L62" >}}
+{{< tab header="Carrete" text=verdad >}}
+{{< gh-codeblock path="ejemplos/dotnet/SeleniumDocs/Elements/InformationTest.cs#L58-L62" >}}
 {{< /tab >}}
-{{< tab header="Ruby" text=true >}}
+{{< tab header="Ruby" text=verdad >}}
 {{< gh-codeblock path="/examples/ruby/spec/elements/information_spec.rb#L48" >}}
 {{< /tab >}}
-{{< tab header="JavaScript" text=true >}}
+{{< tab header="JavaScript" text=verdad >}}
 {{< gh-codeblock path="/examples/javascript/test/elements/information.spec.js#L55-L59" >}}
 {{< /tab >}}
   {{< tab header="Kotlin" >}}
