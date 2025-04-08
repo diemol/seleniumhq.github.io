@@ -6,7 +6,7 @@ weight: 1
 
 (previously located: https://github.com/SeleniumHQ/selenium/wiki/Bot-Style-Tests)
 
-## Overview
+## Resumen
 
 Over time, projects tend to accumulate large numbers of tests. As the total number of tests increases,
 it becomes harder to make changes to the codebase --- a single "simple" change
