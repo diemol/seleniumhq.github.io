@@ -1,21 +1,21 @@
 ---
-title: WebDriver BiDi Script Features
-linkTitle: Script
+title: Características del WebDriver BiDi
+linkTitle: Escribir
 weight: 1
 description: |
-  These features are related to scripts, and are made available via a "script" namespace.
+  Estas características están relacionadas con scripts y están disponibles a través de un namespace "script".
 aliases:
-  - /documentation/en/webdriver/bidirectional/bidirectional_w3c/script
+  - /documentation/es/webdriver/bidirectional/bidirectional_w3c/script
   - /documentation/webdriver/bidirectional/webdriver_bidi/script
 ---
 
-The implementation of these features is being tracked here: [#13992](https://github.com/SeleniumHQ/selenium/issues/13992)
+La implementación de estas características está siendo rastreada aquí: [#13992](https://github.com/SeleniumHQ/selenium/issues/13992)
 
-Remember that to use WebDriver BiDi, you must enable it in Options.
-For more details, see [Enabling BiDi]({{< ref "BiDi" >}})
+Recuerde que para usar WebDriver BiDi, debe activarlo en Opciones.
+Para más detalles, visita [Activando BiDi]({{< ref "BiDi" >}})
 
-## Script Pinning
+## Fijar script
 
-## Execute Script
+## Ejecutar Script
 
 ## DOM Mutation Handlers
